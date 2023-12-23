@@ -1,0 +1,6 @@
+#ifndef __CPP2_S21_CONTAINERS_SRC_MAP_H__
+#define __CPP2_S21_CONTAINERS_SRC_MAP_H__
+
+class Map {};
+
+#endif  // __CPP2_S21_CONTAINERS_SRC_MAP_H__

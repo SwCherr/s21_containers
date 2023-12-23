@@ -1,62 +1,68 @@
-PROJECT = s21_containers.a
+OS = $(shell uname)
+CC = g++ -Wall -Werror -Wextra -std=c++17 -g
+# GCOV_FLAG = --coverage #-fprofile-arcs -ftest-coverage
 
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Werror --coverage
-TESTFLAGS = -lgtest -lgtest_main -pthread
-LIB_NAME = $(DIR_BUILD)$(PROJECT)
+ifeq ($(OS), Linux)
+	OPEN_CMD = xdg-open
+	GTEST_FLAGS = -lgtest -lgtest_main -pthread
+endif
+ifeq ($(OS), Darwin)
+	OPEN_CMD = open
+	LCOV_FLAG = --ignore-errors inconsistent
+	GTEST_FLAGS = -lgtest -lgmock -pthread # -lgtest_main
+endif
 
+DIR_PROJECT = ./project/
 DIR_TESTS = ./tests/
-DIR_OBJ = ./obj/
-DIR_BUILD = ./build/
-DIR_BUILD_TESTS = ./build_tests/
+STAT_LIB = s21_containers.a
+EXECUTABLE = test_conteiners
+FILES_SRC = $(wildcard $(DIR_PROJECT)*.cc)
+FILES_TESTS = $(wildcard $(DIR_TESTS)*.cc)
 
-SRC = $(wildcard *.cc)
-OBJ = $(patsubst %.cc, $(DIR_OBJ)%.o, $(SRC))
+$(STAT_LIB): clean
+	@$(CC) $(GCOV_FLAG) $(FILES_SRC) -c
+	@ar rc $(STAT_LIB) *.o
+	@ranlib $(STAT_LIB)
+	@-rm -rf *.o
 
-TEST_SRC = $(wildcard $(DIR_TESTS)*.cc)
-TEST_OBJ = $(patsubst $(DIR_TESTS)%.cc, $(DIR_OBJ)%.o, $(TEST_SRC))
-TEST_EXECUTABLE = $(DIR_BUILD_TESTS)test_matrix
+test: $(STAT_LIB)
+	@$(CC) $(FILES_TESTS) $(STAT_LIB) -o $(EXECUTABLE) $(GTEST_FLAGS) $(GCOV_FLAG) 
+	@./$(EXECUTABLE)
 
-$(PROJECT): dir $(OBJ)
-	ar rcs $(LIB_NAME) $(OBJ)
-
-$(DIR_OBJ)%.o: %.cc | dir
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(DIR_OBJ)%.o: $(DIR_TESTS)%.cc | dir
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(TEST_EXECUTABLE): $(TEST_OBJ) $(LIB_NAME)
-	$(CXX) $(CXXFLAGS) $(GTEST_LIB) $^ -o $@ $(TESTFLAGS)
-
-test: $(TEST_EXECUTABLE)
-	$(TEST_EXECUTABLE)
-
-gcov_report:
-	gcov $(SRC)
-	# lcov --directory . --capture --output-file $(DIR_BUILD_TESTS)coverage.info --exclude "/usr/local/*"
-	lcov --directory . --capture --output-file $(DIR_BUILD_TESTS)coverage.info --exclude "/usr/local/*" --ignore-errors mismatch
-	genhtml $(DIR_BUILD_TESTS)coverage.info --output-directory $(DIR_BUILD_TESTS)index.html
-	open ./build_tests/index.html/index.html
-
-dir:
-	@mkdir -p $(DIR_OBJ)
-	@mkdir -p $(DIR_BUILD)
-	@mkdir -p $(DIR_BUILD_TESTS)
-
-style_check:
-	cp ../materials/linters/.clang-format ../src/
-	@find . -type f -name '*.cc' -or -name '*.h' | xargs -I {} sh -c 'echo "Checking {}" && clang-format -n {}'
-	@find $(DIR_TESTS) -type f -name '*.cc' -or -name '*.h' | xargs -I {} sh -c 'echo "Checking {}" && clang-format -n {}'
-	rm -rf .clang-format
-
-style_repair: clean
-	cp ../materials/linters/.clang-format ../src/
-	@find . -type f -name '*.cc' -or -name '*.h' | xargs -I {} sh -c 'echo "Formatting {}" && clang-format -i {}'
-	@find $(DIR_TESTS) -type f -name '*.cc' -or -name '*.h' | xargs -I {} sh -c 'echo "Formatting {}" && clang-format -i {}'
-	rm -rf .clang-format
+gcov_report: $(STAT_LIB) test
+	@./$(EXECUTABLE)
+	@lcov -o test.info --no-external -c -d . $(LCOV_FLAG)
+	@genhtml -o report test.info $(LCOV_FLAG)
+	@$(OPEN_CMD) report/index.html
+	@rm -rf *.gcda *.gcno *.info *.dSYM 
 
 clean:
-	rm -rf $(DIR_BUILD) $(DIR_OBJ) $(DIR_BUILD_TESTS)
+	@rm -rf *.a *.o
+	@rm -rf $(EXECUTABLE)
+	@rm -rf *.gcda *.gcno *.info *.dSYM 
+	@rm -rf report
 
-all: $(PROJECT) test
+leaks: test
+	@leaks -atExit -- ./$(EXECUTABLE) | grep LEAK:
+
+valgrind: test
+	@valgrind --tool=memcheck --leak-check=yes ./$(EXECUTABLE)
+#	@CK_FORK=no valgrind --trace-children=yes --track-fds=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$(EXECUTABLE)
+
+style_cp:
+	cp ../materials/linters/.clang-format ../src  
+
+style_preparation: clean style_cp
+	clang-format -style=Google -i $(DIR_PROJECT)*.cpp $(DIR_PROJECT)*.h
+	clang-format -style=Google -i $(DIR_TESTS)*.cpp $(DIR_TESTS)*.h
+	@rm -rf .clang-format
+
+style_check: clean style_cp
+	clang-format -style=Google -n $(DIR_PROJECT)*.cpp $(DIR_PROJECT)*.h
+	clang-format -style=Google -n $(DIR_TESTS)*.cpp $(DIR_TESTS)*.h
+	@rm -rf .clang-format
+
+# Цель по умолчанию
+all:
+
+.PHONY: all clean test
