@@ -37,41 +37,23 @@ void TTree::DestroyNode(TNode* node) {
   // TNode* tmp = new TNode(x);
   // tmp->Left = *cur;
   // *cur = tmp;
-
 // }
 
 void TTree::Insert(int x) {
   bool flag_identic_key = false;
-  TNode** cur = &Root;
-  while (*cur && !flag_identic_key) {
-    TNode& node = **cur;
+  TNode** cur = &Root;                // храним адрес УКАЗАТЕЛЯ на узел
+  while (*cur && !flag_identic_key) { // пока корень не пустой
+    TNode& node = **cur;              // создаем ссылку на адрес УКАЗАТЕЛЯ на узел
     if (x < node.Key) {
-      cur = &node.Left;
+      cur = &node.Left;               // берем адрес УКАЗАТЕЛЯ на левый узел
     } else if (x > node.Key) {
-      cur = &node.Right;
+      cur = &node.Right;              // берем адрес УКАЗАТЕЛЯ на правый узел
     } else {
       flag_identic_key = true;
     }
   }
-  if(!flag_identic_key) *cur = new TNode(x);
+  if (!flag_identic_key) *cur = new TNode(x); // меняем указатель на новую ноду
 }
-
-
-// void TTree::Insert(int x) {
-//   bool flag_identic_key = false;
-//   TNode** cur = &Root;                // храним адрес УКАЗАТЕЛЯ на узел
-//   while (*cur && !flag_identic_key) { // пока корень не пустой
-//     TNode& node = **cur;              // создаем ссылку на адрес УКАЗАТЕЛЯ на узел
-//     if (x < node.Key) {
-//       cur = &node.Left;               // берем адрес УКАЗАТЕЛЯ на левый узел
-//     } else if (x > node.Key) {
-//       cur = &node.Right;              // берем адрес УКАЗАТЕЛЯ на правый узел
-//     } else {
-//       flag_identic_key = true;
-//     }
-//   }
-//   if (!flag_identic_key) *cur = new TNode(x); // меняем указатель на новую ноду
-// }
 
 // Идея удаления элемента делится на несколько случаев:
 // + у узла нет дочерних узлов;
@@ -83,16 +65,13 @@ void TTree::DeleteElement(int x) {
   bool flag_identic_key = false;
   TNode** cur = &Root;                // храним адрес УКАЗАТЕЛЯ на узел
   TNode** prev = nullptr;
-  TNode** prev_br = nullptr;
   while (*cur && !flag_identic_key) { // пока корень не пустой
     TNode& node = **cur;              // создаем ссылку на адрес УКАЗАТЕЛЯ на узел
     if (x < node.Key) {
-      prev = cur;
-      prev_br = &(**prev).Left;
+      prev = &node.Left;
       cur = &node.Left;               // берем адрес УКАЗАТЕЛЯ на левый узел
     } else if (x > node.Key) {
-      prev = cur;
-      prev_br = &(**prev).Right;
+      prev = &node.Right;
       cur = &node.Right;              // берем адрес УКАЗАТЕЛЯ на правый узел
     } else {
       flag_identic_key = true;
@@ -114,16 +93,18 @@ void TTree::DeleteElement(int x) {
   // prevnode.Left->PrintTNode();
 
 
-  (*prev_br)->PrintTNode();
+  // (*prev)->PrintTNode();
 
   if (flag_identic_key) {
     TNode& curnode = **cur;
     // TNode& prevnode = **prev;
 
     if (curnode.Left) {
-      // prev->PrintTNode();
-      // *prev = curnode.Left;
-      *prev_br = curnode.Left;
+      *prev = curnode.Left;
+    } 
+
+    if (curnode.Right) {
+      *prev = curnode.Right;
     } 
 
     // if (curnode.Right) {

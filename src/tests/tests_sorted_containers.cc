@@ -39,7 +39,7 @@ TEST(TNode, test_class_binary_tree_1) {
   binary_tree_1.Insert(28);
 
   binary_tree_1.TreePrint();
-  binary_tree_1.DeleteElement(9);
+  binary_tree_1.DeleteElement(23);
   binary_tree_1.TreePrint();
   ASSERT_EQ(1, 1);
 }
