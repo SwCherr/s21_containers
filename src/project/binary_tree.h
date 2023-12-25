@@ -4,36 +4,30 @@
 #include <iostream>
 
 namespace s21 {
-
 // Класс вершины бинарного дерева
 class TNode {
 public:
   int Key;
   TNode* Left;
   TNode* Right;
-
   TNode(int key);  // constructor
   void PrintTNode();
 };
 
-// // Класс бинарного дерева
-// class TTree {
-// public:
-//   TTree(): Root(0) {}
-//   ~TTree() {
-//     DestroyNode(Root);
-//   }
-// private:
-//   static void DestroyNode(TNode* node) {
-//     if (node) {
-//       DestroyNode(node->Left);
-//       DestroyNode(node->Right);
-//       delete node;
-//     } 
-//   }
-// private:
-//   TNode* Root;
-// };
+// Класс бинарного дерева
+class TTree {
+public:
+  TTree(); // constructor
+  ~TTree();
+  void Insert(int x);
+  void DeleteElement(int x);
+  void TreePrint();
+
+private:
+  TNode* Root;
+  void DestroyNode(TNode* node);
+  void TreePrintPrivate(TNode* node);
+};
 } // namespace s21
 
 

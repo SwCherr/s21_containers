@@ -21,9 +21,25 @@ using namespace s21;
 // }
 
 TEST(TNode, test_class_binary_tree_1) {
-  std::cout << "MAF-MAF" << std::endl;
+  // std::cout << "MAF-MAF" << std::endl;
+  // TNode node_1(5);
+  // node_1.PrintTNode();
 
-  TNode node_1(5);
-  node_1.PrintTNode();
+  TTree binary_tree_1;
+  binary_tree_1.Insert(15);
+  binary_tree_1.Insert(9);
+  binary_tree_1.Insert(12);
+  binary_tree_1.Insert(11);
+  binary_tree_1.Insert(13);
+  binary_tree_1.Insert(3);
+  binary_tree_1.Insert(8);
+  binary_tree_1.Insert(1);
+  binary_tree_1.Insert(23);
+  binary_tree_1.Insert(17);
+  binary_tree_1.Insert(28);
+
+  binary_tree_1.TreePrint();
+  binary_tree_1.DeleteElement(9);
+  binary_tree_1.TreePrint();
   ASSERT_EQ(1, 1);
 }
