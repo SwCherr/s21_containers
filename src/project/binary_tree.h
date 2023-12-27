@@ -22,6 +22,7 @@ public:
   void Insert(int x);
   void DeleteElement(int x);
   void TreePrint();
+  TNode* MaxNode(TNode* node);
 
 private:
   TNode* Root;

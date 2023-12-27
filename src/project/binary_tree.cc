@@ -99,41 +99,58 @@ void TTree::DeleteElement(int x) {
     TNode& curnode = **cur;
     // TNode& prevnode = **prev;
 
-    if (curnode.Left) {
-      *prev = curnode.Left;
-    } 
+    if (curnode.Left && curnode.Right) {
+      // из левой ветви удаляемого узла
+      // находим наибольший узел
+      *prev = MaxNode(curnode.Left);
+      (*prev)->Left = curnode.Left;
+      (*prev)->Right = curnode.Right;
+    }
 
-    if (curnode.Right) {
-      *prev = curnode.Right;
-    } 
-
-    // if (curnode.Right) {
-    //   // prev->PrintTNode();
-    //   prev = &curnode.Right;
+    // if (curnode.Left) {
+    //   *prev = curnode.Left;
     // } 
-    
-    // if (curnode.Left && curnode.Right) {
-
+    // if (curnode.Right) {
+    //   *prev = curnode.Right;
+    // } 
     // } else {
     //   *cur = nullptr;     // адрес на узел
     // }
-
-
-
 
   // std::cout << "*prev Left - ";
   // prevnode.Left->PrintTNode();
   }
 
-
   // добавить удаление самой ноды и освобождение памяти
   // пока буду просто ввырезать элементы из структуры
-
   // DestroyNode(*cur);
-  // delete *cur;
-  
+  // delete *cur;  
 }
 
+
+// написать перемещение узла с зачисткой хвостов
+TNode* TTree:: MaxNode(TNode* node) {
+  TNode* cur = node;
+  TNode* prev = cur;
+  while(cur->Right) {
+    prev = cur;
+    cur = cur->Right;
+  }
+  prev->Right = nullptr;
+  return cur;
+
+  // if (cur->Right != nullptr)
+  //   cur = MaxNode(node->Right);
+  // return cur;
+
+
+
+
+  // TNode* cur = node;
+  // if (cur->Right != nullptr)
+  //   cur = MaxNode(node->Right);
+  // return cur;
+}
 
 void TTree::TreePrint() {
   TreePrintPrivate(Root);
