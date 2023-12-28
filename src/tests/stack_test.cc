@@ -16,11 +16,11 @@ TEST(stack_constructor_test, stack_constructor_with_param) {
   s21::stack<int> example_stack = {1, 2};
 }
 
-/* TEST(stack_constructor_test, stack_constructor_copy) {
+TEST(stack_constructor_test, stack_constructor_copy) {
   s21::stack<int> first_stack;
   first_stack.push(1);
   first_stack.push(2);
   s21::stack<int> second_stack(first_stack);
   // s21::stack<int> second_stack = first_stack;
   EXPECT_EQ(second_stack.top(), 2);
-} */
+}

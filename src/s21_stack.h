@@ -4,6 +4,7 @@
 #include <deque>
 #include <iostream>
 #include <list>
+#include <stack>
 
 namespace s21 {
 
@@ -45,8 +46,7 @@ stack<T, C>::stack(std::initializer_list<value_type> const &items) {
 
 template <class T, class C>
 stack<T, C>::stack(const stack &other) {
-  container_ = other;
-  std::cout << "constructor_copy" << std::endl;
+  container_ = other.container_;
 }
 
 template <class T, class C>
