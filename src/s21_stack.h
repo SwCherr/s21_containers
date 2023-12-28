@@ -15,12 +15,12 @@ class stack {
   using const_reference = const T &;
   using size_type = std::size_t;
 
-  stack();
+  stack() = default;
   stack(std::initializer_list<value_type> const &items);
-  // stack(const stack &s);
-  // stack(stack &&s);
-  ~stack();
-  // operator=(stack &&s);
+  stack(const stack &other);
+  stack(stack &&other) noexcept;
+  ~stack() = default;
+  // stack &operator=(stack &&other);
 
   const_reference top();
 
@@ -28,17 +28,12 @@ class stack {
   size_type size();
 
   void push(const_reference value);
-  // void pop();
+  void pop();
   // void swap(stack &other);
 
  private:
   C container_;
 };  // class stack
-
-/* template <class T, class C>
-stack<T, C>::stack() {
-  std::cout << "constructor " << typeid(std::list<double>).name() << std::endl;
-}
 
 template <class T, class C>
 stack<T, C>::stack(std::initializer_list<value_type> const &items) {
@@ -49,8 +44,9 @@ stack<T, C>::stack(std::initializer_list<value_type> const &items) {
 }
 
 template <class T, class C>
-stack<T, C>::~stack() {
-  std::cout << "deconstructor" << std::endl;
+stack<T, C>::stack(const stack &other) {
+  container_ = other;
+  std::cout << "constructor_copy" << std::endl;
 }
 
 template <class T, class C>
@@ -72,10 +68,15 @@ typename stack<T, C>::size_type stack<T, C>::size() {
 template <class T, class C>
 void stack<T, C>::push(const_reference value) {
   container_.push_back(value);
-} */
+}
+
+template <class T, class C>
+void stack<T, C>::pop() {
+  container_.pop_back();
+}
 
 }  // namespace s21
 
-#include "s21_stack.sex"
+// #include "s21_stack.sex"
 
 #endif  // S21_CONTAINERS_1_SRC_S21_STACK_H_
