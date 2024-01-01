@@ -2,7 +2,6 @@
 // #include <set>
 // #include <map>
 
-// using namespace std;
 using namespace s21;
 
 // TEST(SetContainer, test_class_set_container_1) {
@@ -20,12 +19,16 @@ using namespace s21;
 //   ASSERT_EQ(1, 1);
 // }
 
-TEST(TNode, test_class_binary_tree_1) {
-  // std::cout << "MAF-MAF" << std::endl;
-  // TNode node_1(5);
-  // node_1.PrintTNode();
+TEST(Node, test_class_node_1) {
+  std::cout << "MAF-MAF" << std::endl;
+  Node<int> node{5};
+  node.PrintNode();
+  ASSERT_EQ(1, 1);
+}
 
-  TTree binary_tree_1;
+
+TEST(BinaryTree, test_class_binary_tree_1) {
+  BinaryTree<int> binary_tree_1;
   binary_tree_1.Insert(15);
   binary_tree_1.Insert(9);
   binary_tree_1.Insert(12);
@@ -37,11 +40,19 @@ TEST(TNode, test_class_binary_tree_1) {
   binary_tree_1.Insert(23);
   binary_tree_1.Insert(17);
   binary_tree_1.Insert(28);
+  binary_tree_1.Insert(7);
   // binary_tree_1.Insert(4);
   // binary_tree_1.Insert(5);
 
-  binary_tree_1.TreePrint();
-  binary_tree_1.DeleteElement(3);
-  binary_tree_1.TreePrint();
+  binary_tree_1.Print();
+  binary_tree_1.Erase(3);
+  binary_tree_1.Print();
   ASSERT_EQ(1, 1);
 }
+
+
+// TEST(Set, test_class_set_1) {
+//   set set_container();
+
+//   ASSERT_EQ(1, 1);
+// }
