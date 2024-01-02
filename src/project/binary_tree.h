@@ -5,95 +5,138 @@
 
 namespace s21 {
 // ************ CLASS NODE ************
-template<class T>
+template<class T1, class T2>
 class Node {
 public:
-  T Key;
+  T1 Key;
+  T2 Value;
   Node* Left;
   Node* Right;
-
-  Node(T key) : Key(key), Left(nullptr), Right(nullptr) {};
+  Node(T1 key, T2 value) : Key(key), Value(value), Left(nullptr), Right(nullptr) {};
   void PrintNode() { std::cout << Key << std::endl; }
 };
 
 // ************ CLASS TREE ************
-template<class T>
+template<class T1, class T2>
 class BinaryTree {
 public:
-  BinaryTree(): Root(nullptr) {};
+  Node<T1, T2> *Root;
+  int Size;
+
+  BinaryTree(): Root(nullptr){};
+  // это не копирование а ссылка на один и тот же экземпляр дерева !!!
+  // ИСПРАВИТЬ
+  BinaryTree(const BinaryTree &other) : Root(other.Root), Size(other.Size) {} 
   ~BinaryTree() { DestroyTree(Root); }
+
+  // публичные методы для итерирования по элементам класса
+  class Iterator;
+  Iterator Begin() { return BinaryTree::Iterator(GetMin(Root)); }
+  Iterator End() { return BinaryTree::Iterator(GetMax(Root)); }
+
+  // ***** ITERATOR *****
+  class Iterator {
+    private:
+      Node<T1, T2> *cur;
+    public:
+      Iterator(Node<T1, T2> *first) : cur(first) {}
+      // дописать перегрузку операторов для арифметики указателей
+  };
+
 
   void Print() {
     TreePrint(Root);
     std::cout << std::endl;
   }
 
-  void Insert(T key) {
+  // пока Iterator, потом ЗАМЕНИТЬ НА СВОЙ!!
+  // std::pair<class BinaryTree<T1, T2>::Iterator, bool> 
+  void Insert(T1 key, T2 value) {
+    // bool result_insert = 
+    InsertElement(key, value);
+    // std::pair<Iterator, bool> return_value;
+    // return_value.first = Find(key);
+    // return_value.second = result_insert;
+    // return return_value;
+  }
+
+  bool InsertElement(T1 key, T2 value) {
     bool flag_identic_key = false;
-    Node<T> **cur = &Root;                // храним адрес УКАЗАТЕЛЯ на узел
-    while (*cur && !flag_identic_key) {   // пока корень не пустой
-      Node<T> &node = **cur;              // создаем ссылку на адрес УКАЗАТЕЛЯ на узел
+    bool return_value = false;
+    Node<T1, T2> **cur = &Root;                // храним адрес УКАЗАТЕЛЯ на узел
+    while (*cur && !flag_identic_key) {        // пока корень не пустой
+      Node<T1, T2> &node = **cur;              // создаем ссылку на адрес УКАЗАТЕЛЯ на узел
       if (key < node.Key) {
-        cur = &node.Left;                 // берем адрес УКАЗАТЕЛЯ на левый узел
+        cur = &node.Left;                      // берем адрес УКАЗАТЕЛЯ на левый узел
       } else if (key > node.Key) {
-        cur = &node.Right;                // берем адрес УКАЗАТЕЛЯ на правый узел
+        cur = &node.Right;                    // берем адрес УКАЗАТЕЛЯ на правый узел
       } else {
         flag_identic_key = true;
       }
     }
     if (!flag_identic_key) {
-      *cur = new Node(key);               // меняем указатель на новую ноду
+      *cur = new Node(key, value);               // меняем указатель на новую ноду
+      if (*cur) return_value = true;
       ++Size;
-    }
+    }  
+    return return_value;  
   }
 
-  // удаление узла
-  void Erase(T key) {
-    Node<T> *curr = Root;
-    Node<T> *parent = NULL;
-    while (curr && curr->Key != key) {
-      parent = curr;
-      if (curr->Key > key)
-        curr = curr->Left;
+  // ПЕРЕПИСАТЬ
+  void Erase(T1 key) {
+    Node<T1, T2> *cur = Root;
+    Node<T1, T2> *parent = NULL;
+    while (cur && cur->Key != key) {
+      parent = cur;
+      if (cur->Key > key)
+        cur = cur->Left;
       else
-        curr = curr->Right;
+        cur = cur->Right;
     }
-    if (!curr) return;
-    if (curr->Left == NULL) {
-      // Вместо curr подвешивается его правое поддерево
-      if (parent && parent->Left == curr)
-        parent->Left = curr->Right;
-      if (parent && parent->Right == curr)
-        parent->Right = curr->Right;
+    if (!cur) return;
+    if (cur->Left == NULL) {
+      // Вместо cur подвешивается его правое поддерево
+      if (parent && parent->Left == cur)
+        parent->Left = cur->Right;
+      if (parent && parent->Right == cur)
+        parent->Right = cur->Right;
       --Size;
-      delete curr;
+      delete cur;
       return;
     }
-    if (curr->Right == NULL) {
-      // Вместо curr подвешивается его левое поддерево
-      if (parent && parent->Left == curr)
-        parent->Left = curr->Left;
-      if (parent && parent->Right == curr)
-        parent->Right = curr->Left;
+    if (cur->Right == NULL) {
+      // Вместо cur подвешивается его левое поддерево
+      if (parent && parent->Left == cur)
+        parent->Left = cur->Left;
+      if (parent && parent->Right == cur)
+        parent->Right = cur->Left;
       --Size;
-      delete curr;
+      delete cur;
       return;
     }
     // У элемента есть два потомка, тогда на место элемента поставим
     // наименьший элемент из его правого поддерева
-    Node<T> *replace = curr->Right;
+    Node<T1, T2> *replace = cur->Right;
     while (replace->Left)
       replace = replace->Left;
     int replace_value = replace->Key;
     Erase(replace_value);
-    curr->Key = replace_value;
+    cur->Key = replace_value;
+  }
+
+  typename BinaryTree<T1, T2>::Iterator Find(const T1 key) {
+    Node<T1, T2> *cur = Root;
+    while (cur && cur->Key != key) {
+      if (cur->Key > key)
+        cur = cur->Left;
+      else
+        cur = cur->Right;
+    }
+    return Iterator(cur);
   }
 
 private:
-  Node<T> *Root;
-  int Size;
-
-  void DestroyTree(Node<T> *node) {
+  void DestroyTree(Node<T1, T2> *node) {
     if (node) {
       DestroyTree(node->Left);
       DestroyTree(node->Right);
@@ -101,12 +144,28 @@ private:
     } 
   }
 
-  void TreePrint(Node<T> *node){
-    if (node!=NULL) {                      //Пока не встретится пустой узел
-      TreePrint(node->Left);        //Рекурсивная функция для левого поддерева
-      std::cout << node->Key << " ";       //Отображаем корень дерева
-      TreePrint(node->Right);       //Рекурсивная функция для правого поддерева
+  void TreePrint(Node<T1, T2> *node){
+    if (node!=NULL) {
+      TreePrint(node->Left);
+      std::cout << node->Key << " ";
+      TreePrint(node->Right);
     }
+  }
+
+  Node<T1, T2>* GetMin(Node<T1, T2>* root) {
+    Node<T1, T2> *cur = root;
+    while (cur && cur->Left) {
+      cur = cur->Left;
+    }
+    return cur;
+  }
+
+  Node<T1, T2>* GetMax(Node<T1, T2>* root) {
+    Node<T1, T2> *cur = root;
+    while (cur && cur->Right) {
+      cur = cur->Right;
+    }
+    return cur;
   }
 
 };
