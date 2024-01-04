@@ -21,16 +21,17 @@ class stack {
   stack(const stack &other);
   stack(stack &&other) noexcept;
   ~stack() = default;
-  // stack &operator=(stack &&other);
+
+  stack operator=(const stack &other);
+  bool operator==(const stack &other);
 
   const_reference top();
-
   bool empty();
   size_type size();
 
   void push(const_reference value);
   void pop();
-  // void swap(stack &other);
+  void swap(stack &other) noexcept;
 
  private:
   C container_;
@@ -38,20 +39,31 @@ class stack {
 
 template <class T, class C>
 stack<T, C>::stack(std::initializer_list<value_type> const &items) {
-  std::cout << "constructor2 " << typeid(std::list<double>).name() << std::endl;
   for (auto i = items.begin(); i != items.end(); i++) {
     push(*i);
   }
 }
 
 template <class T, class C>
-stack<T, C>::stack(const stack &other) {
+stack<T, C>::stack(const stack &other) : container_(other.container_) {}
+
+template <class T, class C>
+stack<T, C>::stack(stack &&other) noexcept
+    : container_(std::move(other.container_)) {}
+
+template <class T, class C>
+stack<T, C> stack<T, C>::operator=(const stack &other) {
   container_ = other.container_;
+  return *this;
+}
+
+template <class T, class C>
+bool stack<T, C>::operator==(const stack &other) {
+  return container_ == other.container_;
 }
 
 template <class T, class C>
 typename stack<T, C>::const_reference stack<T, C>::top() {
-  std::cout << typeid(container_).name() << std::endl;
   return container_.back();
 }
 
@@ -73,6 +85,11 @@ void stack<T, C>::push(const_reference value) {
 template <class T, class C>
 void stack<T, C>::pop() {
   container_.pop_back();
+}
+
+template <class T, class C>
+void stack<T, C>::swap(stack &other) noexcept {
+  container_.swap(other.container_);
 }
 
 }  // namespace s21
