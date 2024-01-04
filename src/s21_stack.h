@@ -94,6 +94,4 @@ void stack<T, C>::swap(stack &other) noexcept {
 
 }  // namespace s21
 
-// #include "s21_stack.sex"
-
 #endif  // S21_CONTAINERS_1_SRC_S21_STACK_H_
