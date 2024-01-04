@@ -2,9 +2,6 @@
 #define S21_CONTAINERS_1_SRC_S21_STACK_H_
 
 #include <deque>
-#include <iostream>
-#include <list>
-#include <stack>
 
 namespace s21 {
 
