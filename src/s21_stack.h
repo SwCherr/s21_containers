@@ -22,16 +22,15 @@ class stack {
   stack(stack &&other) noexcept;
   ~stack() = default;
 
-  stack operator=(const stack &other);
-  bool operator==(const stack &other);
-
   const_reference top();
   bool empty();
   size_type size();
-
   void push(const_reference value);
   void pop();
   void swap(stack &other) noexcept;
+
+  stack operator=(const stack &other);
+  bool operator==(const stack &other);
 
  private:
   C container_;
@@ -50,17 +49,6 @@ stack<T, C>::stack(const stack &other) : container_(other.container_) {}
 template <class T, class C>
 stack<T, C>::stack(stack &&other) noexcept
     : container_(std::move(other.container_)) {}
-
-template <class T, class C>
-stack<T, C> stack<T, C>::operator=(const stack &other) {
-  container_ = other.container_;
-  return *this;
-}
-
-template <class T, class C>
-bool stack<T, C>::operator==(const stack &other) {
-  return container_ == other.container_;
-}
 
 template <class T, class C>
 typename stack<T, C>::const_reference stack<T, C>::top() {
@@ -90,6 +78,17 @@ void stack<T, C>::pop() {
 template <class T, class C>
 void stack<T, C>::swap(stack &other) noexcept {
   container_.swap(other.container_);
+}
+
+template <class T, class C>
+stack<T, C> stack<T, C>::operator=(const stack &other) {
+  container_ = other.container_;
+  return *this;
+}
+
+template <class T, class C>
+bool stack<T, C>::operator==(const stack &other) {
+  return container_ == other.container_;
 }
 
 }  // namespace s21
