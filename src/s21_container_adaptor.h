@@ -1,7 +1,7 @@
 #ifndef S21_CONTAINERS_1_SRC_S21_CONTAINER_ADAPTOR_H_
 #define S21_CONTAINERS_1_SRC_S21_CONTAINER_ADAPTOR_H_
 
-#include <deque>
+#include <cstddef>
 
 namespace s21 {
 
@@ -13,13 +13,13 @@ class container_adaptor {
   using const_reference = const T &;
   using size_type = std::size_t;
 
-  // container_adaptor();
-  // ~container_adaptor();
+  virtual ~container_adaptor() = default;
 
   bool empty();
   size_type size();
   void swap(container_adaptor &other) noexcept;
   virtual void pop() = 0;
+  virtual void push(const_reference) = 0;
 
  protected:
   C container_;

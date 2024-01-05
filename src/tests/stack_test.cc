@@ -1,16 +1,14 @@
 #include <gtest/gtest.h>
 
-#include <vector>
-
 #include "../s21_stack.h"
 // constructors
 
-// TEST(stack_constructor_test, stack_default_constructor) {
-//   s21::stack<int> *example_stack = nullptr;
-//   example_stack = new s21::stack<int>;
-//   EXPECT_NE(example_stack, nullptr);
-//   // delete example_stack;
-// }
+TEST(stack_constructor_test, stack_default_constructor) {
+  s21::stack<int> *example_stack = nullptr;
+  example_stack = new s21::stack<int>;
+  EXPECT_NE(example_stack, nullptr);
+  delete example_stack;
+}
 
 TEST(stack_constructor_test, stack_constructor_with_param) {
   s21::stack<int> example_stack({1, 2});

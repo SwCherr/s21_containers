@@ -22,11 +22,12 @@ class stack : public container_adaptor<T, C> {
   ~stack() = default;
 
   reference top();
-  void push(const_reference value);
-  void pop();
+  const_reference top() const;
+  void pop() override;
+  void push(const_reference value) override;
 
   stack operator=(const stack &other);
-  bool operator==(const stack &other);
+  bool operator==(const stack &other) const;
 };  // class stack
 
 template <class T, class C>
@@ -52,6 +53,11 @@ typename stack<T, C>::reference stack<T, C>::top() {
 }
 
 template <class T, class C>
+typename stack<T, C>::const_reference stack<T, C>::top() const {
+  return this->container_.back();
+}
+
+template <class T, class C>
 void stack<T, C>::push(const_reference value) {
   this->container_.push_back(value);
 }
@@ -68,7 +74,7 @@ stack<T, C> stack<T, C>::operator=(const stack &other) {
 }
 
 template <class T, class C>
-bool stack<T, C>::operator==(const stack &other) {
+bool stack<T, C>::operator==(const stack &other) const {
   return this->container_ == other.container_;
 }
 
