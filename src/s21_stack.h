@@ -3,33 +3,9 @@
 
 #include <deque>
 
+#include "s21_container_adaptor.h"
+
 namespace s21 {
-
-template <class T, class C = std::deque<T>>
-class container_adaptor {
- public:
-  using value_type = T;
-  using reference = T &;
-  using const_reference = const T &;
-  using size_type = std::size_t;
-
-  const_reference top();
-  bool empty();
-
- protected:
-  C container_;
-};
-
-template <class T, class C>
-typename container_adaptor<T, C>::const_reference
-container_adaptor<T, C>::top() {
-  return this->container_.back();
-}
-
-template <class T, class C>
-bool container_adaptor<T, C>::empty() {
-  return container_.empty();
-}
 
 template <class T, class C = std::deque<T>>
 class stack : public container_adaptor<T, C> {
@@ -45,9 +21,8 @@ class stack : public container_adaptor<T, C> {
   stack(stack &&other) noexcept;
   ~stack() = default;
 
-  size_type size();
+  reference top();
   void push(const_reference value);
-  void swap(stack &other) noexcept;
   void pop();
 
   stack operator=(const stack &other);
@@ -72,8 +47,8 @@ stack<T, C>::stack(stack &&other) noexcept {
 }
 
 template <class T, class C>
-typename stack<T, C>::size_type stack<T, C>::size() {
-  return this->container_.size();
+typename stack<T, C>::reference stack<T, C>::top() {
+  return this->container_.back();
 }
 
 template <class T, class C>
@@ -84,11 +59,6 @@ void stack<T, C>::push(const_reference value) {
 template <class T, class C>
 void stack<T, C>::pop() {
   this->container_.pop_back();
-}
-
-template <class T, class C>
-void stack<T, C>::swap(stack &other) noexcept {
-  this->container_.swap(other.container_);
 }
 
 template <class T, class C>
