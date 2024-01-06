@@ -2,6 +2,7 @@
 #define CPP2_S21_CONTAINERS_SRC_S21_ARRAY_H_
 
 #include <initializer_list>
+#include <iostream>
 
 namespace s21 {
 template <class T, std::size_t N>
@@ -20,10 +21,39 @@ class array {
   array(array &&other);
   ~array() = default;
 
+  value_type back();
+  value_type front();
+  value_type *data();
+
+  void operator[](T);
+
  private:
   value_type arr_[N];
-  size_type size_ = N;
+  const size_type size_ = N;
 };  // class array
+
+template <class T, std::size_t N>
+array<T, N>::array(std::initializer_list<value_type> const &items) {
+  if (items.size() > N) {
+    throw std::out_of_range("array::initilized_constructor out of range");
+  }
+  std::copy(items.begin(), items.end(), arr_);
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::value_type array<T, N>::back() {
+  return arr_[N - 1];
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::value_type array<T, N>::front() {
+  return arr_[0];
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::value_type *array<T, N>::data() {
+  return arr_;
+}
 
 }  // namespace s21
 
