@@ -4,28 +4,49 @@
 
 using namespace s21;
 
-// TEST(SetContainer, test_class_set_1_1) {
-//   // SetContainer sorted_1;
-//   // sorted_1.DataTypeSize();
-
-//   s21::Set <int, int> set_1;
-//   set_1.DataTypeSize();
-//   std::set <int, int> numbers{1, 2, 3};
-//   std::cout << numbers.size() << std::endl;
-//   // numbers.key_type
-
-//   // Map map_1;
-//   // map_1.PrintSth();
-//   ASSERT_EQ(1, 1);
-// }
-
 TEST(Node, test_class_node_1) {
-  std::cout << "MAF-MAF" << std::endl;
   Node<int, int> node{5, 0};
-  node.PrintNode();
   ASSERT_EQ(1, 1);
 }
 
+// empty()
+TEST(Set, test_class_set_empty_1) {
+  set<int, int> set_1{};
+  bool res = set_1.empty();
+  bool check = true;
+  ASSERT_EQ(res, check);
+}
+
+TEST(Set, test_class_set_empty_2) {
+  set<int, int> set_1{1, 2, 2};
+  bool res = set_1.empty();
+  bool check = false;
+  ASSERT_EQ(res, check);
+}
+
+// size()
+TEST(Set, test_class_set_size_1) {
+  set<int, int> set_1{1, 2, 3};
+  size_t res = set_1.size();
+  size_t check = 3;
+  ASSERT_EQ(res, check);
+}
+
+// max_size()
+TEST(Set, test_class_set_max_size_1) {
+  set<int, int> set_1{1, 2, 3};
+  size_t res = set_1.max_size();
+  size_t check = 461168601842738790;
+  ASSERT_EQ(res, check);
+}
+
+// clear()
+TEST(Set, test_class_set_clear_1) {
+  set<int, int> set_1{1, 2, 3, 4, 5, 6};
+  set_1.clear();
+  // добавить проверку на пустой контейнер empty()
+  // ASSERT_EQ();
+}
 
 TEST(BinaryTree, test_class_binary_tree_1) {
   BinaryTree<int, int> binary_tree_1;
@@ -43,26 +64,42 @@ TEST(BinaryTree, test_class_binary_tree_1) {
   binary_tree_1.Insert(7, 3);
   // binary_tree_1.Insert(4, 3);
   // binary_tree_1.Insert(5, 3);
-
-  binary_tree_1.Print();
-  binary_tree_1.Erase(3);
-  binary_tree_1.Print();
+  // binary_tree_1.Print();
+  binary_tree_1.EraseElement(3);
+  // binary_tree_1.Print();
   ASSERT_EQ(1, 1);
 }
 
+// insert()
+TEST(Set, test_class_set_insert_1) {
+  set<double, double> set_1{};
+  set_1.insert(4);
+  set_1.insert(6);
+  set_1.insert(8);
+  // set_1.Print();
+  ASSERT_EQ(1, 1);
+}
 
-// TEST(Set, test_class_set_1) {
-//   set<int, int> set_1{};
-//   set_1.insert(4);
-//   set_1.insert(6);
-//   set_1.insert(8);
+TEST(Set, test_class_set_insert_2) {
+  set<int, int> set_1{};
+  set_1.insert(4);
+  set_1.insert(6);
+  set_1.insert(8);
+  // set_1.Print();
+  ASSERT_EQ(1, 1);
+}
+
+TEST(Set, test_class_set_2) {
+  set<int, int> set_1{1, 2};
+  // set_1.Print();
+  ASSERT_EQ(1, 1);
+}
+
+// // erase
+// TEST(Set, test_class_set_3) {
+//   set<int, int> set_1{1, 2, 5, 6, 8};
 //   set_1.Print();
-
-//   ASSERT_EQ(1, 1);
-// }
-
-// TEST(Set, test_class_set_2) {
-//   set<double, double> set_1{1.4, 2};
+//   set_1.erase(set_1.begin());
 //   set_1.Print();
 //   ASSERT_EQ(1, 1);
 // }
@@ -75,3 +112,34 @@ TEST(BinaryTree, test_class_binary_tree_1) {
 //   set_2.Print();
 //   ASSERT_EQ(1, 1);
 // }
+
+
+// find()
+TEST(Set, test_class_set_find_1) {
+  set<int, int> set_1{1, 2, 3, 4, 5, 6};
+  auto res = set_1.find(1);
+  auto check = set_1.begin();
+  ASSERT_EQ(*res, *check);
+}
+
+// contains()
+TEST(Set, test_class_set_contains_1) {
+  set<int, int> set_1{1, 2, 3, 4, 5, 6};
+  bool res = set_1.contains(1);
+  bool check = true;
+  ASSERT_EQ(res, check);
+}
+
+TEST(Set, test_class_set_contains_2) {
+  set<int, int> set_1{1, 2, 3, 4, 5, 6};
+  bool res = set_1.contains(4);
+  bool check = true;
+  ASSERT_EQ(res, check);
+}
+
+TEST(Set, test_class_set_contains_3) {
+  set<int, int> set_1{1, 2, 3, 4, 5, 6};
+  bool res = set_1.contains(8);
+  bool check = false;
+  ASSERT_EQ(res, check);
+}
