@@ -1,5 +1,5 @@
-#ifndef S21_CONTAINERS_1_SRC_S21_STACK_H_
-#define S21_CONTAINERS_1_SRC_S21_STACK_H_
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_STACK_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_STACK_H_
 
 #include <deque>
 
@@ -80,4 +80,4 @@ bool stack<T, C>::operator==(const stack &other) const {
 
 }  // namespace s21
 
-#endif  // S21_CONTAINERS_1_SRC_S21_STACK_H_
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_STACK_H_
