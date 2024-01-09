@@ -16,7 +16,7 @@ public:
   Node<T1, T2> *Left;
   Node<T1, T2> *Right;
   Node(T1 key, T2 value);
-  void PrintNode();
+  void PrintNode(); // удалить при рефракторинге
 };
 
 template<class T1, class T2>
@@ -40,13 +40,14 @@ public:
   BinaryTree(const BinaryTree &other);
   ~BinaryTree();
 
-  // ***** iTERATOR *****
+  // ====== iTERATOR ======
   class iterator {
   public:
     iterator();
     iterator(Node<T1, T2> *first);
+    void PrintKey();
     // дописать перегрузку операторов для арифметики указателей
-    T1 operator*();
+    T1 operator*(); // возвращает поле Key
   protected:
     Node<T1, T2> *cur;
   };
@@ -86,20 +87,23 @@ private:
 // BinaryTree<T1, T2>::
 
 
-// ---------------- iterator -----------------
-// --------- CONSTRUCTOR & DESTRUCTOR --------
+// ---------------- ITERATOR -----------------
+// --------- Constructor & destructor --------
 template<class T1, class T2>
 BinaryTree<T1, T2>::iterator::iterator() : cur(nullptr) {}
 
 template<class T1, class T2>
 BinaryTree<T1, T2>::iterator::iterator(Node<T1, T2> *first) : cur(first) {}
 
-// ----------------- METHODS -----------------
+// ----------------- Methods -----------------
+template<class T1, class T2>
+void BinaryTree<T1, T2>::iterator::PrintKey() { std::cout << cur->Key << std::endl; }
+
 template<class T1, class T2>
 T1 BinaryTree<T1, T2>::iterator::operator*() { return cur->Key; }
 
-// --------------- BinaryTree ----------------
-// --------- CONSTRUCTOR & DESTRUCTOR --------
+// --------------- BINARY TREE ----------------
+// --------- Constructor & destructor ---------
 template<class T1, class T2>
 BinaryTree<T1, T2>::BinaryTree(): Root(nullptr), Size(0) {};
 
@@ -109,12 +113,30 @@ BinaryTree<T1, T2>::BinaryTree(const BinaryTree &other) : Root(other.Root), Size
 template<class T1, class T2>
 BinaryTree<T1, T2>::~BinaryTree() { DestroyTree(Root); }
 
-// ----------------- METHODS -----------------
+// ----------------- Methods -----------------
 template<class T1, class T2>
 typename BinaryTree<T1, T2>::iterator BinaryTree<T1, T2>::begin() { return BinaryTree::iterator(GetMin(Root)); }
 
 template<class T1, class T2>
 typename BinaryTree<T1, T2>::iterator BinaryTree<T1, T2>::end() { return BinaryTree::iterator(GetMax(Root)); }
+
+template<class T1, class T2>
+Node<T1, T2>* BinaryTree<T1, T2>::GetMin(Node<T1, T2>* root) {
+  Node<T1, T2> *cur = root;
+  while (cur && cur->Left) {
+    cur = cur->Left;
+  }
+  return cur;
+}
+
+template<class T1, class T2>
+Node<T1, T2>* BinaryTree<T1, T2>::GetMax(Node<T1, T2>* root) {
+  Node<T1, T2> *cur = root;
+  while (cur && cur->Right) {
+    cur = cur->Right;
+  }
+  return cur;
+}
 
 template<class T1, class T2>
 bool BinaryTree<T1, T2>::empty() {
@@ -176,46 +198,51 @@ void BinaryTree<T1, T2>::Erase(iterator pos) {
   EraseElement(*pos);
 }
 
+// переписать
 template<class T1, class T2>
 void BinaryTree<T1, T2>::EraseElement(T1 key) {
   Node<T1, T2> *cur = Root;
   Node<T1, T2> *parent = NULL;
-  while (cur && cur->Key != key) {
+  bool flag_identic_key = false;
+  while (cur && !flag_identic_key) {
     parent = cur;
-    if (cur->Key > key)
+    if (key < cur->Key)
       cur = cur->Left;
-    else
+    else if (key > cur->Key)
       cur = cur->Right;
+    else flag_identic_key = true;
   }
-  if (!cur) return;
-  if (cur->Left == NULL) {
-    // Вместо cur подвешивается его правое поддерево
-    if (parent && parent->Left == cur)
-      parent->Left = cur->Right;
-    if (parent && parent->Right == cur)
-      parent->Right = cur->Right;
-    --Size;
-    delete cur;
-    return;
+  
+  if (flag_identic_key && !cur) {
+    if (cur->Left == NULL) {
+      // Вместо cur подвешивается его правое поддерево
+      if (parent && parent->Left == cur)
+        parent->Left = cur->Right;
+      if (parent && parent->Right == cur)
+        parent->Right = cur->Right;
+      --Size;
+      delete cur;
+      return;
+    }
+    if (cur->Right == NULL) {
+      // Вместо cur подвешивается его левое поддерево
+      if (parent && parent->Left == cur)
+        parent->Left = cur->Left;
+      if (parent && parent->Right == cur)
+        parent->Right = cur->Left;
+      --Size;
+      delete cur;
+      return;
+    }
+    // У элемента есть два потомка, тогда на место элемента поставим
+    // наименьший элемент из его правого поддерева
+    Node<T1, T2> *replace = cur->Right;
+    while (replace->Left)
+      replace = replace->Left;
+    int replace_value = replace->Key;
+    EraseElement(replace_value);
+    cur->Key = replace_value;
   }
-  if (cur->Right == NULL) {
-    // Вместо cur подвешивается его левое поддерево
-    if (parent && parent->Left == cur)
-      parent->Left = cur->Left;
-    if (parent && parent->Right == cur)
-      parent->Right = cur->Left;
-    --Size;
-    delete cur;
-    return;
-  }
-  // У элемента есть два потомка, тогда на место элемента поставим
-  // наименьший элемент из его правого поддерева
-  Node<T1, T2> *replace = cur->Right;
-  while (replace->Left)
-    replace = replace->Left;
-  int replace_value = replace->Key;
-  EraseElement(replace_value);
-  cur->Key = replace_value;
 }
 
 template<class T1, class T2>
@@ -262,24 +289,6 @@ void BinaryTree<T1, T2>::TreePrint(Node<T1, T2> *node){
     std::cout << node->Key << " ";
     TreePrint(node->Right);
   }
-}
-
-template<class T1, class T2>
-Node<T1, T2>* BinaryTree<T1, T2>::GetMin(Node<T1, T2>* root) {
-  Node<T1, T2> *cur = root;
-  while (cur && cur->Left) {
-    cur = cur->Left;
-  }
-  return cur;
-}
-
-template<class T1, class T2>
-Node<T1, T2>* BinaryTree<T1, T2>::GetMax(Node<T1, T2>* root) {
-  Node<T1, T2> *cur = root;
-  while (cur && cur->Right) {
-    cur = cur->Right;
-  }
-  return cur;
 }
 
 template<class T1, class T2>
