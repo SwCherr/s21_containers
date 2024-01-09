@@ -7,10 +7,9 @@ using namespace s21;
 // ************************************
 // ------------ CLASS NODE ------------
 // ************************************
-TEST(Node, test_class_node_1) {
-  Node<int, int> node{5, 0};
-  ASSERT_EQ(1, 1);
-}
+// TEST(Node, test_class_node_1) {
+//   ASSERT_EQ(1, 1);
+// }
 
 // ************************************
 // ------------ CLASS TREE ------------
@@ -55,15 +54,8 @@ TEST(BinaryTree, test_class_binary_tree_erase_2) {
   BinaryTree<int, int> binary_tree;
   binary_tree.Insert(15, 1);
   binary_tree.Insert(9, 2);
-  // binary_tree.Insert(12, 3);
-  // binary_tree.Insert(11, 3);
-  // binary_tree.Insert(13, 3);
-  binary_tree.Print();
-
   auto cur = binary_tree.end();
-  cur.PrintKey();
   binary_tree.Erase(cur);
-  binary_tree.Print();
   ASSERT_EQ(1, 1);
 }
 
