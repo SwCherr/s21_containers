@@ -46,7 +46,6 @@ public:
     iterator& operator--();
     // iterator operator--(int);
     bool operator!=(const iterator& other);
-    bool operator<=(const iterator& other);
     T1 operator*(); // возвращает поле Key
   protected:
     Node *cur;
@@ -116,56 +115,41 @@ BinaryTree<T1, T2>::iterator::iterator(Node *first) : cur(first) {}
 // template<class T1, class T2>
 // void BinaryTree<T1, T2>::iterator::PrintKey() { std::cout << cur->Key << std::endl; }
 
-// template<class T1, class T2>
-// typename BinaryTree<T1, T2>::iterator& BinaryTree<T1, T2>::iterator::operator++() {
-//   RoundInOrder();
-//   return *this;
-// }
-
-// template<class T1, class T2>
-// void BinaryTree<T1, T2>::iterator::RoundInOrder() {
-//   if (cur->Left != nullptr) Left.RoundInOrder();   // обработка левого поддерева
-//   cur.Increment();                                 // обработка текущего состояния
-//   if (cur->Right != nullptr) Right.RoundInOrder(); // обработка правого поддерева
-// }
-
-// template<class T1, class T2>
-// void BinaryTree<T1, T2>::iterator::Increment() {
-
-// }
-
-// static void contInOrder(Node top){
-//   Stack<Node> stack = new Stack<> (); 
-//   while (top!=null || !stack.empty()){
-//     if (!stack.empty()){
-//       top=stack.pop();
-//       top.treatment();
-//       if (top.right!=null) top=top.right;
-//       else top=null;
-//     }
-//     while (top!=null){
-//       stack.push(top);
-//       top=top.left;
-//     }
-//   }
-// }
-
-
 template<class T1, class T2>
 typename BinaryTree<T1, T2>::iterator& BinaryTree<T1, T2>::iterator::operator++() {
-  // if (cur) {} // добавить проверку на пустой итератор
-  if (cur->Right) {
-    cur = cur->Right;           // найти минимальное значение в правой подветке cur
-    while (cur && cur->Left)
-      cur = cur->Left;
-  } else if (cur->Parent) {
-    if (cur->Key < cur->Parent->Key)
-      cur = cur->Parent;
-    else {
-      T1 tmp_key = cur->Key;
-      while (tmp_key >= cur->Key)
+  if (cur) {
+    if (cur->Right) {
+      cur = cur->Right;           // найти минимальное значение в правой подветке cur
+      while (cur && cur->Left)
+        cur = cur->Left;
+    } else if (cur->Parent) {
+      if (cur->Key < cur->Parent->Key)
         cur = cur->Parent;
-      // cur = cur->Parent->Parent;
+      else {
+        T1 tmp_key = cur->Key;
+        while (tmp_key >= cur->Key)
+          cur = cur->Parent;
+      }
+    }
+  }
+  return *this;
+}
+
+template<class T1, class T2>
+typename BinaryTree<T1, T2>::iterator& BinaryTree<T1, T2>::iterator::operator--() {
+  if (cur) {
+    if (cur->Left) {
+      cur = cur->Left;           // найти минимальное значение в правой подветке cur
+      while (cur && cur->Right)
+        cur = cur->Right;
+    } else if (cur->Parent) {
+      if (cur->Key > cur->Parent->Key)
+        cur = cur->Parent;
+      else {
+        T1 tmp_key = cur->Key;
+        while (tmp_key <= cur->Key)
+          cur = cur->Parent;
+      }
     }
   }
   return *this;
@@ -174,11 +158,6 @@ typename BinaryTree<T1, T2>::iterator& BinaryTree<T1, T2>::iterator::operator++(
 template<class T1, class T2>
 bool BinaryTree<T1, T2>::iterator::operator!=(const iterator& other) {
   return cur != other.cur;
-}
-
-template<class T1, class T2>
-bool BinaryTree<T1, T2>::iterator::operator<=(const iterator& other) {
-  return cur->Key <= other.cur->Key;
 }
 
 template<class T1, class T2>

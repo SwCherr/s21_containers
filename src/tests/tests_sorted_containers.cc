@@ -48,15 +48,42 @@ TEST(BinaryTree, test_class_binary_tree_iterator_1) {
   binary_tree.Insert(7, 3);
   binary_tree.Print();
 
-  int count = 0;
   auto tmp = binary_tree.begin();
-  for (auto i = binary_tree.begin(); i <= binary_tree.end() && count < 20; ++i) {
+  for (auto i = binary_tree.begin(); i != binary_tree.end(); ++i) {
     std::cout << *i << " ";
-    count++;
     tmp = i;
   }
-  // ++tmp;
-  // std::cout << *tmp << " ";
+  ++tmp;
+  std::cout << *tmp << " ";
+  std::cout << std::endl;
+
+  ASSERT_EQ(1, 1);
+}
+
+// iterator& operator--()
+TEST(BinaryTree, test_class_binary_tree_iterator_2) {
+  BinaryTree<int, int> binary_tree;
+  binary_tree.Insert(15, 1);
+  binary_tree.Insert(9, 2);
+  binary_tree.Insert(12, 3);
+  binary_tree.Insert(11, 3);
+  binary_tree.Insert(13, 3);
+  binary_tree.Insert(3, 3);
+  binary_tree.Insert(8, 3);
+  binary_tree.Insert(1, 3);
+  binary_tree.Insert(23, 3);
+  binary_tree.Insert(17, 3);
+  binary_tree.Insert(28, 3);
+  binary_tree.Insert(7, 3);
+  binary_tree.Print();
+
+  auto tmp = binary_tree.begin();
+  for (auto i = binary_tree.end(); i != binary_tree.begin(); --i) {
+    std::cout << *i << " ";
+    tmp = i;
+  }
+  --tmp;
+  std::cout << *tmp << " ";
   std::cout << std::endl;
 
   ASSERT_EQ(1, 1);
