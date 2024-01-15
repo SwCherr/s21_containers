@@ -7,56 +7,45 @@ namespace s21 {
 // class SetContainer {}; // общий класс для множеств
 // class Multiset: public SetContainer {}; // допка - заглушка
 
-template<class T1, class T2>
-class set: public BinaryTree<T1, T2> {
+template<class Key>
+class set: public BinaryTree<Key, Key> {
 public:
-  using key_type = T1;                               // первый параметр шаблона
-  using value_type = T1;                              // Тип значения ключа (само значение является ключом)
-  using reference = value_type &;                       // тип ссылки на элемент
-  using const_reference = const value_type &;           // тип ссылки на константу
-  using iterator = typename BinaryTree<T1, T2>::iterator;             // тип для итерации по контейнеру
-  // using const_iterator = BinaryTree::const_iterator; // тип константы для итерации по контейнеру
-  using size_type = size_t;                           // определяет тип размера контейнера (стандартный тип - size_t);
-  
-  // основные публичные методы для взаимодействия с классом
-  // 5 конструкторов и 1 деструктор
-  set() : BinaryTree<T1, T2>() {};
+  using key_type = Key;
+  using value_type = Key;
+  using reference = value_type &;
+  using const_reference = const value_type &;
+  using iterator = typename BinaryTree<Key, Key>::iterator;
+  using const_iterator = typename BinaryTree<Key, Key>::const_iterator;
+  using size_type = size_t;
 
-  set(std::initializer_list<value_type> const &items) {
-    for (auto i = items.begin(); i!= items.end(); i++) {
-      BinaryTree<T1, T2>::Insert(*i, 0);
-    }
-  }
+  set() : BinaryTree<Key, Key>() {};
+  set(std::initializer_list<value_type> const &items);
+  set(const set &s) : BinaryTree<Key, Key>(s) {};           // copy constructor
+  set(set &&s) : BinaryTree<Key, Key>(s) {};                // move constructor
+  ~set() = default;
+  set& operator=(set &&s);
 
-  // set(const set &s);                                    // copy constructor
-  // set(const set &s) : BinaryTree<T1, T2>(s) {}
-  // set(const set &s) : BinaryTree<T1, T2>(), Root(s.Root), Size(s.Size) {}
-
-
-  // set(set &&s);                                         // move constructor
-  // ~set();                                               // destructor
-  // operator=(set &&s);                                   // assignment operator overload for moving object
-
-
-  // публичные методы для итерирования по элементам класса
-  // публичные методы для изменения контейнера
-  std::pair<iterator, bool> insert(const value_type& value) {
-    return BinaryTree<T1, T2>::Insert(value, 0);
-  }
-
-  void erase(iterator pos) {
-    BinaryTree<T1, T2>::Erase(pos);
-  }
-
-  // void swap(set& other)
-  // void merge(set& other);
-
-  // + ready? + публичные методы для просмотра контейнера
-
+  std::pair<iterator, bool> insert(const value_type& value);
 private:
-  // BinaryTree<T1, T2> set_values;
-  // T1 value;
 };
+
+template<class Key>
+set<Key>::set(std::initializer_list<value_type> const &items) {
+  for (auto i = items.begin(); i!= items.end(); i++)
+    BinaryTree<Key, Key>::Insert(*i, *i);
+}
+
+template <class Key>
+set<Key>& set<Key>::operator=(set &&s) {
+  if (this != &s)
+    BinaryTree<Key, Key>::operator=(std::move(s));
+  return *this;
+}
+
+template <class Key>
+std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const value_type& value) {
+  return BinaryTree<Key, Key>::Insert(value, value);
+}
 } // namespace s21
 
 #endif  // __CPP2_S21_CONTAINERS_SRC_SET_H__
