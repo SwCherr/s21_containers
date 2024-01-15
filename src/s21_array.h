@@ -24,8 +24,11 @@ class array {
   value_type back();
   value_type front();
   value_type *data();
+  iterator begin();
+  iterator end();
 
-  void operator[](T);
+  reference operator[](value_type index);
+  value_type operator[](value_type index) const;
 
  private:
   value_type arr_[N];
@@ -53,6 +56,22 @@ typename array<T, N>::value_type array<T, N>::front() {
 template <class T, std::size_t N>
 typename array<T, N>::value_type *array<T, N>::data() {
   return arr_;
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::iterator array<T, N>::end() {
+  return &arr_[size_];
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::reference array<T, N>::operator[](value_type index) {
+  return arr_[index];
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::value_type array<T, N>::operator[](
+    value_type index) const {
+  return arr_[index];
 }
 
 }  // namespace s21

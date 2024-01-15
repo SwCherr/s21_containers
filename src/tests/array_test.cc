@@ -26,3 +26,32 @@ TEST(array_metods_test, metod_front) {
   std::array<int, 3> std_arr = {1, 2, 3};
   ASSERT_EQ(s21_arr.front(), std_arr.front());
 }
+
+TEST(array_metods_test, metod_end) {
+  // s21::array<int, 3> s21_arr = {1, 2, 3};
+  std::array<int, 3> std_arr = {1, 2, 3};
+  // std_arr.end
+  // void *p_end = s21_arr.end();
+
+  for (auto i = std_arr.begin(); i != std_arr.end(); i++) {
+    std::cout << "0" << std::endl;
+  }
+}
+
+// operators
+
+TEST(array_operators_test, operator_square_brackets) {
+  s21::array<int, 3> s21_arr = {1, 2, 3};
+  ASSERT_EQ(s21_arr[0], 1);
+  s21_arr[0] = 5;
+  ASSERT_EQ(s21_arr[0], 5);
+  int *p_int = &s21_arr[0];
+  ASSERT_EQ(*p_int, 5);
+  std::array<int, 3> std_arr = {1, 2, 3};
+  std_arr.begin();
+}
+
+TEST(array_operators_test, operator_square_brackets_const) {
+  const s21::array<int, 3> s21_arr = {1, 2, 3};
+  ASSERT_EQ(s21_arr[0], 1);
+}
