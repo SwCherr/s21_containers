@@ -10,10 +10,11 @@ class array {
  public:
   using value_type = T;
   using reference = T &;
-  using iterator = T *;
+  using pointer = T *;
   using const_reference = const T &;
   using const_iterator = const T *;
   using size_type = std::size_t;
+  class iterator;
 
   array() = default;
   array(std::initializer_list<value_type> const &items);
@@ -33,7 +34,15 @@ class array {
  private:
   value_type arr_[N];
   const size_type size_ = N;
+
 };  // class array
+
+class iterator {
+ public:
+  using iterator_category = std::random_access_iterator_tag;
+
+  iterator operator++();
+};  // class iretator
 
 template <class T, std::size_t N>
 array<T, N>::array(std::initializer_list<value_type> const &items) {

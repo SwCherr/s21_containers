@@ -1,8 +1,17 @@
 #include <gtest/gtest.h>
 
 #include <array>
+#include <vector>
 
 #include "../s21_array.h"
+
+// experements
+
+TEST(iterators, test1) {
+  std::vector<int> a = {1, 2, 3};
+  std::vector<int>::iterator it = a.begin();
+  EXPECT_EQ(*it, 1);
+}
 
 // constructors
 
