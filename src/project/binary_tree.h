@@ -39,7 +39,7 @@ public:
   void EraseElement(T1 key);    // ПЕРЕПИСАТЬ
   void swap(BinaryTree& o);
   void merge(BinaryTree& o);
-  iterator find(const T1 key);
+  iterator find(const T1 key); // подумать над переносом в дочерний класс сет 
   bool contains(const T1& key); // вынести общий код
 
   // вспомогательные ф-ии

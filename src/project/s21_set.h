@@ -26,7 +26,6 @@ public:
   set& operator=(set &&s);
 
   std::pair<iterator, bool> insert(const value_type& value);
-private:
 };
 
 template<class Key>
@@ -47,5 +46,4 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const value_type& 
   return BinaryTree<Key, Key>::Insert(value, value);
 }
 } // namespace s21
-
 #endif  // __CPP2_S21_CONTAINERS_SRC_SET_H__
