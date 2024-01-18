@@ -3,7 +3,7 @@
 
 namespace s21 {
 template<class Key, class Value>
-class map : public BinaryTree<Key, Value> {
+class map: public BinaryTree<Key, Value> {
 public:
   using key_type = Key;
   using mapped_type = Value;
@@ -21,13 +21,39 @@ public:
   ~map() = default;
   map& operator=(map &&s);
 
-  // std::pair<iterator, bool> insert(const value_type& value);
+  // В этой таблице перечислены публичные методы для доступа к элементам класса:
+  // Value& at(const Key& key);
+  // Value& operator[](const Key& key);
+
+  // В этой таблице перечислены публичные методы для итерирования по элементам класса (доступ к итераторам):
+  // iterator begin();
+  // iterator end();
+
+  // В этой таблице перечислены публичные методы для изменения контейнера:
+  // std::pair<iterator, bool> insert(const value_type& value); // +
+  std::pair<iterator, bool> insert(const Key& key, const Value& value); // +
+  // std::pair<iterator, bool> insert_or_assign(const Key& key, const Value& obj);
+  // void erase(iterator pos);
+  // void swap(map& other);
+  // void merge(map& other);
 };
+
+
 
 template<class Key, class Value>
 map<Key, Value>::map(std::initializer_list<value_type> const &items) {
   for (auto i = items.begin(); i!= items.end(); i++)
-    BinaryTree<Key, Value>::Insert(*i);
+    BinaryTree<Key, Value>::Insert(i->first, i->second);
+}
+
+// template<class Key, class Value>
+// std::pair<typename map<Key, Value>::iterator, bool> map<Key, Value>::insert(const value_type& value) {
+//   return BinaryTree<Key, Value>::Insert(value.first, value.second);
+// }
+
+template<class Key, class Value>
+std::pair<typename map<Key, Value>::iterator, bool> map<Key, Value>::insert(const Key& key, const Value& value) {
+  return BinaryTree<Key, Value>::Insert(key, value);
 }
 
 } // namespace s21

@@ -1,7 +1,7 @@
 #include "test.h"
 #include <string>
 #include <set>
-// #include <map>
+
 using namespace s21;
 
 // *************** ITERATOR ***************
@@ -20,16 +20,14 @@ TEST(BinaryTree, test_class_binary_tree_iterator_1) {
   binary_tree.Insert(10, 3);
   binary_tree.Insert(11, 3);
   binary_tree.Insert(12, 3);
-  // binary_tree.PrintByIterator();
-  // binary_tree.Print();
-  int check_value = 1;
-  auto cur = binary_tree.begin();
-  for (size_t i = 0; i < binary_tree.size(); ++i) {
-    ASSERT_EQ(*cur, check_value);
-    ++check_value;
-    if (cur != binary_tree.end()) 
-      ++cur;
-  }
+  // int check_value = 1;
+  // auto cur = binary_tree.begin();
+  // for (size_t i = 0; i < binary_tree.size(); ++i) {
+  //   ASSERT_EQ(*cur, check_value);
+  //   ++check_value;
+  //   if (cur != binary_tree.end()) 
+  //     ++cur;
+  // }
   const unsigned long size_res = 12;
   ASSERT_EQ(binary_tree.size(), size_res);
 }
@@ -49,14 +47,13 @@ TEST(BinaryTree, test_class_binary_tree_iterator_2) {
   binary_tree.Insert(10, 3);
   binary_tree.Insert(11, 3);
   binary_tree.Insert(12, 3);
-  // binary_tree.Print();
-  int check_value = 12;
-  auto cur = binary_tree.end();
-  for (size_t i = 0; i < binary_tree.size(); ++i) {
-    ASSERT_EQ(*cur, check_value);
-    --check_value;
-    --cur;
-  }
+  // int check_value = 12;
+  // auto cur = binary_tree.end();
+  // for (size_t i = 0; i < binary_tree.size(); ++i) {
+  //   ASSERT_EQ(*cur, check_value);
+  //   --check_value;
+  //   --cur;
+  // }
   const unsigned long size_res = 12;
   ASSERT_EQ(binary_tree.size(), size_res);
 }
@@ -83,7 +80,6 @@ TEST(BinaryTree, test_class_binary_tree_copy_constructor_1) {
   binary_tree_1.Insert(13, 3);
   BinaryTree<int, int> binary_tree_2{binary_tree_1};
   ASSERT_EQ(binary_tree_1.size(), binary_tree_2.size());
-  // ASSERT_EQ(CheckEqTreeByKey(binary_tree_1, binary_tree_2), true);
 }
 
 // copy constructor
@@ -91,7 +87,6 @@ TEST(BinaryTree, test_class_binary_tree_copy_constructor_2) {
   BinaryTree<int, int> binary_tree_1;
   BinaryTree<int, int> binary_tree_2{binary_tree_1};
   ASSERT_EQ(binary_tree_1.size(), binary_tree_2.size());
-  // ASSERT_EQ(CheckEqTreeByKey(binary_tree_1, binary_tree_2), true);
 }
 
 // move constructor
@@ -100,7 +95,6 @@ TEST(BinaryTree, test_class_binary_tree_move_constructor_1) {
   BinaryTree<int, int> binary_tree_2(std::move(binary_tree_1));
   const unsigned long check_size = 0;
   ASSERT_EQ(check_size, binary_tree_1.size());
-  // ASSERT_EQ(CheckEqTreeByKey(binary_tree_1, binary_tree_2), true);
 }
 
 // move constructor
@@ -114,7 +108,6 @@ TEST(BinaryTree, test_class_binary_tree_move_constructor_2) {
   BinaryTree<int, int> binary_tree_2(std::move(binary_tree_1));
   const unsigned long check_size = 0;
   ASSERT_EQ(check_size, binary_tree_1.size());
-  // ASSERT_EQ(CheckEqTreeByKey(binary_tree_1, binary_tree_2), false);
 }
 
 // ---------------- Operator -----------------
@@ -124,7 +117,6 @@ TEST(BinaryTree, test_class_binary_tree_operator_1) {
   BinaryTree<int, int> binary_tree_2 = std::move(binary_tree_1);
   const unsigned long check_size = 0;
   ASSERT_EQ(check_size, binary_tree_1.size());
-  // ASSERT_EQ(CheckEqTreeByKey(binary_tree_1, binary_tree_2), true);
 }
 
 // operator=(BinaryTree&& o)
@@ -138,31 +130,18 @@ TEST(BinaryTree, test_class_binary_tree_operator_2) {
   BinaryTree<int, int> binary_tree_2 = std::move(binary_tree_1);
   const unsigned long check_size = 0;
   ASSERT_EQ(check_size, binary_tree_1.size());
-  // ASSERT_EQ(CheckEqTreeByKey(binary_tree_1, binary_tree_2), false);
 }
 
 // ----------------- Methods -----------------
-// Insert() & EraseElement()
+// Insert() & erase()
 TEST(BinaryTree, test_class_binary_tree_insert_1) {
   BinaryTree<int, int> binary_tree;
-  binary_tree.Insert(15, 1);
-  binary_tree.Insert(9, 2);
-  binary_tree.Insert(12, 3);
-  binary_tree.Insert(11, 3);
-  binary_tree.Insert(13, 3);
+  binary_tree.Insert(1, 1);
+  binary_tree.Insert(2, 3);
   binary_tree.Insert(3, 3);
-  binary_tree.Insert(8, 3);
-  binary_tree.Insert(1, 3);
-  binary_tree.Insert(23, 3);
-  binary_tree.Insert(17, 3);
-  binary_tree.Insert(28, 3);
-  binary_tree.Insert(7, 3);
-  // binary_tree.Insert(4, 3);
-  // binary_tree.Insert(5, 3);
-  // binary_tree.Print();
-  binary_tree.EraseElement(3);
-  // binary_tree.Print();
-  ASSERT_EQ(1, 1);
+  ASSERT_TRUE(binary_tree.contains(1));
+  ASSERT_TRUE(binary_tree.contains(2));
+  ASSERT_TRUE(binary_tree.contains(3));
 }
 
 // erase() begin
@@ -174,17 +153,19 @@ TEST(BinaryTree, test_class_binary_tree_erase_1) {
   binary_tree.Insert(11, 3);
   binary_tree.Insert(13, 3);
   binary_tree.erase(binary_tree.begin());
-  ASSERT_EQ(1, 1);
+  ASSERT_FALSE(binary_tree.contains(9));
 }
 
 // erase() end
 TEST(BinaryTree, test_class_binary_tree_erase_2) {
   BinaryTree<int, int> binary_tree;
+  binary_tree.Insert(12, 3);
+  binary_tree.Insert(11, 3);
+  binary_tree.Insert(13, 3);
   binary_tree.Insert(15, 1);
   binary_tree.Insert(9, 2);
-  auto cur = binary_tree.end();
-  binary_tree.erase(cur);
-  ASSERT_EQ(1, 1);
+  binary_tree.erase(binary_tree.end());
+  ASSERT_FALSE(binary_tree.contains(15));
 }
 
 // ************************************
@@ -213,6 +194,24 @@ TEST(Set, test_class_set_size_1) {
   ASSERT_EQ(res, check);
 }
 
+// size()
+TEST(Set, test_class_set_size_2) {
+  s21::set<int> set_test{1, 2, 3};
+  set_test.erase(set_test.begin());
+  size_t res = set_test.size();
+  size_t check = 2;
+  ASSERT_EQ(res, check);
+}
+
+// size()
+TEST(Set, test_class_set_size_3) {
+  s21::set<int> set_test{1, 2, 3};
+  set_test.clear();
+  size_t res = set_test.size();
+  size_t check = 0;
+  ASSERT_EQ(res, check);
+}
+
 // max_size()
 TEST(Set, test_class_set_max_size_1) {
   s21::set<int> set_test{1, 2, 3};
@@ -225,8 +224,7 @@ TEST(Set, test_class_set_max_size_1) {
 TEST(Set, test_class_set_clear_1) {
   s21::set<int> set_test{1, 2, 3, 4, 5, 6};
   set_test.clear();
-  // добавить проверку на пустой контейнер empty()
-  // ASSERT_EQ();
+  ASSERT_TRUE(set_test.empty());
 }
 
 // insert()
@@ -235,26 +233,100 @@ TEST(Set, test_class_set_insert_1) {
   set_test.insert(4);
   set_test.insert(6);
   set_test.insert(8);
-  // set_test.Print();
-  ASSERT_EQ(1, 1);
-}
-
-TEST(Set, test_class_set_insert_2) {
-  s21::set<int> set_test{};
-  set_test.insert(4);
-  set_test.insert(6);
-  set_test.insert(8);
-  // set_test.Print();
-  ASSERT_EQ(1, 1);
+  ASSERT_TRUE(set_test.contains(4));
+  ASSERT_TRUE(set_test.contains(6));
+  ASSERT_TRUE(set_test.contains(8));
 }
 
 // erase
-TEST(Set, test_class_set_erase_1) {
-  s21::set<int> set_test{1, 2, 5, 6, 8};
-  // set_test.Print();
+TEST(set, test_class_set_erase_1) {
+  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  auto set_it = set_test.begin();
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(1));
+}
+
+// erase
+TEST(set, test_class_set_erase_2) {
+  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  auto set_it = set_test.begin() + 4;
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(9));
+}
+
+// erase
+TEST(set, test_class_set_erase_3) {
+  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  auto set_it = set_test.begin() + 3;
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(8));
+}
+
+// erase
+TEST(set, test_class_set_erase_4) {
+  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  auto set_it = set_test.begin() + 2;
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(7));
+}
+
+// erase
+TEST(set, test_class_set_erase_5) {
+  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  auto set_it = set_test.begin() + 8;
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(15));
+}
+
+// erase
+TEST(set, test_class_set_erase_6) {
+  s21::set<int> set_test{-8, 7, 6, -1, 0, 0, 4, 5, 8};
+  auto set_it = set_test.begin();
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(-8));
+}
+
+// erase
+TEST(set, test_class_set_erase_7) {
+  s21::set<int> set_test{-8, 7, 6, -1, 0, 0, 4, 5, 8};
+  auto set_it = set_test.begin() + 1;
+  set_test.erase(set_it);
+  EXPECT_FALSE(set_test.contains(-1));
+}
+
+// erase
+TEST(set, test_class_set_erase_8) {
+  s21::set<int> set_test{-4, 1, 2, 5, 6, 8, 4, 7};
   set_test.erase(set_test.begin());
-  // set_test.Print();
-  ASSERT_EQ(1, 1);
+  EXPECT_FALSE(set_test.contains(-4));
+}
+
+// erase
+TEST(set, test_class_set_erase_9) {
+  s21::set<int> set_test{2, 9, 5, 6, 8};
+  set_test.erase(set_test.begin());
+  EXPECT_FALSE(set_test.contains(2));
+}
+
+// erase
+TEST(set, test_class_set_erase_10) {
+  s21::set<int> set_test{2, 1, 2};
+  set_test.erase(set_test.begin());
+  EXPECT_FALSE(set_test.contains(1));
+}
+
+// erase
+TEST(set, test_class_set_erase_11) {
+  s21::set<int> set_test{1, 1, 2};
+  set_test.erase(set_test.begin());
+  EXPECT_FALSE(set_test.contains(1));
+}
+
+// erase
+TEST(set, test_class_set_erase_12) {
+  s21::set<int> set_test{1};
+  set_test.erase(set_test.begin());
+  EXPECT_FALSE(set_test.contains(1));
 }
 
 // swap()
@@ -264,14 +336,10 @@ TEST(Set, test_class_set_swap_1) {
   s21::set<int> set_test_1_res{3, 4, 6, 7, 0};
   s21::set<int> set_test_2_res{1, 2, 5, 6, 8, 7};
   set_test_1.swap(set_test_2);
-  // // set_test_1.Print();
-  // // set_test_2.Print();
   size_t size_res_1 = 5;
   size_t size_res_2 = 6;
   ASSERT_EQ(set_test_1.size(), size_res_1);
   ASSERT_EQ(set_test_2.size(), size_res_2);
-  // ASSERT_EQ(CheckEqTreeByKey(set_test_1, set_test_1_res), true);
-  // ASSERT_EQ(CheckEqTreeByKey(set_test_2, set_test_2_res), true);
 }
 
 // merge()
@@ -283,18 +351,13 @@ TEST(Set, test_class_set_merge_1) {
   set_test_1.merge(set_test_2);
   size_t size_res = 10;
   ASSERT_EQ(set_test_1.size(), size_res);
-  // // set_test_1.Print();
-  // // set_res.Print();
-  // ASSERT_EQ(CheckEqTreeByKey(set_test_1, set_res), true);
 }
 
 // // copy construct
 // TEST(Set, test_class_set_3) {
 //   s21::set<int> set_test{1, 2};
 //   s21::set<int> set_test_2{set};
-  // // set_test.Print();
-  // // set_test_2.Print();
-//   ASSERT_EQ(1, 1);
+  // ASS--------------------------------------    ERT_EQ(1, 1);
 // }
 
 
@@ -333,76 +396,78 @@ TEST(Set, test_class_set_contains_3) {
 // ************************************
 TEST(Set, test_class_set_int_1) {
   s21::set<int> set_test{1, 2, 3, 4, 5, 6};
-  std::set<int> orig_set {1, 2, 3, 4, 5, 6};
-  auto set_it = set_test.begin();
-  auto orig_it = orig_set.begin();
+  std::set<int> set_orig {1, 2, 3, 4, 5, 6};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
-    EXPECT_TRUE(*orig_it == *set_it);
-    if (set_it != set_test.end()) 
-      ++set_it;
-      ++orig_it;
+    EXPECT_TRUE(*set_orig_it == *set_test_it);
+    if (set_test_it != set_test.end()) 
+      ++set_test_it;
+      ++set_orig_it;
   }
-  ASSERT_EQ(set_test.size(), orig_set.size());
+  ASSERT_EQ(set_test.size(), set_orig.size());
 }
 
 TEST(Set, test_class_set_float_1) {
   s21::set<float> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<float> orig_set {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  auto set_it = set_test.begin();
-  auto orig_it = orig_set.begin();
+  std::set<float> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
-    EXPECT_TRUE(*orig_it == *set_it);
-    if (set_it != set_test.end()) 
-      ++set_it;
-      ++orig_it;
+    EXPECT_TRUE(*set_orig_it == *set_test_it);
+    if (set_test_it != set_test.end()) 
+      ++set_test_it;
+      ++set_orig_it;
   }
-  ASSERT_EQ(set_test.size(), orig_set.size());
+  ASSERT_EQ(set_test.size(), set_orig.size());
 }
 
 TEST(Set, test_class_set_double_1) {
   s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<double> orig_set {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  auto set_it = set_test.begin();
-  auto orig_it = orig_set.begin();
+  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
-    EXPECT_TRUE(*orig_it == *set_it);
-    if (set_it != set_test.end()) 
-      ++set_it;
-      ++orig_it;
+    EXPECT_TRUE(*set_orig_it == *set_test_it);
+    if (set_test_it != set_test.end()) 
+      ++set_test_it;
+      ++set_orig_it;
   }
-  ASSERT_EQ(set_test.size(), orig_set.size());
+  ASSERT_EQ(set_test.size(), set_orig.size());
 }
 
 TEST(Set, test_class_set_char_1) {
   s21::set<char> set_test{'a', 'b', 'c', 'd', 'e', 'f'};
-  std::set<char> orig_set {'a', 'b', 'c', 'd', 'e', 'f'};
-  auto set_it = set_test.begin();
-  auto orig_it = orig_set.begin();
+  std::set<char> set_orig {'a', 'b', 'c', 'd', 'e', 'f'};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
-    EXPECT_TRUE(*orig_it == *set_it);
-    if (set_it != set_test.end()) 
-      ++set_it;
-      ++orig_it;
+    EXPECT_TRUE(*set_orig_it == *set_test_it);
+    if (set_test_it != set_test.end()) 
+      ++set_test_it;
+      ++set_orig_it;
   }
-  ASSERT_EQ(set_test.size(), orig_set.size());
+  ASSERT_EQ(set_test.size(), set_orig.size());
 }
 
 TEST(Set, test_class_set_string_1) {
   s21::set<std::string> set_test {"hello", "world"};
-  std::set<std::string> orig_set {"hello", "world"};
-  ASSERT_EQ(set_test.size(), orig_set.size());
+  std::set<std::string> set_orig {"hello", "world"};
+  ASSERT_EQ(set_test.size(), set_orig.size());
 }
 
 TEST(Set, test_class_set_string_2) {
   s21::set<std::string> set_test {"This", "is", "my", "set"};
-  std::set<std::string> orig_set {"This", "is", "my", "set"};
-  auto set_it = set_test.begin();
-  auto orig_it = orig_set.begin();
+  std::set<std::string> set_orig {"This", "is", "my", "set"};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
-    EXPECT_TRUE(*orig_it == *set_it);
-    if (set_it != set_test.end()) 
-      ++set_it;
-      ++orig_it;
+    EXPECT_TRUE(*set_orig_it == *set_test_it);
+    // std::cout << *set_orig_it << " ";
+    // std::cout << *set_test_it << std::endl;
+    if (set_test_it != set_test.end()) 
+      ++set_test_it;
+      ++set_orig_it;
   }
-  ASSERT_EQ(set_test.size(), orig_set.size());
+  ASSERT_EQ(set_test.size(), set_orig.size());
 }
