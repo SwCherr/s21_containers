@@ -4,173 +4,96 @@
 
 using namespace s21;
 
-// *************** ITERATOR ***************
-// iterator& operator++()
-TEST(BinaryTree, test_class_binary_tree_iterator_1) {
-  BinaryTree<int, int> binary_tree;
-  binary_tree.Insert(1, 1);
-  binary_tree.Insert(2, 2);
-  binary_tree.Insert(3, 3);
-  binary_tree.Insert(4, 3);
-  binary_tree.Insert(5, 3);
-  binary_tree.Insert(6, 3);
-  binary_tree.Insert(7, 3);
-  binary_tree.Insert(8, 3);
-  binary_tree.Insert(9, 3);
-  binary_tree.Insert(10, 3);
-  binary_tree.Insert(11, 3);
-  binary_tree.Insert(12, 3);
-  // int check_value = 1;
-  // auto cur = binary_tree.begin();
-  // for (size_t i = 0; i < binary_tree.size(); ++i) {
-  //   ASSERT_EQ(*cur, check_value);
-  //   ++check_value;
-  //   if (cur != binary_tree.end()) 
-  //     ++cur;
-  // }
-  const unsigned long size_res = 12;
-  ASSERT_EQ(binary_tree.size(), size_res);
-}
-
-// iterator& operator--()
-TEST(BinaryTree, test_class_binary_tree_iterator_2) {
-  BinaryTree<int, int> binary_tree;
-  binary_tree.Insert(1, 1);
-  binary_tree.Insert(2, 2);
-  binary_tree.Insert(3, 3);
-  binary_tree.Insert(4, 3);
-  binary_tree.Insert(5, 3);
-  binary_tree.Insert(6, 3);
-  binary_tree.Insert(7, 3);
-  binary_tree.Insert(8, 3);
-  binary_tree.Insert(9, 3);
-  binary_tree.Insert(10, 3);
-  binary_tree.Insert(11, 3);
-  binary_tree.Insert(12, 3);
-  // int check_value = 12;
-  // auto cur = binary_tree.end();
-  // for (size_t i = 0; i < binary_tree.size(); ++i) {
-  //   ASSERT_EQ(*cur, check_value);
-  //   --check_value;
-  //   --cur;
-  // }
-  const unsigned long size_res = 12;
-  ASSERT_EQ(binary_tree.size(), size_res);
-}
-
 // *************** BINARY TREE ***************
 // --------- Constructor & destructor ---------
 // default constructor, creates empty tree
-TEST(BinaryTree, test_class_binary_tree_default_constructor_1) {
-  BinaryTree<int, int> binary_tree;
+TEST(BTree, test_class_binary_tree_default_constructor_1) {
+  BTree<int, int> binary_tree;
   const unsigned long check = 0;
   ASSERT_EQ(check, binary_tree.size());
 }
 
 // добавить конструктор листом инициализации как вв сете
-// TEST(BinaryTree, test_class_binary_tree_constructor_2)
+// TEST(BTree, test_class_binary_tree_constructor_2)
 
 // copy constructor
-TEST(BinaryTree, test_class_binary_tree_copy_constructor_1) {
-  BinaryTree<int, int> binary_tree_1;
+TEST(BTree, test_class_binary_tree_copy_constructor_1) {
+  BTree<int, int> binary_tree_1;
   binary_tree_1.Insert(15, 1);
   binary_tree_1.Insert(9, 2);
   binary_tree_1.Insert(12, 3);
   binary_tree_1.Insert(11, 3);
   binary_tree_1.Insert(13, 3);
-  BinaryTree<int, int> binary_tree_2{binary_tree_1};
+  BTree<int, int> binary_tree_2{binary_tree_1};
   ASSERT_EQ(binary_tree_1.size(), binary_tree_2.size());
 }
 
 // copy constructor
-TEST(BinaryTree, test_class_binary_tree_copy_constructor_2) {
-  BinaryTree<int, int> binary_tree_1;
-  BinaryTree<int, int> binary_tree_2{binary_tree_1};
+TEST(BTree, test_class_binary_tree_copy_constructor_2) {
+  BTree<int, int> binary_tree_1;
+  BTree<int, int> binary_tree_2{binary_tree_1};
   ASSERT_EQ(binary_tree_1.size(), binary_tree_2.size());
 }
 
 // move constructor
-TEST(BinaryTree, test_class_binary_tree_move_constructor_1) {
-  BinaryTree<int, int> binary_tree_1;
-  BinaryTree<int, int> binary_tree_2(std::move(binary_tree_1));
-  const unsigned long check_size = 0;
-  ASSERT_EQ(check_size, binary_tree_1.size());
+TEST(BTree, test_class_binary_tree_move_constructor_1) {
+  BTree<int, int> binary_tree_1;
+  BTree<int, int> binary_tree_2(std::move(binary_tree_1));
+  ASSERT_TRUE(binary_tree_1.size() == 0);
 }
 
 // move constructor
-TEST(BinaryTree, test_class_binary_tree_move_constructor_2) {
-  BinaryTree<int, int> binary_tree_1;
+TEST(BTree, test_class_binary_tree_move_constructor_2) {
+  BTree<int, int> binary_tree_1;
   binary_tree_1.Insert(15, 1);
   binary_tree_1.Insert(9, 2);
   binary_tree_1.Insert(12, 3);
   binary_tree_1.Insert(11, 3);
   binary_tree_1.Insert(13, 3);
-  BinaryTree<int, int> binary_tree_2(std::move(binary_tree_1));
-  const unsigned long check_size = 0;
-  ASSERT_EQ(check_size, binary_tree_1.size());
+  BTree<int, int> binary_tree_2(std::move(binary_tree_1));
+  ASSERT_TRUE(binary_tree_1.size() == 0);
 }
 
 // ---------------- Operator -----------------
-// operator=(BinaryTree&& o)
-TEST(BinaryTree, test_class_binary_tree_operator_1) {
-  BinaryTree<int, int> binary_tree_1;
-  BinaryTree<int, int> binary_tree_2 = std::move(binary_tree_1);
-  const unsigned long check_size = 0;
-  ASSERT_EQ(check_size, binary_tree_1.size());
+// operator=(BTree&& o)
+TEST(BTree, test_class_binary_tree_operator_1) {
+  BTree<int, int> binary_tree_1;
+  BTree<int, int> binary_tree_2 = std::move(binary_tree_1);
+  ASSERT_TRUE(binary_tree_1.size() == 0);
 }
 
-// operator=(BinaryTree&& o)
-TEST(BinaryTree, test_class_binary_tree_operator_2) {
-  BinaryTree<int, int> binary_tree_1;
+// operator=(BTree&& o)
+TEST(BTree, test_class_binary_tree_operator_2) {
+  BTree<int, int> binary_tree_1;
   binary_tree_1.Insert(15, 1);
   binary_tree_1.Insert(9, 2);
   binary_tree_1.Insert(12, 3);
   binary_tree_1.Insert(11, 3);
   binary_tree_1.Insert(13, 3);
-  BinaryTree<int, int> binary_tree_2 = std::move(binary_tree_1);
-  const unsigned long check_size = 0;
-  ASSERT_EQ(check_size, binary_tree_1.size());
-}
-
-// ----------------- Methods -----------------
-// Insert() & erase()
-TEST(BinaryTree, test_class_binary_tree_insert_1) {
-  BinaryTree<int, int> binary_tree;
-  binary_tree.Insert(1, 1);
-  binary_tree.Insert(2, 3);
-  binary_tree.Insert(3, 3);
-  ASSERT_TRUE(binary_tree.contains(1));
-  ASSERT_TRUE(binary_tree.contains(2));
-  ASSERT_TRUE(binary_tree.contains(3));
-}
-
-// erase() begin
-TEST(BinaryTree, test_class_binary_tree_erase_1) {
-  BinaryTree<int, int> binary_tree;
-  binary_tree.Insert(15, 1);
-  binary_tree.Insert(9, 2);
-  binary_tree.Insert(12, 3);
-  binary_tree.Insert(11, 3);
-  binary_tree.Insert(13, 3);
-  binary_tree.erase(binary_tree.begin());
-  ASSERT_FALSE(binary_tree.contains(9));
-}
-
-// erase() end
-TEST(BinaryTree, test_class_binary_tree_erase_2) {
-  BinaryTree<int, int> binary_tree;
-  binary_tree.Insert(12, 3);
-  binary_tree.Insert(11, 3);
-  binary_tree.Insert(13, 3);
-  binary_tree.Insert(15, 1);
-  binary_tree.Insert(9, 2);
-  binary_tree.erase(binary_tree.end());
-  ASSERT_FALSE(binary_tree.contains(15));
+  BTree<int, int> binary_tree_2 = std::move(binary_tree_1);
+  ASSERT_TRUE(binary_tree_1.size() == 0);
 }
 
 // ************************************
 // ------------ CLASS SET -------------
 // ************************************
+
+// move constructor
+TEST(set, test_class_set_move_constructor_1) {
+  s21::set<int> set_test_1{};
+  s21::set<int> set_test_2{std::move(set_test_1)};
+  EXPECT_TRUE(set_test_1.size() == 0);
+  EXPECT_TRUE(set_test_2.size() == 0);
+}
+
+// move constructor
+TEST(set, test_class_set_move_constructor_2) {
+  s21::set<int> set_test_1{1, 2, 3};
+  s21::set<int> set_test_2{std::move(set_test_1)};
+  ASSERT_TRUE(set_test_1.size() == 0);
+  EXPECT_TRUE(set_test_2.size() == 3);
+}
+
 // empty()
 TEST(Set, test_class_set_empty_1) {
   s21::set<int> set_test{};

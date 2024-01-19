@@ -8,20 +8,20 @@ namespace s21 {
 // class Multiset: public SetContainer {}; // допка - заглушка
 
 template<class Key>
-class set: public BinaryTree<Key, Key> {
+class set: public BTree<Key, Key> {
 public:
   using key_type = Key;
   using value_type = Key;
   using reference = value_type &;
   using const_reference = const value_type &;
-  using iterator = typename BinaryTree<Key, Key>::iterator;
-  using const_iterator = typename BinaryTree<Key, Key>::const_iterator;
+  using iterator = typename BTree<Key, Key>::iterator;
+  using const_iterator = typename BTree<Key, Key>::const_iterator;
   using size_type = size_t;
 
-  set() : BinaryTree<Key, Key>() {};
+  set() : BTree<Key, Key>() {};
   set(std::initializer_list<value_type> const &items);
-  set(const set &s) : BinaryTree<Key, Key>(s) {};           // copy constructor
-  set(set &&s) : BinaryTree<Key, Key>(s) {};                // move constructor
+  set(const set &s) : BTree<Key, Key>(s) {};           // copy constructor
+  set(set &&s) = default;                                   // move constructor
   ~set() = default;
   set& operator=(set &&s);
 
@@ -31,19 +31,19 @@ public:
 template<class Key>
 set<Key>::set(std::initializer_list<value_type> const &items) {
   for (auto i = items.begin(); i!= items.end(); i++)
-    BinaryTree<Key, Key>::Insert(*i, *i);
+    BTree<Key, Key>::Insert(*i, *i);
 }
 
 template <class Key>
 set<Key>& set<Key>::operator=(set &&s) {
   if (this != &s)
-    BinaryTree<Key, Key>::operator=(std::move(s));
+    BTree<Key, Key>::operator=(std::move(s));
   return *this;
 }
 
 template <class Key>
 std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const value_type& value) {
-  return BinaryTree<Key, Key>::Insert(value, value);
+  return BTree<Key, Key>::Insert(value, value);
 }
 } // namespace s21
 #endif  // __CPP2_S21_CONTAINERS_SRC_SET_H__
