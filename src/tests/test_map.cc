@@ -1,5 +1,6 @@
-#include "test.h"
 #include <map>
+#include <gtest/gtest.h>
+#include "../project/s21_map.h"
 
     // std::cout << map_test_it.first() << " ";
     // std::cout << map_test_it.second() << " | ";

@@ -2,7 +2,6 @@
 #define __CPP2_S21_CONTAINERS_SRC_BTree_H__
 
 #include <iostream>
-#include <set>
 
 namespace s21 {
 template<class T1, class T2>
@@ -24,7 +23,7 @@ public:
   BTree();
   BTree(const BTree &o);
   BTree(BTree &&o);
-  ~BTree();
+  virtual ~BTree() = 0;
   BTree& operator=(BTree&& o);
 
   iterator begin();
@@ -39,13 +38,15 @@ public:
   Node* EraseElement(Node* root, T1 key);
   void swap(BTree& o);
   void merge(BTree& o);
-  iterator find(const T1 key); // подумать над переносом в дочерний класс сет 
   bool contains(const T1& key); // вынести общий код
 
   // вспомогательные ф-ии
   void Print();
   void PrintByIterator();
   Node* CopyTree(Node *root, Node *parent);
+
+// protected:
+  iterator find(const T1 key); // подумать над переносом в дочерний класс сет 
 
 private:
   Node *Root;

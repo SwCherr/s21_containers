@@ -1,6 +1,8 @@
 #ifndef __CPP2_S21_CONTAINERS_SRC_MAP_H__
 #define __CPP2_S21_CONTAINERS_SRC_MAP_H__
 
+#include "binary_tree.h"
+
 namespace s21 {
 template<class Key, class Value>
 class map: public BTree<Key, Value> {
@@ -26,12 +28,10 @@ public:
   Value& operator[](const Key& key);
 
   // В этой таблице перечислены публичные методы для изменения контейнера:
-  std::pair<iterator, bool> insert(const value_type& value); // +
-  std::pair<iterator, bool> insert(const Key& key, const Value& value); // +
-  std::pair<iterator, bool> insert_or_assign(const Key& key, const Value& obj);
+  std::pair<iterator, bool> insert(const value_type& value);
+  std::pair<iterator, bool> insert(const Key& key, const Value& value);
+  std::pair<iterator, bool> insert_or_assign(const Key& key, const Value& value);
 };
-
-
 
 template<class Key, class Value>
 map<Key, Value>::map(std::initializer_list<value_type> const &items) {

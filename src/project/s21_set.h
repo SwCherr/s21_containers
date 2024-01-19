@@ -25,6 +25,7 @@ public:
   ~set() = default;
   set& operator=(set &&s);
 
+  // iterator find(const Key key);
   std::pair<iterator, bool> insert(const value_type& value);
 };
 
