@@ -3,89 +3,26 @@
 #include <gtest/gtest.h>
 #include "../project/s21_set.h"
 
-using namespace s21;
+// --------- Constructor & destructor ---------
+// default constructor, creates empty tree
+TEST(set, test_class_set_default_constructor_1) {
+  s21::set<int> set_test;
+  ASSERT_TRUE(set_test.size() == 0);
+}
 
-// // *************** BINARY TREE ***************
-// // --------- Constructor & destructor ---------
-// // default constructor, creates empty tree
-// TEST(BTree, test_class_binary_tree_default_constructor_1) {
-//   BTree<int, int> binary_tree;
-//   const unsigned long check = 0;
-//   ASSERT_EQ(check, binary_tree.size());
-// }
+// copy constructor
+TEST(set, test_class_set_copy_constructor_1) {
+  s21::set<int> set_test_1{1, 2, 3};
+  s21::set<int> set_test_2{set_test_1};
+  ASSERT_EQ(set_test_1.size(), set_test_2.size());
+}
 
-// // добавить конструктор листом инициализации как вв сете
-// // TEST(BTree, test_class_binary_tree_constructor_2)
-
-// // copy constructor
-// TEST(BTree, test_class_binary_tree_copy_constructor_1) {
-//   BTree<int, int> binary_tree_1;
-//   binary_tree_1.Insert(15, 1);
-//   binary_tree_1.Insert(9, 2);
-//   binary_tree_1.Insert(12, 3);
-//   binary_tree_1.Insert(11, 3);
-//   binary_tree_1.Insert(13, 3);
-//   BTree<int, int> binary_tree_2{binary_tree_1};
-//   ASSERT_EQ(binary_tree_1.size(), binary_tree_2.size());
-// }
-
-// // copy constructor
-// TEST(BTree, test_class_binary_tree_copy_constructor_2) {
-//   BTree<int, int> binary_tree_1;
-//   BTree<int, int> binary_tree_2{binary_tree_1};
-//   ASSERT_EQ(binary_tree_1.size(), binary_tree_2.size());
-// }
-
-// // move constructor
-// TEST(BTree, test_class_binary_tree_move_constructor_1) {
-//   BTree<int, int> binary_tree_1;
-//   BTree<int, int> binary_tree_2(std::move(binary_tree_1));
-//   ASSERT_TRUE(binary_tree_1.size() == 0);
-// }
-
-// // move constructor
-// TEST(BTree, test_class_binary_tree_move_constructor_2) {
-//   BTree<int, int> binary_tree_1;
-//   binary_tree_1.Insert(15, 1);
-//   binary_tree_1.Insert(9, 2);
-//   binary_tree_1.Insert(12, 3);
-//   binary_tree_1.Insert(11, 3);
-//   binary_tree_1.Insert(13, 3);
-//   BTree<int, int> binary_tree_2(std::move(binary_tree_1));
-//   ASSERT_TRUE(binary_tree_1.size() == 0);
-// }
-
-// // ---------------- Operator -----------------
-// // operator=(BTree&& o)
-// TEST(BTree, test_class_binary_tree_operator_1) {
-//   BTree<int, int> binary_tree_1;
-//   BTree<int, int> binary_tree_2 = std::move(binary_tree_1);
-//   ASSERT_TRUE(binary_tree_1.size() == 0);
-// }
-
-// // operator=(BTree&& o)
-// TEST(BTree, test_class_binary_tree_operator_2) {
-//   BTree<int, int> binary_tree_1;
-//   binary_tree_1.Insert(15, 1);
-//   binary_tree_1.Insert(9, 2);
-//   binary_tree_1.Insert(12, 3);
-//   binary_tree_1.Insert(11, 3);
-//   binary_tree_1.Insert(13, 3);
-//   BTree<int, int> binary_tree_2 = std::move(binary_tree_1);
-//   ASSERT_TRUE(binary_tree_1.size() == 0);
-// }
-
-// ************************************
-// ------------ CLASS SET -------------
-// ************************************
-
-// // move constructor
-// TEST(set, test_class_set) {
-//   s21::set<int> *set_test_1 = nullptr;
-//   s21::set<int> set_test_2{std::move(set_test_1)};
-//   EXPECT_TRUE(set_test_1.size() == 0);
-//   EXPECT_TRUE(set_test_2.size() == 0);
-// }
+// copy constructor
+TEST(set, test_class_set_copy_constructor_2) {
+  s21::set<int> set_test_1;
+  s21::set<int> set_test_2{set_test_1};
+  ASSERT_EQ(set_test_1.size(), set_test_2.size());
+}
 
 // move constructor
 TEST(set, test_class_set_move_constructor_1) {
@@ -103,6 +40,22 @@ TEST(set, test_class_set_move_constructor_2) {
   EXPECT_TRUE(set_test_2.size() == 3);
 }
 
+// ---------------- Operator -----------------
+// operator=(set&& o)
+TEST(set, test_class_set_operator_1) {
+  s21::set<int> set_test_1;
+  s21::set<int> set_test_2 = std::move(set_test_1);
+  ASSERT_TRUE(set_test_1.size() == 0);
+}
+
+// operator=(set&& o)
+TEST(set, test_class_set_operator_2) {
+  s21::set<int> set_test_1{1, 2, 3};
+  s21::set<int> set_test_2 = std::move(set_test_1);
+  ASSERT_TRUE(set_test_1.size() == 0);
+}
+
+// ----------------- Methods -----------------
 // empty()
 TEST(Set, test_class_set_empty_1) {
   s21::set<int> set_test{};
@@ -284,14 +237,6 @@ TEST(Set, test_class_set_merge_1) {
   size_t size_res = 10;
   ASSERT_EQ(set_test_1.size(), size_res);
 }
-
-// // copy construct
-// TEST(Set, test_class_set_3) {
-//   s21::set<int> set_test{1, 2};
-//   s21::set<int> set_test_2{set};
-  // ASS--------------------------------------    ERT_EQ(1, 1);
-// }
-
 
 // find()
 TEST(Set, test_class_set_find_1) {
