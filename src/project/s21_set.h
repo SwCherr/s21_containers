@@ -4,9 +4,6 @@
 #include "binary_tree.h"
 
 namespace s21 {
-// class SetContainer {}; // общий класс для множеств
-// class Multiset: public SetContainer {}; // допка - заглушка
-
 template<class Key>
 class set: public BTree<Key, Key> {
 public:
@@ -17,15 +14,14 @@ public:
   using iterator = typename BTree<Key, Key>::iterator;
   using const_iterator = typename BTree<Key, Key>::const_iterator;
   using size_type = size_t;
+  using Node = typename BTree<Key, Key>::Node;
 
   set() : BTree<Key, Key>() {};
   set(std::initializer_list<value_type> const &items);
-  set(const set &s) : BTree<Key, Key>(s) {};           // copy constructor
-  set(set &&s) = default;                                   // move constructor
+  set(const set &s) : BTree<Key, Key>(s) {};
+  set(set &&s) = default;
   ~set() = default;
   set& operator=(set &&s);
-
-  // iterator find(const Key key);
   std::pair<iterator, bool> insert(const value_type& value);
 };
 
@@ -44,7 +40,17 @@ set<Key>& set<Key>::operator=(set &&s) {
 
 template <class Key>
 std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const value_type& value) {
-  return BTree<Key, Key>::Insert(value, value);
+  std::pair<iterator, bool> return_value;
+  Node* insert_node = BTree<Key, Key>::Insert(value, value);
+  if (insert_node) {
+    return_value.first = iterator(insert_node);
+    return_value.second = true;
+  } else {
+    return_value.first = iterator(nullptr);
+    return_value.second = false;
+  }
+  return return_value;
 }
+
 } // namespace s21
 #endif  // __CPP2_S21_CONTAINERS_SRC_SET_H__

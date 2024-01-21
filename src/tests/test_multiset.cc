@@ -12,7 +12,7 @@ TEST(multiset, test_class_multiset_default_constructor_1) {
 
 // copy constructor
 TEST(multiset, test_class_multiset_copy_constructor_1) {
-  s21::multiset<int> multiset_test_1{1, 2, 3};
+  s21::multiset<int> multiset_test_1{1, 2, 3, 3};
   s21::multiset<int> multiset_test_2{multiset_test_1};
   ASSERT_EQ(multiset_test_1.size(), multiset_test_2.size());
 }
@@ -34,10 +34,10 @@ TEST(multiset, test_class_multiset_move_constructor_1) {
 
 // move constructor
 TEST(multiset, test_class_multiset_move_constructor_2) {
-  s21::multiset<int> multiset_test_1{1, 2, 3};
+  s21::multiset<int> multiset_test_1{1, 2, 3, 3};
   s21::multiset<int> multiset_test_2{std::move(multiset_test_1)};
   ASSERT_TRUE(multiset_test_1.size() == 0);
-  EXPECT_TRUE(multiset_test_2.size() == 3);
+  EXPECT_TRUE(multiset_test_2.size() == 4);
 }
 
 // ---------------- Operator -----------------
@@ -68,6 +68,7 @@ TEST(multiset, test_class_multiset_empty_2) {
   s21::multiset<int> multiset_test{1, 2, 2};
   bool res = multiset_test.empty();
   bool check = false;
+  EXPECT_TRUE(multiset_test.size() == 3);
   ASSERT_EQ(res, check);
 }
 
@@ -79,7 +80,7 @@ TEST(multiset, test_class_multiset_size_1) {
   auto map_it_1 = multiset_test.begin();
   auto map_it_2 = multiset_orig.begin();
   for (; map_it_1 != multiset_test.end(); ++map_it_1, ++map_it_2) {
-    EXPECT_TRUE(map_it_1.first() == *map_it_2);
+    EXPECT_TRUE(*map_it_1 == *map_it_2);
   }
 }
 
@@ -245,7 +246,7 @@ TEST(multiset, test_class_multiset_merge_1) {
   auto map_it_1 = multiset_test_1.begin();
   auto map_it_2 = multiset_test_res.begin();
   for (; map_it_1 != multiset_test_1.end(); ++map_it_1, ++map_it_2) {
-    EXPECT_TRUE(map_it_1.first() == map_it_2.first());
+    EXPECT_TRUE(*map_it_1 == *map_it_2);
   }
 }
 
@@ -276,7 +277,7 @@ TEST(multiset, test_class_multiset_count_3) {
 TEST(multiset, test_class_multiset_find_1) {
   s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
   auto res = multiset_test.find(1);
-  EXPECT_TRUE(res.first() == 1);
+  EXPECT_TRUE(*res == 1);
 }
 
 // contains()
@@ -307,8 +308,8 @@ TEST(multiset, test_class_multiset_equal_range_1) {
   auto begin_it = multiset_test.begin() + 3;
   auto end_it = multiset_test.begin() + 5;
   auto res = multiset_test.equal_range(2);
-  EXPECT_TRUE(res.first.first() == begin_it.first());
-  EXPECT_TRUE(res.second.first() == end_it.first());
+  EXPECT_TRUE(*(res.first) == *begin_it);
+  EXPECT_TRUE(*(res.second) == *end_it);
 }
 
 // equal_range()
@@ -317,8 +318,8 @@ TEST(multiset, test_class_multiset_equal_range_2) {
   auto begin_it = multiset_test.begin();
   auto end_it = multiset_test.begin() + 1;
   auto res = multiset_test.equal_range(0);
-  EXPECT_TRUE(res.first.first() == begin_it.first());
-  EXPECT_TRUE(res.second.first() == end_it.first());
+  EXPECT_TRUE(*(res.first) == *begin_it);
+  EXPECT_TRUE(*(res.second) == *end_it);
 }
 
 // equal_range()
@@ -327,8 +328,8 @@ TEST(multiset, test_class_multiset_equal_range_3) {
   auto begin_it = multiset_test.begin() + 5;
   auto end_it = multiset_test.begin() + 5;
   auto res = multiset_test.equal_range(5);
-  EXPECT_TRUE(res.first.first() == begin_it.first());
-  EXPECT_TRUE(res.second.first() == end_it.first());
+  EXPECT_TRUE(*(res.first) == *begin_it);
+  EXPECT_TRUE(*(res.second) == *end_it);
 }
 
 // lower_bound()
@@ -336,7 +337,7 @@ TEST(multiset, test_class_multiset_lower_bound_1) {
   s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
   auto begin_it = multiset_test.begin() + 3;
   auto res = multiset_test.lower_bound(2);
-  EXPECT_TRUE(res.first() == begin_it.first());
+  EXPECT_TRUE(*res == *begin_it);
 }
 
 // lower_bound()
@@ -344,7 +345,7 @@ TEST(multiset, test_class_multiset_lower_bound_2) {
   s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
   auto begin_it = multiset_test.begin();
   auto res = multiset_test.lower_bound(0);
-  EXPECT_TRUE(res.first() == begin_it.first());
+  EXPECT_TRUE(*res == *begin_it);
 }
 
 // lower_bound()
@@ -352,7 +353,7 @@ TEST(multiset, test_class_multiset_lower_bound_3) {
   s21::multiset<int> multiset_test{1, 2, 5, 2, 0, 0};
   auto begin_it = multiset_test.begin() + 5;
   auto res = multiset_test.lower_bound(5);
-  EXPECT_TRUE(res.first() == begin_it.first());
+  EXPECT_TRUE(*res == *begin_it);
 }
 
 // upper_bound()
@@ -360,7 +361,7 @@ TEST(multiset, test_class_multiset_upper_bound_1) {
   s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0}; 
   auto end_it = multiset_test.begin() + 2;
   auto res = multiset_test.upper_bound(1);
-  EXPECT_TRUE(res.first() == end_it.first());
+  EXPECT_TRUE(*res == *end_it);
 }
 
 // upper_bound()
@@ -368,7 +369,7 @@ TEST(multiset, test_class_multiset_upper_bound_2) {
   s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0};
   auto end_it = multiset_test.begin() + 4;
   auto res = multiset_test.upper_bound(2);
-  EXPECT_TRUE(res.first() == end_it.first());
+  EXPECT_TRUE(*res == *end_it);
 }
 
 // upper_bound()
@@ -376,7 +377,7 @@ TEST(multiset, test_class_multiset_upper_bound_3) {
   s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0};
   auto end_it = multiset_test.begin() + 5;
   auto res = multiset_test.upper_bound(4);
-  EXPECT_TRUE(res.first() == end_it.first());
+  EXPECT_TRUE(*res == *end_it);
 }
 
 // ************************************

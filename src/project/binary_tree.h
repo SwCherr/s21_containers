@@ -9,15 +9,13 @@ class BTree {
 protected:
   struct Node;
 
-private:
-  struct Iterator;
-  struct ConstIterator;
-
 public:
+  class Iterator;
+  class ConstIterator;
   using key_type = T1;
   using value_type = T2;
   using reference = value_type&;
-  using const_reference = const value_type&;           // тип ссылки на константу
+  using const_reference = const value_type&;
   using iterator = Iterator;
   using const_iterator = ConstIterator;
   using size_type = size_t;
@@ -34,8 +32,7 @@ public:
   size_type size();
   size_type max_size();
   void clear();
-  std::pair<iterator, bool> Insert(T1 key, T2 value);
-  virtual bool InsertElement(T1 key, T2 value);
+  Node* Insert(T1 key, T2 value);
   void erase(iterator pos);
   Node* EraseElement(Node* root, T1 key);
   void swap(BTree& o);
@@ -48,7 +45,30 @@ public:
   Node* CopyTree(Node *root, Node *parent);
   iterator find(const T1 key); // подумать над переносом в дочерний класс сет 
 
-protected:
+  // ====== ITERATOR ======
+  class Iterator {
+  public:
+    Node *cur; // вынести в private
+    Iterator();
+    Iterator(Node *node);
+    Iterator& operator++();
+    Iterator& operator+(int count);
+    // Iterator& operator=(Iterator&& o);
+    // iterator& operator--();
+    // iterator& operator-(int count);
+    bool operator!=(const Iterator& o);
+    T1 operator*(); // возвращает поле Key     // удалить при рефакторинге
+    T2 operator~(); // возвращает поле Value   // удалить при рефакторинге
+    T1& first();     // возвращает поле Key
+    T2& second();    // возвращает поле Value
+  };
+
+  class ConstIterator : Iterator {
+    ConstIterator() : Iterator(){};
+    const_reference operator*() const { return Iterator::operator*(); };
+  };
+  
+  protected:
   Node *Root;
   size_type Size;
 // ====== NODE ======
@@ -69,29 +89,6 @@ private:
   void TreePrint(Node *node);
   Node* GetMin(Node* root) const;
   Node* GetMax(Node* root) const;
-
-  
-  // ====== ITERATOR ======
-  struct Iterator {
-    Node *cur;
-    Iterator();
-    Iterator(Node *first);
-    Iterator& operator++();
-    Iterator& operator+(int count);
-    // Iterator& operator=(Iterator&& o);
-    // iterator& operator--();
-    // iterator& operator-(int count);
-    bool operator!=(const Iterator& o);
-    T1 operator*(); // возвращает поле Key     // удалить при рефакторинге
-    T2 operator~(); // возвращает поле Value   // удалить при рефакторинге
-    T1& first();     // возвращает поле Key
-    T2& second();    // возвращает поле Value
-  };
-
-  struct ConstIterator : Iterator {
-    ConstIterator() : Iterator(){};
-    const_reference operator*() const { return Iterator::operator*(); };
-  };
 };
 
 // ------------------ NODE -------------------
@@ -277,18 +274,8 @@ void BTree<T1, T2>::clear() {
 }
 
 template<class T1, class T2>
-std::pair<typename BTree<T1, T2>::iterator, bool> BTree<T1, T2>::Insert(T1 key, T2 value) {
-  bool result_insert = InsertElement(key, value);
-  std::pair<iterator, bool> return_value;
-  return_value.first = find(key);
-  return_value.second = result_insert;
-  return return_value;
-}
-
-template<class T1, class T2>
-bool BTree<T1, T2>::InsertElement(T1 key, T2 value) {
+typename BTree<T1, T2>::Node* BTree<T1, T2>::Insert(T1 key, T2 value) {
   bool flag_identic_key = false;
-  bool return_value = false;
   Node **cur = &Root;
   Node *parent = nullptr;
   while (*cur && !flag_identic_key) {
@@ -307,11 +294,10 @@ bool BTree<T1, T2>::InsertElement(T1 key, T2 value) {
     *cur = new Node(key, value);
     if (*cur) {
       (*cur)->Parent = parent;
-      return_value = true;
       Size++;
     }
   }
-  return return_value;  
+  return *cur;
 }
 
 template<class T1, class T2>

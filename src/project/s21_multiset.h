@@ -4,9 +4,6 @@
 #include "binary_tree.h"
 
 namespace s21 {
-// class multisetContainer {}; // общий класс для множеств
-// class Multimultiset: public multisetContainer {}; // допка - заглушка
-
 template<class Key>
 class multiset: public BTree<Key, Key> {
 public:
@@ -21,14 +18,12 @@ public:
 
   multiset() : BTree<Key, Key>() {};
   multiset(std::initializer_list<value_type> const &items);
-  multiset(const multiset &s) : BTree<Key, Key>(s) {};           // copy constructor
-  multiset(multiset &&s) = default;                                   // move constructor
+  multiset(const multiset &s) : BTree<Key, Key>(s) {};
+  multiset(multiset &&s) = default;
   ~multiset() = default;
   multiset& operator=(multiset &&s);
 
   std::pair<iterator, bool> insert(const value_type& value);
-  bool InsertElement(Key key, Key value);
-
   size_type count(const Key& key);
   std::pair<iterator,iterator> equal_range(const Key& key);
   iterator lower_bound(const Key& key);
@@ -38,7 +33,7 @@ public:
 template<class Key>
 multiset<Key>::multiset(std::initializer_list<value_type> const &items) {
   for (auto i = items.begin(); i!= items.end(); i++)
-    BTree<Key, Key>::Insert(*i, *i);
+    insert(*i);
 }
 
 template <class Key>
@@ -50,29 +45,28 @@ multiset<Key>& multiset<Key>::operator=(multiset &&s) {
 
 template <class Key>
 std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const value_type& value) {
-  return BTree<Key, Key>::Insert(value, value);
-}
-
-template<class Key>
-bool multiset<Key>::InsertElement(Key key, Key value) {
-  bool return_value = false;
+  std::pair<iterator, bool> return_value;
   Node **cur = &(BTree<Key, Key>::Root);
   Node *parent = nullptr;
   while (*cur) {
     Node &node = **cur;
     parent = *cur;
-    if (key <= node.Key)
+    if (value <= node.Key)
       cur = &node.Left;
-    else if (key > node.Key)
+    else if (value > node.Key)
       cur = &node.Right;
   }
-  *cur = new Node(key, value); 
+  *cur = new Node(value, value); 
   if (*cur) {
+    return_value.first = iterator(*cur);
+    return_value.second = true;
     (*cur)->Parent = parent;
-    return_value = true;
     BTree<Key, Key>::Size++;
+  } else {
+    return_value.first = iterator(nullptr);
+    return_value.second = false;
   }
-  return return_value;  
+  return return_value;
 }
 
 template<class Key>

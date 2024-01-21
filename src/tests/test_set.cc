@@ -278,9 +278,6 @@ TEST(Set, test_class_set_int_1) {
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
     EXPECT_TRUE(*set_orig_it == *set_test_it);
-    if (set_test_it != set_test.end()) 
-      ++set_test_it;
-      ++set_orig_it;
   }
   ASSERT_EQ(set_test.size(), set_orig.size());
 }
@@ -292,9 +289,6 @@ TEST(Set, test_class_set_float_1) {
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
     EXPECT_TRUE(*set_orig_it == *set_test_it);
-    if (set_test_it != set_test.end()) 
-      ++set_test_it;
-      ++set_orig_it;
   }
   ASSERT_EQ(set_test.size(), set_orig.size());
 }
@@ -306,9 +300,6 @@ TEST(Set, test_class_set_double_1) {
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
     EXPECT_TRUE(*set_orig_it == *set_test_it);
-    if (set_test_it != set_test.end()) 
-      ++set_test_it;
-      ++set_orig_it;
   }
   ASSERT_EQ(set_test.size(), set_orig.size());
 }
@@ -320,9 +311,6 @@ TEST(Set, test_class_set_char_1) {
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
     EXPECT_TRUE(*set_orig_it == *set_test_it);
-    if (set_test_it != set_test.end()) 
-      ++set_test_it;
-      ++set_orig_it;
   }
   ASSERT_EQ(set_test.size(), set_orig.size());
 }
@@ -340,11 +328,6 @@ TEST(Set, test_class_set_string_2) {
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
     EXPECT_TRUE(*set_orig_it == *set_test_it);
-    // std::cout << *set_orig_it << " ";
-    // std::cout << *set_test_it << std::endl;
-    if (set_test_it != set_test.end()) 
-      ++set_test_it;
-      ++set_orig_it;
   }
   ASSERT_EQ(set_test.size(), set_orig.size());
 }
