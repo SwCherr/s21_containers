@@ -85,5 +85,38 @@ typename multiset<Key>::size_type multiset<Key>::count(const Key& key) {
   return count;
 }
 
+template<class Key>
+std::pair<typename multiset<Key>::iterator, typename multiset<Key>::iterator> multiset<Key>::equal_range(const Key& key) {
+  std::pair<iterator, iterator> return_value;
+  auto cur = this->begin();
+  while (cur != this->end() && key != cur.first())
+    ++cur;
+  return_value.first = iterator(cur);
+  while (cur != this->end() && key == cur.first()) {
+    return_value.second = iterator(cur);
+      ++cur;
+  }
+  return return_value;
+}
+
+template<class Key>
+typename multiset<Key>::iterator multiset<Key>::lower_bound(const Key& key) {
+  iterator return_value;
+  auto cur = this->begin();
+  while (cur != this->end() && key != cur.first())
+    ++cur;
+  return_value = iterator(cur);
+  return return_value;
+}
+
+template<class Key>
+typename multiset<Key>::iterator multiset<Key>::upper_bound(const Key& key) {
+  iterator return_value;
+  auto cur = this->begin();
+  while (cur != this->end() && key >= cur.first())
+    ++cur;
+  return_value = iterator(cur);
+  return return_value;
+}
 } // namespace s21
 #endif  // __CPP2_S21_CONTAINERS_SRC_multiset_H__

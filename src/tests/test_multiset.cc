@@ -301,6 +301,84 @@ TEST(multiset, test_class_multiset_contains_3) {
   ASSERT_EQ(res, check);
 }
 
+// equal_range()
+TEST(multiset, test_class_multiset_equal_range_1) {
+  s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
+  auto begin_it = multiset_test.begin() + 3;
+  auto end_it = multiset_test.begin() + 5;
+  auto res = multiset_test.equal_range(2);
+  EXPECT_TRUE(res.first.first() == begin_it.first());
+  EXPECT_TRUE(res.second.first() == end_it.first());
+}
+
+// equal_range()
+TEST(multiset, test_class_multiset_equal_range_2) {
+  s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
+  auto begin_it = multiset_test.begin();
+  auto end_it = multiset_test.begin() + 1;
+  auto res = multiset_test.equal_range(0);
+  EXPECT_TRUE(res.first.first() == begin_it.first());
+  EXPECT_TRUE(res.second.first() == end_it.first());
+}
+
+// equal_range()
+TEST(multiset, test_class_multiset_equal_range_3) {
+  s21::multiset<int> multiset_test{1, 2, 5, 2, 0, 0};
+  auto begin_it = multiset_test.begin() + 5;
+  auto end_it = multiset_test.begin() + 5;
+  auto res = multiset_test.equal_range(5);
+  EXPECT_TRUE(res.first.first() == begin_it.first());
+  EXPECT_TRUE(res.second.first() == end_it.first());
+}
+
+// lower_bound()
+TEST(multiset, test_class_multiset_lower_bound_1) {
+  s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
+  auto begin_it = multiset_test.begin() + 3;
+  auto res = multiset_test.lower_bound(2);
+  EXPECT_TRUE(res.first() == begin_it.first());
+}
+
+// lower_bound()
+TEST(multiset, test_class_multiset_lower_bound_2) {
+  s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
+  auto begin_it = multiset_test.begin();
+  auto res = multiset_test.lower_bound(0);
+  EXPECT_TRUE(res.first() == begin_it.first());
+}
+
+// lower_bound()
+TEST(multiset, test_class_multiset_lower_bound_3) {
+  s21::multiset<int> multiset_test{1, 2, 5, 2, 0, 0};
+  auto begin_it = multiset_test.begin() + 5;
+  auto res = multiset_test.lower_bound(5);
+  EXPECT_TRUE(res.first() == begin_it.first());
+}
+
+// upper_bound()
+TEST(multiset, test_class_multiset_upper_bound_1) {
+  s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0}; 
+  auto end_it = multiset_test.begin() + 2;
+  auto res = multiset_test.upper_bound(1);
+  EXPECT_TRUE(res.first() == end_it.first());
+}
+
+// upper_bound()
+TEST(multiset, test_class_multiset_upper_bound_2) {
+  s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0};
+  auto end_it = multiset_test.begin() + 4;
+  auto res = multiset_test.upper_bound(2);
+  EXPECT_TRUE(res.first() == end_it.first());
+}
+
+// upper_bound()
+TEST(multiset, test_class_multiset_upper_bound_3) {
+  s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0};
+  auto end_it = multiset_test.begin() + 5;
+  auto res = multiset_test.upper_bound(4);
+  EXPECT_TRUE(res.first() == end_it.first());
+}
+
 // ************************************
 // --------- DIFFERENT TYPE -----------
 // ************************************

@@ -76,8 +76,9 @@ private:
     Node *cur;
     Iterator();
     Iterator(Node *first);
-    iterator& operator++();
-    iterator& operator+(int count);
+    Iterator& operator++();
+    Iterator& operator+(int count);
+    // Iterator& operator=(Iterator&& o);
     // iterator& operator--();
     // iterator& operator-(int count);
     bool operator!=(const Iterator& o);
@@ -169,6 +170,15 @@ typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator+(int count) 
 // typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator-(int count) {
 //   for (int i = 0; i < count; ++i)
 //     operator--();
+//   return *this;
+// }
+
+// template<class T1, class T2>
+// typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator=(Iterator&& o) {
+//   if (this != &o) {
+//     cur = o.cur;
+//     o.cur = nullptr;
+//   }
 //   return *this;
 // }
 
