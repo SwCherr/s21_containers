@@ -16,24 +16,25 @@ class array {
   using size_type = std::size_t;
   class iterator;
 
-  array() = default;
+  array() : size_(N){};
   array(std::initializer_list<value_type> const &items);
   array(const array &other);
-  array(array &&other);
+  array(array &&other) noexcept;
   ~array() = default;
 
   value_type back();
   value_type front();
+  size_type size();
   value_type *data();
   iterator begin();
   iterator end();
 
-  reference operator[](value_type index);
-  value_type operator[](value_type index) const;
+  reference operator[](size_t index);
+  value_type operator[](size_t index) const;
 
  private:
+  const size_type size_;
   value_type arr_[N];
-  const size_type size_ = N;
 
 };  // class array
 
@@ -45,11 +46,25 @@ class iterator {
 };  // class iretator
 
 template <class T, std::size_t N>
-array<T, N>::array(std::initializer_list<value_type> const &items) {
-  if (items.size() > N) {
+array<T, N>::array(std::initializer_list<value_type> const &items) : size_(N) {
+  if (items.size() > size_) {
     throw std::out_of_range("array::initilized_constructor out of range");
   }
   std::copy(items.begin(), items.end(), arr_);
+}
+
+template <class T, std::size_t N>
+array<T, N>::array(const array &other) : size_(N) {
+  for (size_t i = 0; i < size_; ++i) {
+    arr_[i] = other.arr_[i];
+  }
+}
+
+template <class T, std::size_t N>
+array<T, N>::array(array &&other) noexcept : size_(N) {
+  for (size_t i = 0; i < size_; ++i) {
+    arr_[i] = std::move(other.arr_[i]);
+  }
 }
 
 template <class T, std::size_t N>
@@ -63,6 +78,11 @@ typename array<T, N>::value_type array<T, N>::front() {
 }
 
 template <class T, std::size_t N>
+typename array<T, N>::size_type array<T, N>::size() {
+  return size_;
+}
+
+template <class T, std::size_t N>
 typename array<T, N>::value_type *array<T, N>::data() {
   return arr_;
 }
@@ -73,13 +93,12 @@ typename array<T, N>::iterator array<T, N>::end() {
 }
 
 template <class T, std::size_t N>
-typename array<T, N>::reference array<T, N>::operator[](value_type index) {
+typename array<T, N>::reference array<T, N>::operator[](size_t index) {
   return arr_[index];
 }
 
 template <class T, std::size_t N>
-typename array<T, N>::value_type array<T, N>::operator[](
-    value_type index) const {
+typename array<T, N>::value_type array<T, N>::operator[](size_t index) const {
   return arr_[index];
 }
 
