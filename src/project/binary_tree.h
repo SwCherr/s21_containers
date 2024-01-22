@@ -28,39 +28,36 @@ public:
 
   iterator begin();
   iterator end();
-  bool empty();
   size_type size();
   size_type max_size();
+  bool empty();
   void clear();
   Node* Insert(T1 key, T2 value);
   void erase(iterator pos);
   Node* EraseElement(Node* root, T1 key);
   void swap(BTree& o);
   void merge(BTree& o);
-  bool contains(const T1& key); // вынести общий код
+  iterator find(const T1 key);
+  bool contains(const T1& key);
 
   // вспомогательные ф-ии
   void Print();
-  void PrintByIterator();
-  Node* CopyTree(Node *root, Node *parent);
-  iterator find(const T1 key); // подумать над переносом в дочерний класс сет 
 
   // ====== ITERATOR ======
   class Iterator {
   public:
-    Node *cur; // вынести в private
     Iterator();
     Iterator(Node *node);
     Iterator& operator++();
+    iterator& operator--();
     Iterator& operator+(int count);
-    // Iterator& operator=(Iterator&& o);
-    // iterator& operator--();
-    // iterator& operator-(int count);
+    iterator& operator-(int count);
     bool operator!=(const Iterator& o);
-    T1 operator*(); // возвращает поле Key     // удалить при рефакторинге
-    T2 operator~(); // возвращает поле Value   // удалить при рефакторинге
-    T1& first();     // возвращает поле Key
-    T2& second();    // возвращает поле Value
+    bool operator==(const Iterator& o);
+    T1& operator*(); // возвращает поле Key
+    T2& operator~(); // возвращает поле Value
+  protected:
+    Node *cur;
   };
 
   class ConstIterator : Iterator {
@@ -68,10 +65,12 @@ public:
     const_reference operator*() const { return Iterator::operator*(); };
   };
   
-  protected:
+protected:
   Node *Root;
   size_type Size;
-// ====== NODE ======
+  Node* GetMin(Node* root) const;
+  Node* GetMax(Node* root) const;
+  // ====== NODE ======
   struct Node {
     T1 Key;
     T2 Value;
@@ -86,9 +85,8 @@ public:
 
 private:
   void DestroyTree(Node *node);
+  Node* CopyTree(Node *root, Node *parent);
   void TreePrint(Node *node);
-  Node* GetMin(Node* root) const;
-  Node* GetMax(Node* root) const;
 };
 
 // ------------------ NODE -------------------
@@ -143,32 +141,32 @@ typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator+(int count) 
   return *this;
 }
 
-// template<class T1, class T2>
-// typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator--() {
-//   if (cur) {
-//     if (cur->Left) {
-//       cur = cur->Left;           // найти минимальное значение в правой подветке cur
-//       while (cur && cur->Right)
-//         cur = cur->Right;
-//     } else if (cur->Parent) {
-//       if (cur->Key > cur->Parent->Key)
-//         cur = cur->Parent;
-//       else {
-//         T1 tmp_key = cur->Key;
-//         while (tmp_key <= cur->Key)
-//           cur = cur->Parent;
-//       }
-//     }
-//   }
-//   return *this;
-// }
+template<class T1, class T2>
+typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator--() {
+  if (cur) {
+    if (cur->Left) {
+      cur = cur->Left;           // найти минимальное значение в правой подветке cur
+      while (cur && cur->Right)
+        cur = cur->Right;
+    } else if (cur->Parent) {
+      if (cur->Key > cur->Parent->Key)
+        cur = cur->Parent;
+      else {
+        T1 tmp_key = cur->Key;
+        while (tmp_key <= cur->Key)
+          cur = cur->Parent;
+      }
+    }
+  }
+  return *this;
+}
 
-// template<class T1, class T2>
-// typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator-(int count) {
-//   for (int i = 0; i < count; ++i)
-//     operator--();
-//   return *this;
-// }
+template<class T1, class T2>
+typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator-(int count) {
+  for (int i = 0; i < count; ++i)
+    operator--();
+  return *this;
+}
 
 // template<class T1, class T2>
 // typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator=(Iterator&& o) {
@@ -185,17 +183,15 @@ bool BTree<T1, T2>::iterator::operator!=(const iterator& o) {
 }
 
 template<class T1, class T2>
-T1 BTree<T1, T2>::iterator::operator*() { return cur->Key; }
+bool BTree<T1, T2>::iterator::operator==(const iterator& o) {
+  return cur == o.cur;
+}
 
 template<class T1, class T2>
-T2 BTree<T1, T2>::iterator::operator~() { return cur->Value; }
-
-// ----------------- Methods -----------------
-template<class T1, class T2>
-T1& BTree<T1, T2>::iterator::first() { return cur->Key; }
+T1& BTree<T1, T2>::iterator::operator*() { return cur->Key; }
 
 template<class T1, class T2>
-T2& BTree<T1, T2>::iterator::second() { return cur->Value; }
+T2& BTree<T1, T2>::iterator::operator~() { return cur->Value; }
 
 // --------------- BINARY TREE ----------------
 // --------- Constructor & destructor ---------
@@ -302,7 +298,7 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::Insert(T1 key, T2 value) {
 
 template<class T1, class T2>
 void BTree<T1, T2>::erase(iterator pos) {
-  Root = EraseElement(Root, pos.first());
+  Root = EraseElement(Root, *pos);
 }
 
 template<class T1, class T2>
@@ -351,7 +347,6 @@ void BTree<T1, T2>::merge(BTree& o) {
   }
 }
 
-// дописать отсутсвие элемента
 template<class T1, class T2>
 typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const T1 key) {
   Node *cur = Root;
@@ -361,8 +356,6 @@ typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const T1 key) {
     else
       cur = cur->Right;
   }
-  // добавить перегрузку равно для класса дерева. раскомментировать строчку
-  // if (cur->Key != key) *cur = nullptr;
   return iterator(cur);
 }
 
@@ -416,19 +409,6 @@ void BTree<T1, T2>::Print() {
   TreePrint(Root);
   std::cout << std::endl;
 }
-
-template<class T1, class T2>
-void BTree<T1, T2>::PrintByIterator() {
-  if (this->Root) {
-    iterator cur_element = this->begin();
-    for (size_type i = 0; i < Size; ++i) {
-      std::cout << *cur_element << std::endl;
-      if (cur_element != this->end()) 
-        ++cur_element;
-    }
-  }
-}
-
 } // namespace s21
 
 #endif  // __CPP2_S21_CONTAINERS_SRC_BTree_H__

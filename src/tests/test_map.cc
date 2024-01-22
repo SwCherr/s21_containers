@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 #include "../project/s21_map.h"
 
-    // std::cout << map_test_it.first() << " ";
-    // std::cout << map_test_it.second() << " | ";
+    // std::cout << (*map_test_it).first << " ";
+    // std::cout << (*map_test_it).second << " | ";
     // std::cout << (*map_orig_it).first << " ";
     // std::cout << (*map_orig_it).second << std::endl;
 
@@ -14,8 +14,8 @@ TEST(map, ConstructorInitializerMap) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 }
 
@@ -36,8 +36,8 @@ TEST(map, test_class_map_initializer_list_constructor) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 }
 
@@ -49,8 +49,8 @@ TEST(map, test_class_map_copy_constructor_1) {
   auto map_it_1 = map_1.begin();
   auto map_it_2 = map_2.begin();
   for (; map_it_1 != map_1.end(); ++map_it_1, ++map_it_2) {
-    EXPECT_TRUE(map_it_1.first() == map_it_2.first());
-    EXPECT_TRUE(map_it_1.second() == map_it_2.second());
+    EXPECT_TRUE((*map_it_1).first == (*map_it_2).first);
+    EXPECT_TRUE((*map_it_1).second == (*map_it_2).second);
   }
 }
 
@@ -71,8 +71,8 @@ TEST(map, test_class_map_move_constructor_1) {
   auto map_it_1 = map_2.begin();
   auto map_it_2 = res.begin();
   for (; map_it_1 != map_2.end(); ++map_it_1, ++map_it_2) {
-    EXPECT_TRUE(map_it_1.first() == map_it_2.first());
-    EXPECT_TRUE(map_it_1.second() == map_it_2.second());
+    EXPECT_TRUE((*map_it_1).first == (*map_it_2).first);
+    EXPECT_TRUE((*map_it_1).second == (*map_it_2).second);
   }
 }
 
@@ -111,8 +111,8 @@ TEST(map, test_class_map_operator_2) {
   auto map_it_1 = map_2.begin();
   auto map_it_2 = res.begin();
   for (; map_it_1 != map_2.end(); ++map_it_1, ++map_it_2) {
-    EXPECT_TRUE(map_it_1.first() == map_it_2.first());
-    EXPECT_TRUE(map_it_1.second() == map_it_2.second());
+    EXPECT_TRUE((*map_it_1).first == (*map_it_2).first);
+    EXPECT_TRUE((*map_it_1).second == (*map_it_2).second);
   }
 }
 
@@ -139,8 +139,8 @@ TEST(map, test_class_map_iterator_1) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 }
 
@@ -153,8 +153,8 @@ TEST(map, test_class_map_iterator_1) {
 //   auto map_orig_it = map_orig.end();
 //   --map_orig_it;
 //   for (size_t i = 0; i < map_test.size() - 1; ++i, --map_test_it, --map_orig_it) {
-//     EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-//     EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+//     EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+//     EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
 //   }
 // }
 
@@ -250,8 +250,8 @@ TEST(map, test_class_map_insert_pair_1) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 }
 
@@ -267,8 +267,8 @@ TEST(map, test_class_map_insert_pair_2) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 
 }
@@ -286,8 +286,8 @@ TEST(map, test_class_map_insert_key_value) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 
 }
@@ -310,8 +310,8 @@ TEST(map, test_class_map_insert_or_assign_1) {
   auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.begin();
   for (; map_test_it != map_test.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == (*map_orig_it).first);
-    EXPECT_TRUE(map_test_it.second() == (*map_orig_it).second);
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 
 }
@@ -372,14 +372,14 @@ TEST(map, test_class_map_swap) {
   auto map_test_it = map_1.begin();
   auto map_orig_it = res_1.begin();
   for (; map_test_it != map_1.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == map_orig_it.first());
-    EXPECT_TRUE(map_test_it.second() == map_orig_it.second());
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
   map_test_it = map_2.begin();
   map_orig_it = map_test_res_2.begin();
   for (; map_test_it != map_2.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == map_orig_it.first());
-    EXPECT_TRUE(map_test_it.second() == map_orig_it.second());
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
   EXPECT_TRUE(map_1.size() == 3);
   EXPECT_TRUE(map_2.size() == 5);
@@ -394,8 +394,8 @@ TEST(map, test_class_map_merge) {
   auto map_test_it = map_1.begin();
   auto map_orig_it = res_1.begin();
   for (; map_test_it != map_1.end(); ++map_test_it, ++map_orig_it) {
-    EXPECT_TRUE(map_test_it.first() == map_orig_it.first());
-    EXPECT_TRUE(map_test_it.second() == map_orig_it.second());
+    EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
+    EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
   std::cout << map_1.size() << std::endl;
   EXPECT_TRUE(map_1.size() == 7);

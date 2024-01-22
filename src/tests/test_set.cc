@@ -268,6 +268,57 @@ TEST(Set, test_class_set_contains_3) {
   ASSERT_EQ(res, check);
 }
 
+
+// Iterator& operator++();
+TEST(set, test_class_set_iterator_plus_plus_1) {
+  s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
+  ASSERT_EQ(set_test.size(), set_orig.size());
+  for (; set_test_it != set_test.end(); ++set_test_it, ++set_orig_it) {
+    EXPECT_TRUE(*set_test_it == *set_orig_it);
+  }
+}
+
+// Iterator& operator+();
+TEST(set, test_class_set_iterator_plus_plus_2) {
+  s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  auto set_test_it = set_test.begin() + 1;
+  auto set_orig_it = ++set_orig.begin();
+  ASSERT_EQ(set_test.size(), set_orig.size());
+  for (; set_test_it != set_test.end(); ++set_test_it, ++set_orig_it) {
+    EXPECT_TRUE(*set_test_it == *set_orig_it);
+  }
+}
+
+// Iterator& operator--();
+TEST(set, test_class_set_iterator_plus_plus_3) {
+  s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  auto set_test_it = set_test.begin() + 5;
+  auto set_orig_it = --(set_orig.end());
+  ASSERT_EQ(set_test.size(), set_orig.size());
+  for (; set_test_it != set_test.begin(); --set_test_it, --set_orig_it) {
+    EXPECT_TRUE(*set_test_it == *set_orig_it);
+  }
+}
+
+// Iterator& operator==();
+TEST(set, test_class_set_iterator_plus_plus_4) {
+  s21::set<double> set_test {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  s21::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  auto set_test_it = set_test.begin();
+  auto set_orig_it = set_orig.begin();
+  ASSERT_EQ(set_test.size(), set_orig.size());
+  for (; set_test_it != set_test.end(); ++set_test_it, ++set_orig_it) {
+    EXPECT_TRUE(set_test_it == set_test_it);
+    EXPECT_TRUE(set_orig_it == set_orig_it);
+    EXPECT_FALSE(set_test_it == set_orig_it);
+  }
+}
+
 // ************************************
 // --------- DIFFERENT TYPE -----------
 // ************************************

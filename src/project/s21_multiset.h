@@ -73,7 +73,7 @@ template<class Key>
 typename multiset<Key>::size_type multiset<Key>::count(const Key& key) {
   int count = 0;
   for (auto cur = this->begin(); cur != this->end(); ++cur) {
-    if (key == cur.first())
+    if (key == *cur)
       ++count;
   }
   return count;
@@ -83,10 +83,10 @@ template<class Key>
 std::pair<typename multiset<Key>::iterator, typename multiset<Key>::iterator> multiset<Key>::equal_range(const Key& key) {
   std::pair<iterator, iterator> return_value;
   auto cur = this->begin();
-  while (cur != this->end() && key != cur.first())
+  while (cur != this->end() && key != *cur)
     ++cur;
   return_value.first = iterator(cur);
-  while (cur != this->end() && key == cur.first()) {
+  while (cur != this->end() && key == *cur) {
     return_value.second = iterator(cur);
       ++cur;
   }
@@ -97,7 +97,7 @@ template<class Key>
 typename multiset<Key>::iterator multiset<Key>::lower_bound(const Key& key) {
   iterator return_value;
   auto cur = this->begin();
-  while (cur != this->end() && key != cur.first())
+  while (cur != this->end() && key != *cur)
     ++cur;
   return_value = iterator(cur);
   return return_value;
@@ -107,7 +107,7 @@ template<class Key>
 typename multiset<Key>::iterator multiset<Key>::upper_bound(const Key& key) {
   iterator return_value;
   auto cur = this->begin();
-  while (cur != this->end() && key >= cur.first())
+  while (cur != this->end() && key >= *cur)
     ++cur;
   return_value = iterator(cur);
   return return_value;
