@@ -13,8 +13,8 @@ public:
   using value_type = std::pair<const Key, mapped_type>;
   using reference = value_type &;
   using const_reference = const value_type &;
-  // using iterator = MapIterator; // typename BTree<Key, Value>::iterator;
-  using iterator = typename BTree<Key, Value>::iterator;
+  using iterator = MapIterator; // typename BTree<Key, Value>::iterator;
+  // using iterator = typename BTree<Key, Value>::iterator;
   using const_iterator = typename BTree<Key, Value>::const_iterator;
   using size_type = size_t;
   using Node = typename BTree<Key, Value>::Node;
@@ -35,9 +35,8 @@ public:
   class MapIterator : public BTree<Key, Value>::Iterator {
   public:
     friend class map;
-    // MapIterator() : BTree<Key, Value>::Iterator(){};
-    // MapIterator(typename BTree<Key, Value>::Node *node) 
-    //   : BTree<Key, Value>::Iterator(BTree<Key, Value>::Node *node){};
+    MapIterator() : BTree<Key, Value>::Iterator(){};
+    MapIterator(Node* node): BTree<Key, Value>::Iterator(node){};
     // std::pair<const Key, Value> &operator*();
   };
 
