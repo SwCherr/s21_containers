@@ -4,6 +4,8 @@
 #include <initializer_list>
 #include <iostream>
 
+#include "s21_array_iterator.h"
+
 namespace s21 {
 template <class T, std::size_t N>
 class array {
@@ -14,7 +16,7 @@ class array {
   using const_reference = const T &;
   using const_iterator = const T *;
   using size_type = std::size_t;
-  class iterator;
+  using iterator = ArrayIterator<T>;
 
   array() : size_(N){};
   array(std::initializer_list<value_type> const &items);
@@ -24,7 +26,8 @@ class array {
 
   value_type back();
   value_type front();
-  size_type size();
+  size_type size() const noexcept;
+  size_type max_size() const noexcept;
   value_type *data();
   iterator begin();
   iterator end();
@@ -78,8 +81,13 @@ typename array<T, N>::value_type array<T, N>::front() {
 }
 
 template <class T, std::size_t N>
-typename array<T, N>::size_type array<T, N>::size() {
+typename array<T, N>::size_type array<T, N>::size() const noexcept {
   return size_;
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::size_type array<T, N>::max_size() const noexcept {
+  return N;
 }
 
 template <class T, std::size_t N>
@@ -89,7 +97,7 @@ typename array<T, N>::value_type *array<T, N>::data() {
 
 template <class T, std::size_t N>
 typename array<T, N>::iterator array<T, N>::end() {
-  return &arr_[size_];
+  return iterator(arr_, size_);
 }
 
 template <class T, std::size_t N>
@@ -100,6 +108,11 @@ typename array<T, N>::reference array<T, N>::operator[](size_t index) {
 template <class T, std::size_t N>
 typename array<T, N>::value_type array<T, N>::operator[](size_t index) const {
   return arr_[index];
+}
+
+template <class T, std::size_t N>
+typename array<T, N>::iterator array<T, N>::begin() {
+  return iterator(arr_);
 }
 
 }  // namespace s21

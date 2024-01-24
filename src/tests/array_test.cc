@@ -5,12 +5,9 @@
 
 #include "../s21_array.h"
 
-// constructors
+using std::cout;
 
-TEST(experement, max_size) {
-  std::array<int, 10> std_arr;
-  std::cout << std_arr.max_size();
-}
+// constructors
 
 TEST(array_constructor_test, constructor_default_01) {
   s21::array<int, 1>* example_arr = nullptr;
@@ -96,4 +93,57 @@ TEST(array_operators_test, operator_square_brackets) {
 TEST(array_operators_test, operator_square_brackets_const) {
   const s21::array<int, 3> s21_arr = {1, 2, 3};
   ASSERT_EQ(s21_arr[0], 1);
+}
+
+// iterators
+
+TEST(array_iterator_test, iterator_begin) {
+  std::array<int, 1> std_arr({123});
+  s21::array<int, 1> s21_arr({123});
+  auto std_iter = std_arr.begin();
+  auto s21_iter = s21_arr.begin();
+  ASSERT_EQ(*std_iter, *s21_iter);
+}
+
+TEST(array_iterator_test, iterator_incrementation) {
+  std::array<int, 2> std_arr({123, 22});
+  s21::array<int, 2> s21_arr({123, 22});
+  auto std_iter = std_arr.begin();
+  auto s21_iter = s21_arr.begin();
+  std_iter++;
+  s21_iter++;
+  ASSERT_EQ(*std_iter, *s21_iter);
+}
+
+TEST(array_iterator_test, iterator_plus_minus) {
+  s21::array<int, 5> s21_arr({1, 2, 3, 4, 5});
+  std::array<int, 5> std_arr({1, 2, 3, 4, 5});
+
+  auto s21_first_iter = s21_arr.begin();
+  auto std_first_iter = std_arr.begin();
+
+  auto s21_second_iter = s21_first_iter + 3;
+  auto std_second_iter = std_first_iter + 3;
+  ASSERT_EQ(*s21_second_iter, *std_second_iter);
+
+  auto s21_third_iter = s21_second_iter - 2;
+  auto std_third_iter = std_second_iter - 2;
+  ASSERT_EQ(*s21_third_iter, *std_third_iter);
+}
+
+TEST(array_iterator_test, iterator_plus_minus_iterator) {
+  s21::array<int, 5> s21_arr({1, 2, 3, 4, 5});
+  auto s21_begin = s21_arr.begin();
+  auto s21_end = s21_arr.end();
+  ASSERT_EQ(s21_begin - s21_end, -5);
+  ASSERT_EQ(s21_arr.end() - s21_arr.begin(), 5);
+}
+
+TEST(array_iterator_test, iterator_end) {
+  std::array<int, 2> std_arr({123, 22});
+  s21::array<int, 2> s21_arr({123, 22});
+  std::array<int, 2>::iterator std_iter = std_arr.end();
+  s21::array<int, 2>::iterator s21_iter = s21_arr.end();
+  ASSERT_EQ(*(s21_iter - 1), 22);
+  ASSERT_EQ(*(std_iter - 1), 22);
 }
