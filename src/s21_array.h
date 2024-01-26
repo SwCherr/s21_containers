@@ -7,16 +7,16 @@
 #include "s21_array_iterator.h"
 
 namespace s21 {
+
 template <class T, std::size_t N>
 class array {
  public:
   using value_type = T;
   using reference = T &;
-  using pointer = T *;
   using const_reference = const T &;
-  using const_iterator = const T *;
-  using size_type = std::size_t;
   using iterator = ArrayIterator<T>;
+  using const_iterator = const ArrayIterator<T>;
+  using size_type = std::size_t;
 
   array() : size_(N){};
   array(std::initializer_list<value_type> const &items);
@@ -32,6 +32,7 @@ class array {
   iterator begin();
   iterator end();
 
+  array operator=(array &&a) noexcept;
   reference operator[](size_t index);
   value_type operator[](size_t index) const;
 
@@ -40,13 +41,6 @@ class array {
   value_type arr_[N];
 
 };  // class array
-
-class iterator {
- public:
-  using iterator_category = std::random_access_iterator_tag;
-
-  iterator operator++();
-};  // class iretator
 
 template <class T, std::size_t N>
 array<T, N>::array(std::initializer_list<value_type> const &items) : size_(N) {
@@ -96,6 +90,11 @@ typename array<T, N>::value_type *array<T, N>::data() {
 }
 
 template <class T, std::size_t N>
+typename array<T, N>::iterator array<T, N>::begin() {
+  return iterator(arr_);
+}
+
+template <class T, std::size_t N>
 typename array<T, N>::iterator array<T, N>::end() {
   return iterator(arr_, size_);
 }
@@ -111,8 +110,11 @@ typename array<T, N>::value_type array<T, N>::operator[](size_t index) const {
 }
 
 template <class T, std::size_t N>
-typename array<T, N>::iterator array<T, N>::begin() {
-  return iterator(arr_);
+array<T, N> array<T, N>::operator=(array &&other) noexcept {
+  for (size_t i = 0; i < size_; ++i) {
+    arr_[i] = std::move(other.arr_[i]);
+  }
+  return this;
 }
 
 }  // namespace s21

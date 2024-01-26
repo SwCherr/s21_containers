@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <array>
+#include <string>
 #include <vector>
 
 #include "../s21_array.h"
@@ -63,19 +64,26 @@ TEST(array_constructor_test, constructor_move) {
 }
 
 // metods
+TEST(array_metods_test, metod_back) {
+  s21::array<int, 5> s21_arr = {1, 2, 3, 4, 5};
+  s21::array<std::string, 2> s21_arr_string = {"hello", "world"};
+  ASSERT_EQ(s21_arr.back(), 5);
+  ASSERT_EQ(s21_arr_string.back(), "world");
+}
 
 TEST(array_metods_test, metod_front) {
   s21::array<int, 3> s21_arr = {1, 2, 3};
   std::array<int, 3> std_arr = {1, 2, 3};
   ASSERT_EQ(s21_arr.front(), std_arr.front());
+  s21::array<std::string, 2> s21_arr_string = {"hello", "world"};
+  ASSERT_EQ(s21_arr_string.front(), "hello");
 }
 
-// TEST(array_metods_test, metod_end) {
-//   s21::array<int, 3> arr = {1, 2, 3};
-//   int* p_begin = arr.begin();
-//   int* p_end = arr.end();
-//   std::cout << p_end - p_begin << '\n';
-// }
+TEST(array_metods_test, metod_end) {
+  s21::array<int, 3> arr = {1, 2, 3};
+  auto iter_arr_end = arr.end();
+  ASSERT_EQ(*(iter_arr_end - 1), 3);
+}
 
 // operators
 
@@ -106,13 +114,50 @@ TEST(array_iterator_test, iterator_begin) {
 }
 
 TEST(array_iterator_test, iterator_incrementation) {
-  std::array<int, 2> std_arr({123, 22});
-  s21::array<int, 2> s21_arr({123, 22});
+  std::array<int, 3> std_arr({123, 22, 55});
+  s21::array<int, 3> s21_arr({123, 22, 55});
   auto std_iter = std_arr.begin();
   auto s21_iter = s21_arr.begin();
   std_iter++;
   s21_iter++;
   ASSERT_EQ(*std_iter, *s21_iter);
+  ++std_iter;
+  ++s21_iter;
+  ASSERT_EQ(*std_iter, *s21_iter);
+}
+
+TEST(array_iterator_test, iterator_equal_not_equal) {
+  /* std::array<int, 3> std_first_arr({123, 22, 55});
+  std::array<int, 3> std_second_arr({123, 22, 55});
+  auto std_iter1 = std_first_arr.begin();
+  auto std_iter2 = std_second_arr.begin();
+  auto std_iter3 = std_first_arr.begin();
+
+  ASSERT_TRUE(std_iter1 != std_iter2);
+  ASSERT_TRUE(*std_iter1 == *std_iter2);
+  ASSERT_TRUE(std_iter1 == std_iter3);
+  ASSERT_TRUE(*std_iter1 == *std_iter3);
+
+  ASSERT_FALSE(std_iter1 == std_iter2);
+  ASSERT_FALSE(*std_iter1 != *std_iter2);
+  ASSERT_FALSE(std_iter1 != std_iter3);
+  ASSERT_FALSE(*std_iter1 != *std_iter3); */
+
+  s21::array<int, 3> s21_first_arr({123, 22, 55});
+  s21::array<int, 3> s21_second_arr({123, 22, 55});
+  auto s21_iter1 = s21_first_arr.begin();
+  auto s21_iter2 = s21_second_arr.begin();
+  auto s21_iter3 = s21_first_arr.begin();
+
+  ASSERT_TRUE(s21_iter1 != s21_iter2);
+  ASSERT_TRUE(*s21_iter1 == *s21_iter2);
+  ASSERT_TRUE(s21_iter1 == s21_iter3);
+  ASSERT_TRUE(*s21_iter1 == *s21_iter3);
+
+  ASSERT_FALSE(s21_iter1 == s21_iter2);
+  ASSERT_FALSE(*s21_iter1 != *s21_iter2);
+  ASSERT_FALSE(s21_iter1 != s21_iter3);
+  ASSERT_FALSE(*s21_iter1 != *s21_iter3);
 }
 
 TEST(array_iterator_test, iterator_plus_minus) {
