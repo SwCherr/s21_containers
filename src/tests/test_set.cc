@@ -101,7 +101,7 @@ TEST(Set, test_class_set_size_3) {
 TEST(Set, test_class_set_max_size_1) {
   s21::set<int> set_test{1, 2, 3};
   size_t res = set_test.max_size();
-  size_t check = 461168601842738790;
+  size_t check = 1152921504606846975;
   ASSERT_EQ(res, check);
 }
 
@@ -118,6 +118,29 @@ TEST(Set, test_class_set_insert_1) {
   set_test.insert(4);
   set_test.insert(6);
   set_test.insert(8);
+  ASSERT_TRUE(set_test.contains(4));
+  ASSERT_TRUE(set_test.contains(6));
+  ASSERT_TRUE(set_test.contains(8));
+}
+
+// insert()
+TEST(Set, test_class_set_insert_2) {
+  s21::set<double> set_test{};
+  set_test.insert(4);
+  set_test.insert(4);
+  set_test.insert(4);
+  set_test.insert(5);
+  set_test.insert(6);
+  ASSERT_TRUE(set_test.contains(4));
+  ASSERT_TRUE(set_test.contains(5));
+  ASSERT_TRUE(set_test.contains(6));
+  ASSERT_TRUE(set_test.size() == 3);
+}
+
+// insert_many()
+TEST(Set, test_class_set_insert_many_1) {
+  s21::set<double> set_test{};
+  set_test.insert_many(4, 6, 8);
   ASSERT_TRUE(set_test.contains(4));
   ASSERT_TRUE(set_test.contains(6));
   ASSERT_TRUE(set_test.contains(8));

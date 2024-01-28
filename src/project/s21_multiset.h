@@ -9,8 +9,8 @@ class multiset: public BTree<Key, Key> {
 public:
   using key_type = Key;
   using value_type = Key;
-  using reference = value_type &;
-  using const_reference = const value_type &;
+  using reference = value_type&;
+  using const_reference = const value_type&;
   using iterator = typename BTree<Key, Key>::iterator;
   using const_iterator = typename BTree<Key, Key>::const_iterator;
   using size_type = size_t;
@@ -23,11 +23,15 @@ public:
   ~multiset() = default;
   multiset& operator=(multiset &&s);
 
-  std::pair<iterator, bool> insert(const value_type& value);
-  size_type count(const Key& key);
-  std::pair<iterator,iterator> equal_range(const Key& key);
-  iterator lower_bound(const Key& key);
-  iterator upper_bound(const Key& key);
+  std::pair<iterator, bool> insert(const_reference value);
+  size_type count(const_reference key) const;
+  std::pair<iterator,iterator> equal_range(const_reference key) const;
+  iterator lower_bound(const_reference key) const;
+  iterator upper_bound(const_reference key) const;
+
+  // std -> s21 change
+  template <class... Args>
+  std::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
 };
 
 template<class Key>
@@ -44,7 +48,7 @@ multiset<Key>& multiset<Key>::operator=(multiset &&s) {
 }
 
 template <class Key>
-std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const value_type& value) {
+std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const_reference value) {
   std::pair<iterator, bool> return_value;
   Node **cur = &(BTree<Key, Key>::Root);
   Node *parent = nullptr;
@@ -61,7 +65,6 @@ std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const va
     return_value.first = iterator(*cur);
     return_value.second = true;
     (*cur)->Parent = parent;
-    BTree<Key, Key>::Size++;
   } else {
     return_value.first = iterator(nullptr);
     return_value.second = false;
@@ -70,17 +73,19 @@ std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const va
 }
 
 template<class Key>
-typename multiset<Key>::size_type multiset<Key>::count(const Key& key) {
+typename multiset<Key>::size_type multiset<Key>::count(const_reference key) const {
   int count = 0;
-  for (auto cur = this->begin(); cur != this->end(); ++cur) {
+  for (auto cur = BTree<Key, Key>::begin(); cur != BTree<Key, Key>::end(); ++cur) {
+    std::cout << *cur << " ";
     if (key == *cur)
       ++count;
   }
+  std::cout << "maf-maf" << std::endl;
   return count;
 }
 
 template<class Key>
-std::pair<typename multiset<Key>::iterator, typename multiset<Key>::iterator> multiset<Key>::equal_range(const Key& key) {
+std::pair<typename multiset<Key>::iterator, typename multiset<Key>::iterator> multiset<Key>::equal_range(const_reference key) const {
   std::pair<iterator, iterator> return_value;
   auto cur = this->begin();
   while (cur != this->end() && key != *cur)
@@ -94,7 +99,7 @@ std::pair<typename multiset<Key>::iterator, typename multiset<Key>::iterator> mu
 }
 
 template<class Key>
-typename multiset<Key>::iterator multiset<Key>::lower_bound(const Key& key) {
+typename multiset<Key>::iterator multiset<Key>::lower_bound(const_reference key) const {
   iterator return_value;
   auto cur = this->begin();
   while (cur != this->end() && key != *cur)
@@ -104,13 +109,22 @@ typename multiset<Key>::iterator multiset<Key>::lower_bound(const Key& key) {
 }
 
 template<class Key>
-typename multiset<Key>::iterator multiset<Key>::upper_bound(const Key& key) {
+typename multiset<Key>::iterator multiset<Key>::upper_bound(const_reference key) const {
   iterator return_value;
   auto cur = this->begin();
   while (cur != this->end() && key >= *cur)
     ++cur;
   return_value = iterator(cur);
   return return_value;
+}
+
+template <class Key>
+template <class... Args>
+std::vector<std::pair<typename multiset<Key>::iterator,bool>> multiset<Key>::insert_many(Args&&... args) {
+  std::vector<std::pair<iterator,bool>> insert_results{};
+  for (const auto &arg : {args...})
+    insert_results.push_back(insert(arg));
+  return insert_results;
 }
 } // namespace s21
 #endif  // __CPP2_S21_CONTAINERS_SRC_multiset_H__

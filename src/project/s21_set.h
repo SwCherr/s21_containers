@@ -9,8 +9,8 @@ class set: public BTree<Key, Key> {
 public:
   using key_type = Key;
   using value_type = Key;
-  using reference = value_type &;
-  using const_reference = const value_type &;
+  using reference = value_type&;
+  using const_reference = const value_type&;
   using iterator = typename BTree<Key, Key>::iterator;
   using const_iterator = typename BTree<Key, Key>::const_iterator;
   using size_type = size_t;
@@ -22,13 +22,16 @@ public:
   set(set &&s) = default;
   ~set() = default;
   set& operator=(set &&s);
-  std::pair<iterator, bool> insert(const value_type& value);
+  std::pair<iterator, bool> insert(const_reference value);
+  // std -> s21 change
+  template <class... Args>
+  std::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
 };
 
 template<class Key>
 set<Key>::set(std::initializer_list<value_type> const &items) {
   for (auto i = items.begin(); i!= items.end(); i++)
-    BTree<Key, Key>::Insert(*i, *i);
+    BTree<Key, Key>::BTInsert(*i, *i);
 }
 
 template <class Key>
@@ -39,9 +42,9 @@ set<Key>& set<Key>::operator=(set &&s) {
 }
 
 template <class Key>
-std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const value_type& value) {
+std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const_reference value) {
   std::pair<iterator, bool> return_value;
-  Node* insert_node = BTree<Key, Key>::Insert(value, value);
+  Node* insert_node = BTree<Key, Key>::BTInsert(value, value);
   if (insert_node) {
     return_value.first = iterator(insert_node);
     return_value.second = true;
@@ -52,5 +55,13 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const value_type& 
   return return_value;
 }
 
+template <class Key>
+template <class... Args>
+std::vector<std::pair<typename set<Key>::iterator,bool>> set<Key>::insert_many(Args&&... args) {
+  std::vector<std::pair<iterator,bool>> insert_results{};
+  for (const auto &arg : {args...})
+    insert_results.push_back(insert(arg));
+  return insert_results;
+}
 } // namespace s21
 #endif  // __CPP2_S21_CONTAINERS_SRC_SET_H__

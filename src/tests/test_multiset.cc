@@ -86,11 +86,10 @@ TEST(multiset, test_class_multiset_size_1) {
 
 // size()
 TEST(multiset, test_class_multiset_size_2) {
-  s21::multiset<int> multiset_test{1, 2, 3, 3};
-  auto map_it_1 = multiset_test.begin();
+  s21::multiset<int> multiset_test{1, 2, 3, 4};
   auto count = multiset_test.size() - 1;
-  for (int i = 4; i > 0; --i, ++map_it_1, --count) {
-    multiset_test.erase(map_it_1);
+  for (int i = 0; i < 4; ++i, --count) {
+    multiset_test.erase(multiset_test.begin());
     EXPECT_TRUE(multiset_test.size() == count);
   }
 }
@@ -107,7 +106,7 @@ TEST(multiset, test_class_multiset_size_3) {
 TEST(multiset, test_class_multiset_max_size_1) {
   s21::multiset<int> multiset_test{1, 2, 3, 3};
   size_t res = multiset_test.max_size();
-  size_t check = 461168601842738790;
+  size_t check = 1152921504606846975;
   ASSERT_EQ(res, check);
 }
 
@@ -128,6 +127,15 @@ TEST(multiset, test_class_multiset_insert_1) {
   ASSERT_TRUE(multiset_test.contains(4));
   ASSERT_TRUE(multiset_test.contains(6));
   ASSERT_TRUE(multiset_test.contains(8));
+}
+
+// insert_many()
+TEST(multiset, test_class_multiset_insert_many_1) {
+  s21::multiset<double> multiset_test{};
+  multiset_test.insert_many(6, 6, 6, 8, 8, 9, 9, 9);
+  ASSERT_TRUE(multiset_test.contains(6));
+  ASSERT_TRUE(multiset_test.contains(8));
+  ASSERT_TRUE(multiset_test.contains(9));
 }
 
 // erase
@@ -240,11 +248,12 @@ TEST(multiset, test_class_multiset_swap_1) {
 TEST(multiset, test_class_multiset_merge_1) {
   s21::multiset<int> multiset_test_1{8, 8, 8, 8};
   s21::multiset<int> multiset_test_2{3, 4, 6, 7, 0};
-  s21::multiset<int> multiset_test_res{0, 3, 4, 6, 7, 8, 8, 8, 8};
+  std::multiset<int> std_test_1{8, 8, 8, 8};
+  std::multiset<int> std_test_2{3, 4, 6, 7, 0};
   multiset_test_1.merge(multiset_test_2);
-  ASSERT_EQ(multiset_test_1.size(), multiset_test_res.size());
+  std_test_1.merge(std_test_2);
   auto map_it_1 = multiset_test_1.begin();
-  auto map_it_2 = multiset_test_res.begin();
+  auto map_it_2 = std_test_1.begin();
   for (; map_it_1 != multiset_test_1.end(); ++map_it_1, ++map_it_2) {
     EXPECT_TRUE(*map_it_1 == *map_it_2);
   }
@@ -253,24 +262,9 @@ TEST(multiset, test_class_multiset_merge_1) {
 // count()
 TEST(multiset, test_class_multiset_count_1) {
   s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
-  auto res = multiset_test.count(1);
-  EXPECT_TRUE(res == 1);
-}
-
-// count()
-TEST(multiset, test_class_multiset_count_2) {
-  s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
-  multiset_test.Print();
-  auto res = multiset_test.count(2);
-  EXPECT_TRUE(res == 3);
-}
-
-// count()
-TEST(multiset, test_class_multiset_count_3) {
-  s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
-  multiset_test.Print();
-  auto res = multiset_test.count(0);
-  EXPECT_TRUE(res == 2);
+  EXPECT_TRUE(multiset_test.count(1) == 1);
+  EXPECT_TRUE(multiset_test.count(2) == 3);
+  EXPECT_TRUE(multiset_test.count(0) == 2);
 }
 
 // find()

@@ -3,6 +3,7 @@ PROJECT = s21_containers
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
 TESTFLAGS = -lgtest -lgtest_main -pthread
+# GCOV_FLAG = --coverage #-fprofile-arcs -ftest-coverage
 
 DIR_TESTS = tests/
 DIR_BUILD_TESTS = build_tests/
@@ -13,7 +14,7 @@ TEST_EXECUTABLE = $(DIR_BUILD_TESTS)$(PROJECT)_test
 all: clean test
 
 test: dir
-	$(CXX) $(CXXFLAGS) $(TEST_SRC) $(TESTFLAGS) -o $(TEST_EXECUTABLE)
+	$(CXX) $(CXXFLAGS) $(TEST_SRC) $(TESTFLAGS) $(GCOV_FLAG) -o $(TEST_EXECUTABLE)
 	./$(TEST_EXECUTABLE)
 
 dir:
@@ -33,6 +34,15 @@ style_repair: clean
 
 clean:
 	rm -rf $(DIR_BUILD) $(DIR_OBJ) $(DIR_BUILD_TESTS) build/
+	@rm -rf *.gcda *.gcno *.info *.dSYM 
+
+gcov_report: $(STAT_LIB) test
+	@./$(TEST_EXECUTABLE)
+	@lcov -o test.info --no-external -c -d . $(LCOV_FLAG)
+	@genhtml -o report test.info $(LCOV_FLAG)
+	@$(OPEN_CMD) report/index.html
+	@rm -rf *.gcda *.gcno *.info *.dSYM 
+
 
 
 # OS = $(shell uname)

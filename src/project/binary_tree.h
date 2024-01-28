@@ -2,6 +2,7 @@
 #define __CPP2_S21_CONTAINERS_SRC_BTree_H__
 
 #include <iostream>
+#include <cstdint>
 
 namespace s21 {
 template<class T1, class T2>
@@ -28,17 +29,17 @@ public:
 
   iterator begin();
   iterator end();
-  size_type size();
-  size_type max_size();
-  bool empty();
+  const iterator begin() const;
+  const iterator end() const;
+  size_type size() const;
+  size_type max_size() const;
+  bool empty() const;
   void clear();
-  Node* Insert(T1 key, T2 value);
   void erase(iterator pos);
-  Node* EraseElement(Node* root, T1 key);
   void swap(BTree& o);
   void merge(BTree& o);
-  iterator find(const T1 key);
-  bool contains(const T1& key);
+  bool contains(const key_type& key) const;
+  iterator find(const key_type key) const;
 
   // вспомогательные ф-ии
   void Print();
@@ -52,10 +53,12 @@ public:
     iterator& operator--();
     Iterator& operator+(int count);
     iterator& operator-(int count);
-    bool operator!=(const Iterator& o);
-    bool operator==(const Iterator& o);
-    T1& operator*(); // возвращает поле Key
-    T2& operator~(); // возвращает поле Value
+    bool operator!=(const Iterator& o) const;
+    bool operator==(const Iterator& o) const;
+    key_type& operator*(); // возвращает поле Key
+    reference operator~(); // возвращает поле Value
+    key_type& operator*() const;
+    reference operator~() const;
   protected:
     Node *cur;
   };
@@ -67,20 +70,22 @@ public:
   
 protected:
   Node *Root;
-  size_type Size;
-  Node* GetMin(Node* root) const;
-  Node* GetMax(Node* root) const;
+  Node* BTGetMin(Node* root) const;
+  Node* BTGetMax(Node* root) const;
+  Node* BTInsert(key_type key, value_type value);
+  Node* BTErase(Node* root, key_type key);
+
   // ====== NODE ======
   struct Node {
-    T1 Key;
-    T2 Value;
+    key_type Key;
+    value_type Value;
     Node *Left;
     Node *Right;
     Node *Parent;
-    Node(T1 key, T2 value);
-    Node(T1 key, T2 value, Node* parent);
-    void PrintNode();             // удалить при рефакторинге
-    void PrintNodeParent();       // удалить при рефакторинге
+    Node(key_type key, value_type value);
+    Node(key_type key, value_type value, Node* parent);
+    // void PrintNode();             // удалить при рефакторинге
+    // void PrintNodeParent();       // удалить при рефакторинге
   };
 
 private:
@@ -88,6 +93,8 @@ private:
   Node* CopyTree(Node *root, Node *parent);
   void TreePrint(Node *node);
 };
+
+
 
 // ------------------ NODE -------------------
 // --------- Constructor & destructor --------
@@ -97,15 +104,15 @@ BTree<T1, T2>::Node::Node(T1 key, T2 value) : Key(key), Value(value), Left(nullp
 template<class T1, class T2>
 BTree<T1, T2>::Node::Node(T1 key, T2 value, Node* parent) : Key(key), Value(value), Left(nullptr), Right(nullptr), Parent(parent) {}
 
-// ----------------- Methods -----------------
-template<class T1, class T2>
-void BTree<T1, T2>::Node::PrintNode() { std::cout << Key << std::endl; }
+// // ----------------- Methods -----------------
+// template<class T1, class T2>
+// void BTree<T1, T2>::Node::PrintNode() { std::cout << Key << std::endl; }
 
-template<class T1, class T2>
-void BTree<T1, T2>::Node::PrintNodeParent() {
-  if (Parent == nullptr) std::cout << "nullptr" << std::endl;
-  else std::cout << Parent->Key << std::endl;
-}
+// template<class T1, class T2>
+// void BTree<T1, T2>::Node::PrintNodeParent() {
+//   if (Parent == nullptr) std::cout << "nullptr" << std::endl;
+//   else std::cout << Parent->Key << std::endl;
+// }
 
 // ---------------- ITERATOR -----------------
 // --------- Constructor & destructor --------
@@ -119,12 +126,12 @@ BTree<T1, T2>::iterator::Iterator(Node *first) : cur(first) {}
 template<class T1, class T2>
 typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator++() {
   if (cur->Right) {
-    cur = cur->Right;           // найти минимальное значение в правой подветке cur
+    cur = cur->Right;
     while (cur && cur->Left)
       cur = cur->Left;
   } else if (cur->Parent) {
     Node* tmp_right = cur->Right;
-    T1 tmp_key = cur->Key;
+    key_type tmp_key = cur->Key;
     cur = cur->Parent;
     while (tmp_key > cur->Key && cur->Parent)
       cur = cur->Parent;
@@ -145,7 +152,7 @@ template<class T1, class T2>
 typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator--() {
   if (cur) {
     if (cur->Left) {
-      cur = cur->Left;           // найти минимальное значение в правой подветке cur
+      cur = cur->Left;
       while (cur && cur->Right)
         cur = cur->Right;
     } else if (cur->Parent) {
@@ -168,45 +175,45 @@ typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator-(int count) 
   return *this;
 }
 
-// template<class T1, class T2>
-// typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator=(Iterator&& o) {
-//   if (this != &o) {
-//     cur = o.cur;
-//     o.cur = nullptr;
-//   }
-//   return *this;
-// }
-
 template<class T1, class T2>
-bool BTree<T1, T2>::iterator::operator!=(const iterator& o) {
+bool BTree<T1, T2>::iterator::operator!=(const iterator& o) const {
   return cur != o.cur;
 }
 
 template<class T1, class T2>
-bool BTree<T1, T2>::iterator::operator==(const iterator& o) {
+bool BTree<T1, T2>::iterator::operator==(const iterator& o) const {
   return cur == o.cur;
 }
 
 template<class T1, class T2>
-T1& BTree<T1, T2>::iterator::operator*() { return cur->Key; }
+typename BTree<T1, T2>::key_type& BTree<T1, T2>::iterator::operator*() { return cur->Key; }
 
 template<class T1, class T2>
-T2& BTree<T1, T2>::iterator::operator~() { return cur->Value; }
+typename BTree<T1, T2>::reference BTree<T1, T2>::iterator::operator~() { return cur->Value; }
+
+template<class T1, class T2>
+typename BTree<T1, T2>::key_type& BTree<T1, T2>::iterator::operator*() const { 
+  return cur->Key; 
+}
+
+template<class T1, class T2>
+typename BTree<T1, T2>::reference BTree<T1, T2>::iterator::operator~() const { 
+  return cur->Value; 
+}
 
 // --------------- BINARY TREE ----------------
 // --------- Constructor & destructor ---------
 template<class T1, class T2>
-BTree<T1, T2>::BTree(): Root(nullptr), Size(0) {};
+BTree<T1, T2>::BTree(): Root(nullptr) {};
 
 template<class T1, class T2>
-BTree<T1, T2>::BTree(const BTree& o) : Size(o.Size) {
+BTree<T1, T2>::BTree(const BTree& o) {
   Root = CopyTree(o.Root, nullptr);
 }
 
 template<class T1, class T2>
-BTree<T1, T2>::BTree(BTree&& o) : Root(o.Root), Size(o.Size) {
+BTree<T1, T2>::BTree(BTree&& o) : Root(o.Root) {
   o.Root = nullptr;
-  o.Size = 0;
 }
 
 template<class T1, class T2>
@@ -217,22 +224,30 @@ template<class T1, class T2>
 BTree<T1, T2>& BTree<T1, T2>::operator=(BTree &&o) {
   if (this != &o) {
     Root = o.Root;
-    Size = o.Size;
     o.Root = nullptr;
-    o.Size = 0;
   }
   return *this;
 }
 
 // ----------------- Methods -----------------
 template<class T1, class T2>
-typename BTree<T1, T2>::iterator BTree<T1, T2>::begin() { return BTree::iterator(GetMin(Root)); }
+typename BTree<T1, T2>::iterator BTree<T1, T2>::begin() { return BTree::iterator(BTGetMin(Root)); }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::iterator BTree<T1, T2>::end() { return BTree::iterator(GetMax(Root)->Right); }
+typename BTree<T1, T2>::iterator BTree<T1, T2>::end() { return BTree::iterator(BTGetMax(Root)->Right); }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::Node* BTree<T1, T2>::GetMin(Node* root) const {
+const typename BTree<T1, T2>::Iterator BTree<T1, T2>::begin() const {
+  return BTree::iterator(BTGetMin(Root));
+}
+
+template<class T1, class T2>
+const typename BTree<T1, T2>::Iterator BTree<T1, T2>::end() const {
+  return BTree::iterator(BTGetMax(Root)->Right);
+}
+
+template<class T1, class T2>
+typename BTree<T1, T2>::Node* BTree<T1, T2>::BTGetMin(Node* root) const {
   Node *min = root;
   while (min && min->Left)
     min = min->Left;
@@ -240,7 +255,7 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::GetMin(Node* root) const {
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::Node* BTree<T1, T2>::GetMax(Node* root) const {
+typename BTree<T1, T2>::Node* BTree<T1, T2>::BTGetMax(Node* root) const {
   Node *max = root;
   while (max && max->Right)
     max = max->Right;
@@ -248,29 +263,31 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::GetMax(Node* root) const {
 }
 
 template<class T1, class T2>
-bool BTree<T1, T2>::empty() {
+bool BTree<T1, T2>::empty() const {
   return Root == nullptr;
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::size_type BTree<T1, T2>::size() {
-  return Size;
+typename BTree<T1, T2>::size_type BTree<T1, T2>::size() const {
+  size_type size = 0;
+  if (Root)
+    for (auto iter = begin(); iter != end(); ++iter, ++size);
+  return size;
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::size_type BTree<T1, T2>::max_size() {
-  return 461168601842738790;
+typename BTree<T1, T2>::size_type BTree<T1, T2>::max_size() const {
+  return SIZE_MAX / sizeof(BTree<T1, T2>);
 }
 
 template<class T1, class T2>
 void BTree<T1, T2>::clear() { 
   DestroyTree(Root);
   Root = nullptr;
-  Size = 0;
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::Node* BTree<T1, T2>::Insert(T1 key, T2 value) {
+typename BTree<T1, T2>::Node* BTree<T1, T2>::BTInsert(key_type key, value_type value) {
   bool flag_identic_key = false;
   Node **cur = &Root;
   Node *parent = nullptr;
@@ -290,7 +307,6 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::Insert(T1 key, T2 value) {
     *cur = new Node(key, value);
     if (*cur) {
       (*cur)->Parent = parent;
-      Size++;
     }
   }
   return *cur;
@@ -298,22 +314,20 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::Insert(T1 key, T2 value) {
 
 template<class T1, class T2>
 void BTree<T1, T2>::erase(iterator pos) {
-  Root = EraseElement(Root, *pos);
+  Root = BTErase(Root, *pos);
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::Node* BTree<T1, T2>::EraseElement(Node* root, T1 key) {
+typename BTree<T1, T2>::Node* BTree<T1, T2>::BTErase(Node* root, key_type key) {
   if (root) {
     if (key < root->Key)
-      root->Left = EraseElement(root->Left, key);
+      root->Left = BTErase(root->Left, key);
     else if (key > root->Key)
-      root->Right = EraseElement(root->Right, key);
+      root->Right = BTErase(root->Right, key);
     else if (root->Left && root->Right) {
-      root->Key = GetMin(root->Right)->Key;
-      root->Right = EraseElement(root->Right, root->Key);
-      --Size;
+      root->Key = BTGetMin(root->Right)->Key;
+      root->Right = BTErase(root->Right, root->Key);
     } else {
-      --Size;
       if (root->Left)
         root = root->Left;
       else if (root->Right)
@@ -328,27 +342,20 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::EraseElement(Node* root, T1 key) {
 template<class T1, class T2>
 void BTree<T1, T2>::swap(BTree& o) {
   Node* root_tmp = Root;
-  size_type size_tmp = Size;
   Root = o.Root;
   o.Root = root_tmp;
-  Size = o.Size;
-  o.Size = size_tmp;
 }
 
 template<class T1, class T2>
 void BTree<T1, T2>::merge(BTree& o) {
   if (this != &o && o.Root) {
-    iterator cur_element_o = o.begin();
-    for (size_type i = 0; i < o.Size; ++i) {
-      this->Insert(*cur_element_o, ~cur_element_o);
-      if (cur_element_o != o.end()) 
-        ++cur_element_o;
-    }
+    for (auto iter = o.begin(); iter != o.end(); ++iter)
+      this->BTInsert(*iter, ~iter);
   }
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const T1 key) {
+typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const T1 key) const {
   Node *cur = Root;
   while (cur && cur->Key != key) {
     if (cur->Key > key)
@@ -360,7 +367,7 @@ typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const T1 key) {
 }
 
 template<class T1, class T2>
-bool BTree<T1, T2>::contains(const T1& key) {
+bool BTree<T1, T2>::contains(const key_type& key) const {
   Node *cur = Root;
   bool return_res = false;
   while (cur && !return_res) {
@@ -396,7 +403,7 @@ void BTree<T1, T2>::DestroyTree(Node *node) {
 
 template<class T1, class T2>
 void BTree<T1, T2>::TreePrint(Node *node){
-  if (node != NULL) {
+  if (node != nullptr) {
     TreePrint(node->Left);
     std::cout << node->Key << " ";
     // std::cout << node->Value << std::endl;

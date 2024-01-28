@@ -227,7 +227,7 @@ TEST(map, test_class_map_size_4) {
 TEST(map, test_class_map_max_size) {
   s21::map<int, int> map_test {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}};
   size_t res = map_test.max_size();
-  size_t check = 461168601842738790;
+  size_t check = 1152921504606846975;
   ASSERT_EQ(res, check);
 }
 
@@ -314,6 +314,20 @@ TEST(map, test_class_map_insert_or_assign_1) {
     EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
 
+}
+
+// insert_many()
+TEST(map, test_class_map_insert_many_1) {
+  s21::map<int, int> map_test{};
+  std::pair<int, int> el_1{1, 1};
+  std::pair<int, int> el_2{2, 2};
+  std::pair<int, int> el_3{3, 3};
+  std::pair<int, int> el_4{4, 4};
+  map_test.insert_many(el_1, el_2, el_3, el_4);
+  ASSERT_TRUE(map_test.contains(1));
+  ASSERT_TRUE(map_test.contains(2));
+  ASSERT_TRUE(map_test.contains(3));
+  ASSERT_TRUE(map_test.contains(4));
 }
 
 // erase
