@@ -41,8 +41,8 @@ public:
   bool contains(const key_type& key) const;
   iterator find(const key_type key) const;
 
-  // вспомогательные ф-ии
-  void Print();
+  // // вспомогательные ф-ии
+  // void Print();
 
   // ====== ITERATOR ======
   class Iterator {
@@ -57,8 +57,6 @@ public:
     bool operator==(const Iterator& o) const;
     key_type& operator*(); // возвращает поле Key
     reference operator~(); // возвращает поле Value
-    key_type& operator*() const;
-    reference operator~() const;
   protected:
     Node *cur;
   };
@@ -75,7 +73,6 @@ protected:
   Node* BTInsert(key_type key, value_type value);
   Node* BTErase(Node* root, key_type key);
 
-  // ====== NODE ======
   struct Node {
     key_type Key;
     value_type Value;
@@ -84,8 +81,6 @@ protected:
     Node *Parent;
     Node(key_type key, value_type value);
     Node(key_type key, value_type value, Node* parent);
-    // void PrintNode();             // удалить при рефакторинге
-    // void PrintNodeParent();       // удалить при рефакторинге
   };
 
 private:
@@ -103,16 +98,6 @@ BTree<T1, T2>::Node::Node(T1 key, T2 value) : Key(key), Value(value), Left(nullp
 
 template<class T1, class T2>
 BTree<T1, T2>::Node::Node(T1 key, T2 value, Node* parent) : Key(key), Value(value), Left(nullptr), Right(nullptr), Parent(parent) {}
-
-// // ----------------- Methods -----------------
-// template<class T1, class T2>
-// void BTree<T1, T2>::Node::PrintNode() { std::cout << Key << std::endl; }
-
-// template<class T1, class T2>
-// void BTree<T1, T2>::Node::PrintNodeParent() {
-//   if (Parent == nullptr) std::cout << "nullptr" << std::endl;
-//   else std::cout << Parent->Key << std::endl;
-// }
 
 // ---------------- ITERATOR -----------------
 // --------- Constructor & destructor --------
@@ -190,16 +175,6 @@ typename BTree<T1, T2>::key_type& BTree<T1, T2>::iterator::operator*() { return 
 
 template<class T1, class T2>
 typename BTree<T1, T2>::reference BTree<T1, T2>::iterator::operator~() { return cur->Value; }
-
-template<class T1, class T2>
-typename BTree<T1, T2>::key_type& BTree<T1, T2>::iterator::operator*() const { 
-  return cur->Key; 
-}
-
-template<class T1, class T2>
-typename BTree<T1, T2>::reference BTree<T1, T2>::iterator::operator~() const { 
-  return cur->Value; 
-}
 
 // --------------- BINARY TREE ----------------
 // --------- Constructor & destructor ---------
@@ -355,7 +330,7 @@ void BTree<T1, T2>::merge(BTree& o) {
 }
 
 template<class T1, class T2>
-typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const T1 key) const {
+typename BTree<T1, T2>::iterator BTree<T1, T2>::find(const key_type key) const {
   Node *cur = Root;
   while (cur && cur->Key != key) {
     if (cur->Key > key)
@@ -411,11 +386,11 @@ void BTree<T1, T2>::TreePrint(Node *node){
   }
 }
 
-template<class T1, class T2>
-void BTree<T1, T2>::Print() {
-  TreePrint(Root);
-  std::cout << std::endl;
-}
+// template<class T1, class T2>
+// void BTree<T1, T2>::Print() {
+//   TreePrint(Root);
+//   std::cout << std::endl;
+// }
 } // namespace s21
 
 #endif  // __CPP2_S21_CONTAINERS_SRC_BTree_H__

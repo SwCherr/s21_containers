@@ -24,12 +24,9 @@ public:
   map(const map &s) : BTree<Key, Value>(s) {};
   map(map &&s) = default;
   ~map() = default;
-  map& operator=(map &&s);
 
   iterator begin();
   iterator end();
-  const iterator begin() const;
-  const iterator end() const;
   mapped_type& at(const key_type& key);
   mapped_type& operator[](const key_type& key);
   std::pair<iterator, bool> insert(const_reference value);
@@ -56,15 +53,6 @@ public:
   };
 };
 
-template<class Key, class Value>
-template <class... Args>
-std::vector<std::pair<typename map<Key, Value>::iterator,bool>> map<Key, Value>::insert_many(Args&&... args) {
-  std::vector<std::pair<iterator,bool>> insert_results{};
-  for (const auto &arg : {args...})
-    insert_results.push_back(insert(arg));
-  return insert_results;
-}
-
 // ---------------- ITERATOR -----------------
 // ---------------- Operator -----------------
 template<class Key, class Value>
@@ -86,7 +74,7 @@ typename map<Key, Value>::mapped_type& map<Key, Value>::operator[](const Key& ke
   return (*cur_it).second;
 }
 
-// ---------------- MAP -----------------
+// -------------------- MAP ------------------
 // --------- Constructor & destructor --------
 template<class Key, class Value>
 map<Key, Value>::map(std::initializer_list<value_type> const &items) {
@@ -106,28 +94,13 @@ typename map<Key, Value>::iterator map<Key, Value>::end() {
 }
 
 template<class Key, class Value>
-const typename map<Key, Value>::iterator map<Key, Value>::begin() const { 
-  return iterator(BTree<Key, Value>::BTGetMin(BTree<Key, Value>::Root));
-}
-
-template<class Key, class Value>
-const typename map<Key, Value>::iterator map<Key, Value>::end() const { 
-  return iterator(BTree<Key, Value>::BTGetMax(BTree<Key, Value>::Root)->Right);
-}
-
-template<class Key, class Value>
 std::pair<typename map<Key, Value>::iterator, bool> map<Key, Value>::insert(const_reference value) {
   std::pair<iterator, bool> return_value;
   Node* insert_node = nullptr;
   if (!BTree<Key, Value>::contains(value.first))
     insert_node = BTree<Key, Value>::BTInsert(value.first, value.second);
-  if (insert_node) {
-    return_value.first = iterator(insert_node);
-    return_value.second = true;
-  } else {
-    return_value.first = iterator(nullptr);
-    return_value.second = false;
-  }
+  return_value.first = iterator(insert_node);
+  return_value.second = (insert_node != nullptr);
   return return_value;
 }
 
@@ -137,13 +110,8 @@ std::pair<typename map<Key, Value>::iterator, bool> map<Key, Value>::insert(cons
   Node* insert_node = nullptr;
   if (!BTree<Key, Value>::contains(key))
     insert_node = BTree<Key, Value>::BTInsert(key, value);
-  if (insert_node) {
-    return_value.first = iterator(insert_node);
-    return_value.second = true;
-  } else {
-    return_value.first = iterator(nullptr);
-    return_value.second = false;
-  }
+  return_value.first = iterator(insert_node);
+  return_value.second = (insert_node != nullptr);
   return return_value;
 }
 
@@ -151,13 +119,8 @@ template<class Key, class Value>
 std::pair<typename map<Key, Value>::iterator, bool> map<Key, Value>::insert_or_assign(const key_type& key, const mapped_type& value) {
   std::pair<iterator, bool> return_value;
   Node* insert_node = BTree<Key, Value>::BTInsert(key, value);
-  if (insert_node) {
-    return_value.first = iterator(insert_node);
-    return_value.second = true;
-  } else {
-    return_value.first = iterator(nullptr);
-    return_value.second = false;
-  }
+  return_value.first = iterator(insert_node);
+  return_value.second = (insert_node != nullptr);
   return return_value;
 }
 
@@ -171,6 +134,15 @@ Value& map<Key, Value>::at(const Key& key) {
       cur = cur->Right;
   }
   return cur->Value;
+}
+
+template<class Key, class Value>
+template <class... Args>
+std::vector<std::pair<typename map<Key, Value>::iterator,bool>> map<Key, Value>::insert_many(Args&&... args) {
+  std::vector<std::pair<iterator,bool>> insert_results{};
+  for (const auto &arg : {args...})
+    insert_results.push_back(insert(arg));
+  return insert_results;
 }
 } // namespace s21
 #endif  // __CPP2_S21_CONTAINERS_SRC_MAP_H__

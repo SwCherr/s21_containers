@@ -55,6 +55,21 @@ TEST(set, test_class_set_operator_2) {
   ASSERT_TRUE(set_test_1.size() == 0);
 }
 
+// operator=(set&& o)
+TEST(set, test_class_set_operator_3) {
+  s21::set<int> set_test_1;
+  s21::set<int> set_test_2 = set_test_1;
+  ASSERT_TRUE(set_test_1.size() == 0);
+}
+
+// operator=(set&& o)
+TEST(set, test_class_set_operator_4) {
+  s21::set<int> set_test_1{1, 2, 3};
+  s21::set<int> set_test_2 = set_test_1;
+  ASSERT_TRUE(set_test_1.size() == 3);
+  ASSERT_TRUE(set_test_2.size() == 3);
+}
+
 // ----------------- Methods -----------------
 // empty()
 TEST(Set, test_class_set_empty_1) {
@@ -144,6 +159,24 @@ TEST(Set, test_class_set_insert_many_1) {
   ASSERT_TRUE(set_test.contains(4));
   ASSERT_TRUE(set_test.contains(6));
   ASSERT_TRUE(set_test.contains(8));
+  ASSERT_TRUE(set_test.size() == 3);
+}
+
+// insert_many()
+TEST(Set, test_class_set_insert_many_2) {
+  s21::set<double> set_test{};
+  set_test.insert_many(0, 0, 0);
+  ASSERT_TRUE(set_test.contains(0));
+  ASSERT_TRUE(set_test.size() == 1);
+}
+
+// insert_many()
+TEST(Set, test_class_set_insert_many_3) {
+  s21::set<double> set_test{};
+  set_test.insert_many(5, 5, 8);
+  ASSERT_TRUE(set_test.contains(5));
+  ASSERT_TRUE(set_test.contains(8));
+  ASSERT_TRUE(set_test.size() == 2);
 }
 
 // erase
@@ -265,8 +298,21 @@ TEST(Set, test_class_set_merge_1) {
 TEST(Set, test_class_set_find_1) {
   s21::set<int> set_test{1, 2, 3, 4, 5, 6};
   auto res = set_test.find(1);
-  auto check = set_test.begin();
-  ASSERT_EQ(*res, *check);
+  ASSERT_TRUE(*res == 1);
+}
+
+// find()
+TEST(Set, test_class_set_find_2) {
+  s21::set<int> set_test{1, 2, 3, 4, 5, 6};
+  auto res = set_test.find(2);
+  ASSERT_TRUE(*res == 2);
+}
+
+// find()
+TEST(Set, test_class_set_find_3) {
+  s21::set<int> set_test{4, 2, 3, 7, 5, 6};
+  auto res = set_test.find(6);
+  ASSERT_TRUE(*res == 6);
 }
 
 // contains()

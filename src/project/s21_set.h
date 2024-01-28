@@ -21,7 +21,7 @@ public:
   set(const set &s) : BTree<Key, Key>(s) {};
   set(set &&s) = default;
   ~set() = default;
-  set& operator=(set &&s);
+
   std::pair<iterator, bool> insert(const_reference value);
   // std -> s21 change
   template <class... Args>
@@ -35,23 +35,11 @@ set<Key>::set(std::initializer_list<value_type> const &items) {
 }
 
 template <class Key>
-set<Key>& set<Key>::operator=(set &&s) {
-  if (this != &s)
-    BTree<Key, Key>::operator=(std::move(s));
-  return *this;
-}
-
-template <class Key>
 std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const_reference value) {
   std::pair<iterator, bool> return_value;
   Node* insert_node = BTree<Key, Key>::BTInsert(value, value);
-  if (insert_node) {
-    return_value.first = iterator(insert_node);
-    return_value.second = true;
-  } else {
-    return_value.first = iterator(nullptr);
-    return_value.second = false;
-  }
+  return_value.first = iterator(insert_node);
+  return_value.second = (insert_node != nullptr);
   return return_value;
 }
 

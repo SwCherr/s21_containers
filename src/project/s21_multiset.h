@@ -21,7 +21,6 @@ public:
   multiset(const multiset &s) : BTree<Key, Key>(s) {};
   multiset(multiset &&s) = default;
   ~multiset() = default;
-  multiset& operator=(multiset &&s);
 
   std::pair<iterator, bool> insert(const_reference value);
   size_type count(const_reference key) const;
@@ -41,13 +40,6 @@ multiset<Key>::multiset(std::initializer_list<value_type> const &items) {
 }
 
 template <class Key>
-multiset<Key>& multiset<Key>::operator=(multiset &&s) {
-  if (this != &s)
-    BTree<Key, Key>::operator=(std::move(s));
-  return *this;
-}
-
-template <class Key>
 std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const_reference value) {
   std::pair<iterator, bool> return_value;
   Node **cur = &(BTree<Key, Key>::Root);
@@ -61,14 +53,10 @@ std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const_re
       cur = &node.Right;
   }
   *cur = new Node(value, value); 
-  if (*cur) {
-    return_value.first = iterator(*cur);
-    return_value.second = true;
+  return_value.first = iterator(*cur);
+  return_value.second = (*cur != nullptr);
+  if (*cur)
     (*cur)->Parent = parent;
-  } else {
-    return_value.first = iterator(nullptr);
-    return_value.second = false;
-  }
   return return_value;
 }
 

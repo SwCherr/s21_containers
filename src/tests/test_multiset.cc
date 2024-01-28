@@ -55,6 +55,21 @@ TEST(multiset, test_class_multiset_operator_2) {
   ASSERT_TRUE(multiset_test_1.size() == 0);
 }
 
+// operator=(set&& o)
+TEST(multiset, test_class_multiset_operator_3) {
+  s21::multiset<int> multiset_test_1;
+  s21::multiset<int> multiset_test_2 = multiset_test_1;
+  ASSERT_TRUE(multiset_test_1.size() == 0);
+}
+
+// operator=(set&& o)
+TEST(set, test_class_multiset_operator_4) {
+  s21::multiset<int> multiset_test_1{1, 2, 3};
+  s21::multiset<int> multiset_test_2 = multiset_test_1;
+  ASSERT_TRUE(multiset_test_1.size() == 3);
+  ASSERT_TRUE(multiset_test_2.size() == 3);
+}
+
 // ----------------- Methods -----------------
 // empty()
 TEST(multiset, test_class_multiset_empty_1) {
