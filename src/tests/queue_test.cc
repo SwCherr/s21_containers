@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../s21_queue.h"
+#include "../s21_container_adaptor/s21_queue.h"
+
 // constructors
 
 TEST(queue_constructor_test, queue_default_constructor) {

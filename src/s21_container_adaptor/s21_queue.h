@@ -1,5 +1,5 @@
-#ifndef CPP2_S21_CONTAINERS_SRC_S21_QUEUE_H_
-#define CPP2_S21_CONTAINERS_SRC_S21_QUEUE_H_
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_QUEUE_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_QUEUE_H_
 
 #include <deque>
 #include <initializer_list>
@@ -81,4 +81,4 @@ bool queue<T, C>::operator==(const queue &other) const {
 
 }  // namespace s21
 
-#endif  // CPP2_S21_CONTAINERS_SRC_S21_QUEUE_H_
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_QUEUE_H_
