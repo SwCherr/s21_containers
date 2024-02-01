@@ -8,7 +8,9 @@
 
 using std::cout;
 
-// constructors
+// --------------------------------------------------
+// Array Constructors
+// --------------------------------------------------
 
 TEST(array_constructor_test, constructor_default_01) {
   s21::array<int, 1>* example_arr = nullptr;
@@ -63,15 +65,20 @@ TEST(array_constructor_test, constructor_move) {
   s21::array<int, 3> b(std::move(a));
 }
 
-// metods
-TEST(array_metods_test, metod_back) {
-  s21::array<int, 5> s21_arr = {1, 2, 3, 4, 5};
-  s21::array<std::string, 2> s21_arr_string = {"hello", "world"};
-  ASSERT_EQ(s21_arr.back(), 5);
-  ASSERT_EQ(s21_arr_string.back(), "world");
+// --------------------------------------------------
+// Array Element acces
+// --------------------------------------------------
+
+TEST(array_element_acces, at) {
+  s21::array<int, 3> s21_arr = {1, 2, 3};
+  ASSERT_EQ(s21_arr.at(0), 1);
+  ASSERT_EQ(s21_arr.at(1), 2);
+  ASSERT_EQ(s21_arr.at(2), 3);
+  EXPECT_ANY_THROW(s21_arr.at(3));
+  EXPECT_ANY_THROW(s21_arr.at(5));
 }
 
-TEST(array_metods_test, metod_front) {
+TEST(array_element_acces, front) {
   s21::array<int, 3> s21_arr = {1, 2, 3};
   std::array<int, 3> std_arr = {1, 2, 3};
   ASSERT_EQ(s21_arr.front(), std_arr.front());
@@ -79,31 +86,79 @@ TEST(array_metods_test, metod_front) {
   ASSERT_EQ(s21_arr_string.front(), "hello");
 }
 
-TEST(array_metods_test, metod_end) {
+TEST(array_element_acces, back) {
+  s21::array<int, 5> s21_arr = {1, 2, 3, 4, 5};
+  s21::array<std::string, 2> s21_arr_string = {"hello", "world"};
+  ASSERT_EQ(s21_arr.back(), 5);
+  ASSERT_EQ(s21_arr_string.back(), "world");
+}
+
+TEST(array_element_acces, end) {
   s21::array<int, 3> arr = {1, 2, 3};
   auto iter_arr_end = arr.end();
   ASSERT_EQ(*(iter_arr_end - 1), 3);
 }
 
-// operators
-
-TEST(array_operators_test, operator_square_brackets) {
-  s21::array<int, 3> s21_arr = {1, 2, 3};
-  ASSERT_EQ(s21_arr[0], 1);
-  s21_arr[0] = 5;
-  ASSERT_EQ(s21_arr[0], 5);
-  int* p_int = &s21_arr[0];
-  ASSERT_EQ(*p_int, 5);
-  std::array<int, 3> std_arr = {1, 2, 3};
-  std_arr.begin();
+TEST(array_element_acces, data) {
+  s21::array<int, 3> arr = {1, 2, 3};
+  int* arr_data = arr.data();
+  ASSERT_EQ(arr_data[0], 1);
+  ASSERT_EQ(arr_data[1], 2);
+  ASSERT_EQ(arr_data[2], 3);
 }
 
-TEST(array_operators_test, operator_square_brackets_const) {
-  const s21::array<int, 3> s21_arr = {1, 2, 3};
-  ASSERT_EQ(s21_arr[0], 1);
+// --------------------------------------------------
+// Array Capacity
+// --------------------------------------------------
+
+TEST(array_capacity, empty) {
+  s21::array<int, 3> arr_1;
+  ASSERT_FALSE(arr_1.empty());
+  s21::array<int, 0> arr_2;
+  ASSERT_TRUE(arr_2.empty());
 }
 
-// iterators
+TEST(array_capacity, size) {
+  s21::array<int, 3> arr_1;
+  ASSERT_EQ(arr_1.size(), 3);
+  s21::array<int, 0> arr_2;
+  ASSERT_EQ(arr_2.size(), 0);
+}
+
+TEST(array_capacity, max_size) {
+  s21::array<int, 2> arr_1;
+  std::array<int, 2> std_arr_1;
+  ASSERT_EQ(arr_1.max_size(), std_arr_1.max_size());
+  s21::array<int, 100> arr_2;
+  std::array<int, 100> std_arr_2;
+  ASSERT_EQ(arr_2.max_size(), std_arr_2.max_size());
+}
+
+// --------------------------------------------------
+// Array Modifiers
+// --------------------------------------------------
+
+TEST(array_modifiers, swap) {
+  s21::array<int, 2> arr_1 = {10, 100};
+  s21::array<int, 2> arr_2 = {20, 200};
+  arr_1.swap(arr_2);
+  ASSERT_EQ(arr_1[0], 20);
+  ASSERT_EQ(arr_1[1], 200);
+  ASSERT_EQ(arr_2[0], 10);
+  ASSERT_EQ(arr_2[1], 100);
+}
+
+TEST(array_modifiers, fill) {
+  s21::array<int, 10> arr;
+  arr.fill(10);
+  for (size_t i = 0; i < arr.size(); ++i) {
+    ASSERT_EQ(arr[i], 10);
+  }
+}
+
+// --------------------------------------------------
+// Array Iterators
+// --------------------------------------------------
 
 TEST(array_iterator_test, iterator_begin) {
   std::array<int, 1> std_arr({123});
@@ -113,7 +168,16 @@ TEST(array_iterator_test, iterator_begin) {
   ASSERT_EQ(*std_iter, *s21_iter);
 }
 
-TEST(array_iterator_test, iterator_incrementation) {
+TEST(array_iterator_test, iterator_end) {
+  std::array<int, 2> std_arr({123, 22});
+  s21::array<int, 2> s21_arr({123, 22});
+  std::array<int, 2>::iterator std_iter = std_arr.end();
+  s21::array<int, 2>::iterator s21_iter = s21_arr.end();
+  ASSERT_EQ(*(s21_iter - 1), 22);
+  ASSERT_EQ(*(std_iter - 1), 22);
+}
+
+TEST(array_iterator_test, iterator_incrementation_01) {
   std::array<int, 3> std_arr({123, 22, 55});
   s21::array<int, 3> s21_arr({123, 22, 55});
   auto std_iter = std_arr.begin();
@@ -126,23 +190,13 @@ TEST(array_iterator_test, iterator_incrementation) {
   ASSERT_EQ(*std_iter, *s21_iter);
 }
 
+TEST(array_iterator_test, iterator_incrementation_02) {
+  s21::array<int, 5> s21_arr = {1, 2, 3, 4, 5};
+  s21::array<int, 5>::const_iterator s21_iter = s21_arr.cbegin();
+  ASSERT_EQ(*(s21_iter++), 2);
+}
+
 TEST(array_iterator_test, iterator_equal_not_equal) {
-  /* std::array<int, 3> std_first_arr({123, 22, 55});
-  std::array<int, 3> std_second_arr({123, 22, 55});
-  auto std_iter1 = std_first_arr.begin();
-  auto std_iter2 = std_second_arr.begin();
-  auto std_iter3 = std_first_arr.begin();
-
-  ASSERT_TRUE(std_iter1 != std_iter2);
-  ASSERT_TRUE(*std_iter1 == *std_iter2);
-  ASSERT_TRUE(std_iter1 == std_iter3);
-  ASSERT_TRUE(*std_iter1 == *std_iter3);
-
-  ASSERT_FALSE(std_iter1 == std_iter2);
-  ASSERT_FALSE(*std_iter1 != *std_iter2);
-  ASSERT_FALSE(std_iter1 != std_iter3);
-  ASSERT_FALSE(*std_iter1 != *std_iter3); */
-
   s21::array<int, 3> s21_first_arr({123, 22, 55});
   s21::array<int, 3> s21_second_arr({123, 22, 55});
   auto s21_iter1 = s21_first_arr.begin();
@@ -184,11 +238,22 @@ TEST(array_iterator_test, iterator_plus_minus_iterator) {
   ASSERT_EQ(s21_arr.end() - s21_arr.begin(), 5);
 }
 
-TEST(array_iterator_test, iterator_end) {
-  std::array<int, 2> std_arr({123, 22});
-  s21::array<int, 2> s21_arr({123, 22});
-  std::array<int, 2>::iterator std_iter = std_arr.end();
-  s21::array<int, 2>::iterator s21_iter = s21_arr.end();
-  ASSERT_EQ(*(s21_iter - 1), 22);
-  ASSERT_EQ(*(std_iter - 1), 22);
+// --------------------------------------------------
+// Array Operators
+// --------------------------------------------------
+
+TEST(array_operators_test, operator_square_brackets) {
+  s21::array<int, 3> s21_arr = {1, 2, 3};
+  ASSERT_EQ(s21_arr[0], 1);
+  s21_arr[0] = 5;
+  ASSERT_EQ(s21_arr[0], 5);
+  int* p_int = &s21_arr[0];
+  ASSERT_EQ(*p_int, 5);
+  std::array<int, 3> std_arr = {1, 2, 3};
+  std_arr.begin();
+}
+
+TEST(array_operators_test, operator_square_brackets_const) {
+  const s21::array<int, 3> s21_arr = {1, 2, 3};
+  ASSERT_EQ(s21_arr[0], 1);
 }
