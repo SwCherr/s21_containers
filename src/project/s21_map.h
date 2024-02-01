@@ -15,7 +15,7 @@ public:
   using reference = value_type&;
   using const_reference = const value_type&;
   using iterator = MapIterator;
-  using const_iterator = ConstMapIterator;
+  using const_iterator = const MapIterator;
   using size_type = size_t;
   using Node = typename BTree<Key, Value>::Node;
 
@@ -43,54 +43,48 @@ public:
     MapIterator(Node* node): BTree<Key, Value>::Iterator(node){};
     std::pair<Key, Value>& operator*();
   };
-
-  class ConstMapIterator : public MapIterator {
-   public:
-    friend class map;
-    ConstMapIterator() : MapIterator(){};
-    ConstMapIterator(Node *node): MapIterator(node){};
-    const_reference operator*() const { return MapIterator::operator*(); };
-  };
 };
 
-// ---------------- ITERATOR -----------------
-// ---------------- Operator -----------------
+// --------------------------------------------------
+//  ITERATOR 
+// --------------------------------------------------
 template<class Key, class Value>
 std::pair<Key, Value>& map<Key, Value>::iterator::operator*() {
   static std::pair<key_type, mapped_type> it_element;
-  it_element.first = BTree<Key, Value>::iterator::cur->Key;
-  it_element.second = BTree<Key, Value>::iterator::cur->Value;
+  it_element.first = BTree<Key, Value>::iterator::cur_->Key;
+  it_element.second = BTree<Key, Value>::iterator::cur_->Value;
   return it_element;
 }
 
 template<class Key, class Value>
 typename map<Key, Value>::mapped_type& map<Key, Value>::operator[](const Key& key) {
-  auto cur_it = begin();
+  auto cur__it = begin();
   size_type i = 0;
-  while (key != (*cur_it).first && i < BTree<Key, Value>::size()) {
-    ++cur_it;
+  while (key != (*cur__it).first && i < BTree<Key, Value>::size()) {
+    ++cur__it;
     ++i;
   }
-  return (*cur_it).second;
+  return (*cur__it).second;
 }
 
-// -------------------- MAP ------------------
-// --------- Constructor & destructor --------
+
+// --------------------------------------------------
+//  MAP 
+// --------------------------------------------------
 template<class Key, class Value>
 map<Key, Value>::map(std::initializer_list<value_type> const &items) {
   for (auto i = items.begin(); i!= items.end(); i++)
     BTree<Key, Value>::BTInsert(i->first, i->second);
 }
 
-// ----------------- Methods -----------------
 template<class Key, class Value>
 typename map<Key, Value>::iterator map<Key, Value>::begin() { 
-  return iterator(BTree<Key, Value>::BTGetMin(BTree<Key, Value>::Root));
+  return iterator(BTree<Key, Value>::BTGetMin(BTree<Key, Value>::root_));
 }
 
 template<class Key, class Value>
 typename map<Key, Value>::iterator map<Key, Value>::end() { 
-  return iterator(BTree<Key, Value>::BTGetMax(BTree<Key, Value>::Root)->Right);
+  return iterator(BTree<Key, Value>::BTGetMax(BTree<Key, Value>::root_)->Right);
 }
 
 template<class Key, class Value>
@@ -126,14 +120,14 @@ std::pair<typename map<Key, Value>::iterator, bool> map<Key, Value>::insert_or_a
 
 template<class Key, class Value>
 Value& map<Key, Value>::at(const Key& key) {
-  Node *cur = BTree<Key, Value>::Root;
-  while (cur && cur->Key != key) {
-    if (cur->Key > key)
-      cur = cur->Left;
+  Node *cur_ = BTree<Key, Value>::root_;
+  while (cur_ && cur_->Key != key) {
+    if (cur_->Key > key)
+      cur_ = cur_->Left;
     else
-      cur = cur->Right;
+      cur_ = cur_->Right;
   }
-  return cur->Value;
+  return cur_->Value;
 }
 
 template<class Key, class Value>

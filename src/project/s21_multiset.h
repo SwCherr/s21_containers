@@ -42,7 +42,7 @@ multiset<Key>::multiset(std::initializer_list<value_type> const &items) {
 template <class Key>
 std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const_reference value) {
   std::pair<iterator, bool> return_value;
-  Node **cur = &(BTree<Key, Key>::Root);
+  Node **cur = &(BTree<Key, Key>::root_);
   Node *parent = nullptr;
   while (*cur) {
     Node &node = **cur;
