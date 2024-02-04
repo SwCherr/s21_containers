@@ -3,6 +3,7 @@ PROJECT = s21_containers
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
 TESTFLAGS = -lgtest -lgtest_main -pthread
+GCOV_FLAG = --coverage
 
 DIR_TESTS = tests/
 DIR_BUILD_TESTS = build_tests/
@@ -10,14 +11,31 @@ DIR_BUILD_TESTS = build_tests/
 TEST_SRC = $(DIR_TESTS)*.cc
 TEST_EXECUTABLE = $(DIR_BUILD_TESTS)$(PROJECT)_test
 
+ifeq ($(OS), Linux)
+	OPEN_CMD = xdg-open
+	GTEST_FLAGS = -lgtest -lgtest_main -pthread
+endif
+ifeq ($(OS), Darwin)
+	OPEN_CMD = open
+	LCOV_FLAG = --ignore-errors inconsistent
+	GTEST_FLAGS = -lgtest -lgmock -pthread -lgtest_main
+endif
+
 all: test
 
-test: dir
-	$(CXX) $(CXXFLAGS) $(TEST_SRC) $(TESTFLAGS) -o $(TEST_EXECUTABLE)
+test: clean dir
+	$(CXX) $(CXXFLAGS) $(GCOV_FLAG) $(TEST_SRC) $(TESTFLAGS) -o $(TEST_EXECUTABLE)
 	./$(TEST_EXECUTABLE)
 
 dir:
 	@mkdir -p $(DIR_BUILD_TESTS)
+
+gcov_report: test
+	@./$(TEST_EXECUTABLE)
+	@lcov -o test.info --no-external -c -d . $(LCOV_FLAG)
+	@genhtml -o report test.info $(LCOV_FLAG)
+	@$(OPEN_CMD) report/index.html
+	@rm -rf *.gcda *.gcno *.info *.dSYM 
 
 style_check:
 	cp ../materials/linters/.clang-format ../src/

@@ -158,11 +158,12 @@ TEST(map, test_class_map_iterator_3) {
   s21::map<int, int> map_test {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}, {23, 3}};
   std::map<int, int> map_orig {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}, {23, 3}};
   EXPECT_EQ(map_test.size(), map_orig.size());
-  auto map_test_it = map_test.end();
+  auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.end();
-  --map_test_it;
+  map_test_it + 5;
   --map_orig_it;
-  for (; map_test_it != map_test.end(); --map_test_it, --map_orig_it) {
+  for (; map_test_it != map_test.begin(); --map_test_it, --map_orig_it) {
+    std::cout << "Maf-maf" << std::endl;
     EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
     EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
@@ -173,11 +174,13 @@ TEST(map, test_class_map_iterator_4) {
   s21::map<int, int> map_test {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}, {23, 3}};
   std::map<int, int> map_orig {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}, {23, 3}};
   EXPECT_EQ(map_test.size(), map_orig.size());
-  auto map_test_it = map_test.end();
+  auto map_test_it = map_test.begin();
   auto map_orig_it = map_orig.end();
+  map_test_it + 5;
   map_test_it - 1;
   --map_orig_it;
-  for (; map_test_it != map_test.end(); --map_test_it, --map_orig_it) {
+  --map_orig_it;
+  for (; map_test_it != map_test.begin(); --map_test_it, --map_orig_it) {
     EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
     EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }

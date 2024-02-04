@@ -103,23 +103,23 @@ BTree<T1, T2>::iterator::Iterator(Node *node) : cur_(node) {}
 
 template<class T1, class T2>
 typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator++() {
-  if (cur_) {
-    if (cur_->Right) {
+  if (!cur_)
+    throw std::invalid_argument("Iterator is nullptr");
+  if (cur_->Right) {
+    cur_ = cur_->Right;
+    while (cur_ && cur_->Left)
+      cur_ = cur_->Left;
+  } else {
+    if (!cur_->Parent) {
       cur_ = cur_->Right;
-      while (cur_ && cur_->Left)
-        cur_ = cur_->Left;
     } else {
-      if (!cur_->Parent) {
-        cur_ = cur_->Right;
-      } else {
-        Node *tmp_right = cur_->Right;
-        key_type tmp_key = cur_->Key;
+      Node *tmp_right = cur_->Right;
+      key_type tmp_key = cur_->Key;
+      cur_ = cur_->Parent;
+      while (tmp_key > cur_->Key && cur_->Parent)
         cur_ = cur_->Parent;
-        while (tmp_key > cur_->Key && cur_->Parent)
-          cur_ = cur_->Parent;
-        if (!cur_->Parent) {
-          if (tmp_key > cur_->Key) cur_ = tmp_right;
-        }
+      if (!cur_->Parent) {
+        if (tmp_key > cur_->Key) cur_ = tmp_right;
       }
     }
   }
@@ -135,19 +135,19 @@ typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator+(int count) 
 
 template<class T1, class T2>
 typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator--() {
-  if (cur_) {
-    if (cur_->Left) {
-      cur_ = cur_->Left;
-      while (cur_ && cur_->Right)
-        cur_ = cur_->Right;
-    } else if (cur_->Parent) {
-      if (cur_->Key > cur_->Parent->Key)
+  if (!cur_)
+    throw std::invalid_argument("Iterator is nullptr");
+  if (cur_->Left) {
+    cur_ = cur_->Left;
+    while (cur_ && cur_->Right)
+      cur_ = cur_->Right;
+  } else if (cur_->Parent) {
+    if (cur_->Key > cur_->Parent->Key)
+      cur_ = cur_->Parent;
+    else {
+      key_type tmp_key = cur_->Key;
+      while (tmp_key <= cur_->Key)
         cur_ = cur_->Parent;
-      else {
-        key_type tmp_key = cur_->Key;
-        while (tmp_key <= cur_->Key)
-          cur_ = cur_->Parent;
-      }
     }
   }
   return *this;
