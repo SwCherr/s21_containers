@@ -3,7 +3,7 @@ PROJECT = s21_containers
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
 TESTFLAGS = -lgtest -lgtest_main -pthread
-GCOV_FLAG = --coverage
+# GCOV_FLAG = --coverage
 
 DIR_TESTS = tests/
 DIR_BUILD_TESTS = build_tests/
