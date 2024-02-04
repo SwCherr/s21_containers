@@ -32,5 +32,7 @@ style_repair: clean
 	rm -rf .clang-format
 
 clean:
-	rm -rf $(DIR_BUILD) $(DIR_OBJ) $(DIR_BUILD_TESTS)
-
+	@rm -rf *.a *.o
+	@rm -rf $(DIR_BUILD_TESTS)
+	@rm -rf *.gcda *.gcno *.info *.dSYM 
+	@rm -rf report
