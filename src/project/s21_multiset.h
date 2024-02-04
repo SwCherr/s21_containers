@@ -52,7 +52,7 @@ std::pair<typename multiset<Key>::iterator, bool> multiset<Key>::insert(const_re
     else if (value > node.Key)
       cur = &node.Right;
   }
-  *cur = new Node(value, value); 
+  *cur = new Node(value, value);
   return_value.first = iterator(*cur);
   return_value.second = (*cur != nullptr);
   if (*cur)
@@ -64,11 +64,9 @@ template<class Key>
 typename multiset<Key>::size_type multiset<Key>::count(const_reference key) const {
   int count = 0;
   for (auto cur = BTree<Key, Key>::begin(); cur != BTree<Key, Key>::end(); ++cur) {
-    std::cout << *cur << " ";
     if (key == *cur)
       ++count;
   }
-  std::cout << "maf-maf" << std::endl;
   return count;
 }
 

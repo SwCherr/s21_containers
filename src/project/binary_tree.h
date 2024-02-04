@@ -8,11 +8,10 @@ namespace s21 {
 template<class T1, class T2>
 class BTree {
 protected:
-  struct Node;
+  class Node;
 
 public:
   class Iterator;
-  // class ConstIterator;
   using key_type = T1;
   using value_type = T2;
   using reference = value_type&;
@@ -40,11 +39,10 @@ public:
   void merge(const BTree& o);
   bool contains(const key_type& key) const;
   iterator find(const key_type key) const;
-
-  // // вспомогательные ф-ии
-  // void Print();
+  // void Print();   // вспомогательные ф-ии
 
   class Iterator {
+    friend class BTree;
   public:
     Iterator();
     Iterator(Node *node);
@@ -67,7 +65,8 @@ protected:
   Node* BTInsert(key_type key, value_type value);
   Node* BTErase(Node* root, key_type key);
 
-  struct Node {
+  class Node {
+  public:
     key_type Key;
     value_type Value;
     Node *Left;
@@ -100,30 +99,37 @@ template<class T1, class T2>
 BTree<T1, T2>::iterator::Iterator() : cur_(nullptr) {}
 
 template<class T1, class T2>
-BTree<T1, T2>::iterator::Iterator(Node *first) : cur_(first) {}
+BTree<T1, T2>::iterator::Iterator(Node *node) : cur_(node) {}
 
 template<class T1, class T2>
 typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator++() {
-  if (cur_->Right) {
-    cur_ = cur_->Right;
-    while (cur_ && cur_->Left)
-      cur_ = cur_->Left;
-  } else if (cur_->Parent) {
-    Node* tmp_right = cur_->Right;
-    key_type tmp_key = cur_->Key;
-    cur_ = cur_->Parent;
-    while (tmp_key > cur_->Key && cur_->Parent)
-      cur_ = cur_->Parent;
-    if (tmp_key >= cur_->Key && cur_->Parent == nullptr)
-      cur_ = tmp_right;
-  } else cur_ = cur_->Right;
+  if (cur_) {
+    if (cur_->Right) {
+      cur_ = cur_->Right;
+      while (cur_ && cur_->Left)
+        cur_ = cur_->Left;
+    } else {
+      if (!cur_->Parent) {
+        cur_ = cur_->Right;
+      } else {
+        Node *tmp_right = cur_->Right;
+        key_type tmp_key = cur_->Key;
+        cur_ = cur_->Parent;
+        while (tmp_key > cur_->Key && cur_->Parent)
+          cur_ = cur_->Parent;
+        if (!cur_->Parent) {
+          if (tmp_key > cur_->Key) cur_ = tmp_right;
+        }
+      }
+    }
+  }
   return *this;
 }
 
 template<class T1, class T2>
 typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator+(int count) {
   for (int i = 0; i < count; ++i)
-    operator++();
+    ++(*this);
   return *this;
 }
 
@@ -138,7 +144,7 @@ typename BTree<T1, T2>::iterator& BTree<T1, T2>::iterator::operator--() {
       if (cur_->Key > cur_->Parent->Key)
         cur_ = cur_->Parent;
       else {
-        T1 tmp_key = cur_->Key;
+        key_type tmp_key = cur_->Key;
         while (tmp_key <= cur_->Key)
           cur_ = cur_->Parent;
       }
@@ -282,7 +288,9 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::BTInsert(key_type key, value_type v
 
 template<class T1, class T2>
 void BTree<T1, T2>::erase(iterator pos) {
-  root_ = BTErase(root_, *pos);
+  if (pos.cur_ != nullptr) {
+    root_ = BTErase(root_, *pos);
+  }
 }
 
 template<class T1, class T2>
@@ -296,12 +304,15 @@ typename BTree<T1, T2>::Node* BTree<T1, T2>::BTErase(Node* root, key_type key) {
       root->Key = BTGetMin(root->Right)->Key;
       root->Right = BTErase(root->Right, root->Key);
     } else {
+      Node* tmp = nullptr;
       if (root->Left)
-        root = root->Left;
+        tmp = root->Left;
       else if (root->Right)
-        root = root->Right;
+        tmp = root->Right;
       else
-        root = nullptr;
+        tmp = nullptr;
+      delete root;
+      root = tmp;
     }
   }
   return root;
@@ -369,19 +380,18 @@ void BTree<T1, T2>::DestroyTree(Node *node) {
   } 
 }
 
-template<class T1, class T2>
-void BTree<T1, T2>::TreePrint(Node *node){
-  if (node != nullptr) {
-    TreePrint(node->Left);
-    std::cout << node->Key << " ";
-    // std::cout << node->Value << std::endl;
-    TreePrint(node->Right);
-  }
-}
+// template<class T1, class T2>
+// void BTree<T1, T2>::TreePrint(Node *node){
+//   if (node != nullptr) {
+//     TreePrint(node->Left);
+//     std::cout << node->Key << " ";
+//     TreePrint(node->Right);
+//   }
+// }
 
 // template<class T1, class T2>
 // void BTree<T1, T2>::Print() {
-//   TreePrint(Root);
+//   TreePrint(root_);
 //   std::cout << std::endl;
 // }
 } // namespace s21

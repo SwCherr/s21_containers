@@ -8,7 +8,6 @@ template<class Key, class Value>
 class map: public BTree<Key, Value> {
 public:
   class MapIterator;
-  class ConstMapIterator;
   using key_type = Key;
   using mapped_type = Value;
   using value_type = std::pair<const key_type, mapped_type>;
@@ -66,7 +65,6 @@ typename map<Key, Value>::mapped_type& map<Key, Value>::operator[](const Key& ke
   }
   return (*cur__it).second;
 }
-
 
 // --------------------------------------------------
 //  MAP 

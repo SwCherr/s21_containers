@@ -47,7 +47,7 @@
 
 OS = $(shell uname)
 CC = g++ -Wall -Werror -Wextra -std=c++17 -g
-# GCOV_FLAG = --coverage #-fprofile-arcs -ftest-coverage
+GCOV_FLAG = --coverage #-fprofile-arcs -ftest-coverage
 
 ifeq ($(OS), Linux)
 	OPEN_CMD = xdg-open
