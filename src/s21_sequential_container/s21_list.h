@@ -30,8 +30,11 @@ class list {
   // List Operators
   list &operator=(const list &other);
   list &operator=(list &&other) noexcept;
+  bool operator==(const list &other) const;
 
   // List Element access
+  reference front();
+  reference back();
   const_reference front() const noexcept;
   const_reference back() const noexcept;
 
@@ -233,21 +236,45 @@ list<value_type> &list<value_type>::operator=(list &&other) noexcept {
   return *this;
 }
 
+template <class value_type>
+bool list<value_type>::operator==(const list &other) const {
+  if (this == &other) {
+    return true;
+  }
+  bool result = (size() == other.size());
+  for (list<value_type>::const_iterator it = cbegin(),
+                                        it_other = other.cbegin();
+       it != cend() && result; ++it, ++it_other) {
+    result = (*it == *it_other);
+  }
+  return result;
+}
+
 // --------------------------------------------------
 // List Element access
 // --------------------------------------------------
 
 template <class value_type>
+typename list<value_type>::reference list<value_type>::front() {
+  return *(begin());
+};
+
+template <class value_type>
+typename list<value_type>::reference list<value_type>::back() {
+  return *(--end());
+};
+
+template <class value_type>
 typename list<value_type>::const_reference list<value_type>::front()
     const noexcept {
-  static const_reference default_value{};
+  const_reference default_value{};
   return empty() ? default_value : *cbegin();
 };
 
 template <class value_type>
 typename list<value_type>::const_reference list<value_type>::back()
     const noexcept {
-  static const_reference default_value{};
+  const_reference default_value{};
   return empty() ? default_value : *(--cend());
 };
 

@@ -4,11 +4,12 @@
 #include <deque>
 #include <initializer_list>
 
+#include "../s21_sequential_container/s21_list.h"
 #include "s21_container_adaptor.h"
 
 namespace s21 {
 
-template <class T, class C = std::deque<T>>
+template <class T, class C = list<T>>
 class queue : public container_adaptor<T, C> {
  public:
   using value_type = T;

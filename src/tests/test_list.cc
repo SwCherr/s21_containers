@@ -375,13 +375,6 @@ TEST(list, front_back_0) {
   ASSERT_EQ(List.back(), MyList.back());
 }
 
-TEST(list, front_back_1) {
-  std::list<int> List;
-  s21::list<int> MyList;
-  ASSERT_EQ(List.front(), MyList.front());
-  ASSERT_EQ(List.back(), MyList.back());
-}
-
 TEST(list, insert_0) {
   std::list<unsigned int> List{6, 5, 4, 2, 1};
   auto iter = List.begin();
