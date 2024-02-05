@@ -163,7 +163,6 @@ TEST(map, test_class_map_iterator_3) {
   map_test_it + 5;
   --map_orig_it;
   for (; map_test_it != map_test.begin(); --map_test_it, --map_orig_it) {
-    std::cout << "Maf-maf" << std::endl;
     EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
     EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
@@ -356,8 +355,12 @@ TEST(map, test_class_map_erase_1) {
 // erase
 TEST(map, test_class_map_erase_2) {
   s21::map<int, int> map_test{{1, 10}, {2, 20}, {5, 50}, {6, 60}, {8, 80}};
-  map_test.erase(map_test.begin() + 1);
-  map_test.erase(map_test.begin() + 1);
+  auto map_it = map_test.begin();
+  map_it + 1;
+  map_test.erase(map_it);
+  map_it = map_test.begin();
+  map_it + 1;
+  map_test.erase(map_it);
   EXPECT_TRUE(map_test.size() == 3);
   EXPECT_FALSE(map_test.contains(2));
   EXPECT_FALSE(map_test.contains(5));
@@ -367,7 +370,9 @@ TEST(map, test_class_map_erase_2) {
 TEST(map, test_class_map_erase_3) {
   s21::map<int, int> map_test{{1, 10}, {2, 20}, {5, 50}, {6, 60}, {8, 80}};
   EXPECT_TRUE(map_test.size() == 5);
-  map_test.erase(map_test.begin() + 4);
+  auto map_it = map_test.begin();
+  map_it + 4;
+  map_test.erase(map_it);
   EXPECT_TRUE(map_test.size() == 4);
   EXPECT_FALSE(map_test.contains(8));
 }
@@ -375,7 +380,8 @@ TEST(map, test_class_map_erase_3) {
 // erase
 TEST(map, test_class_map_erase_4) {
   s21::map<int, int> map_test{{1, 1}, {2, 2}};
-  map_test.erase(map_test.begin());
+  auto map_it = map_test.begin();
+  map_test.erase(map_it);
   EXPECT_TRUE(map_test.size() == 1);
   EXPECT_FALSE(map_test.contains(1));
 }
@@ -383,7 +389,8 @@ TEST(map, test_class_map_erase_4) {
 // erase
 TEST(map, test_class_map_erase_5) {
   s21::map<int, int> map_test{{1, 1}};
-  map_test.erase(map_test.begin());
+  auto map_it = map_test.begin();
+  map_test.erase(map_it);
   EXPECT_TRUE(map_test.size() == 0);
   EXPECT_FALSE(map_test.contains(1));
 }
