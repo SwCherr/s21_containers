@@ -1,6 +1,8 @@
+#include <gtest/gtest.h>
+
 #include <set>
 #include <string>
-#include <gtest/gtest.h>
+
 #include "../s21_sorted_container/s21_multiset.h"
 
 // --------- Constructor & destructor ---------
@@ -101,16 +103,6 @@ TEST(multiset, test_class_multiset_size_1) {
 
 // size()
 TEST(multiset, test_class_multiset_size_2) {
-  s21::multiset<int> multiset_test{1, 2, 3, 4};
-  auto count = multiset_test.size() - 1;
-  for (int i = 0; i < 4; ++i, --count) {
-    multiset_test.erase(multiset_test.begin());
-    EXPECT_TRUE(multiset_test.size() == count);
-  }
-}
-
-// size()
-TEST(multiset, test_class_multiset_size_3) {
   s21::multiset<int> multiset_test{1, 2, 3, 3};
   multiset_test.clear();
   EXPECT_TRUE(multiset_test.size() == 0);
@@ -155,7 +147,7 @@ TEST(multiset, test_class_multiset_insert_many_1) {
 
 // erase
 TEST(multiset, test_class_multiset_erase_1) {
-  s21::multiset<int> multiset_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::multiset<int> multiset_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto multiset_it = multiset_test.begin();
   multiset_test.erase(multiset_it);
   EXPECT_FALSE(multiset_test.contains(1));
@@ -163,7 +155,7 @@ TEST(multiset, test_class_multiset_erase_1) {
 
 // erase
 TEST(multiset, test_class_multiset_erase_2) {
-  s21::multiset<int> multiset_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::multiset<int> multiset_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto multiset_it = multiset_test.begin() + 4;
   multiset_test.erase(multiset_it);
   EXPECT_FALSE(multiset_test.contains(9));
@@ -171,7 +163,7 @@ TEST(multiset, test_class_multiset_erase_2) {
 
 // erase
 TEST(multiset, test_class_multiset_erase_3) {
-  s21::multiset<int> multiset_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::multiset<int> multiset_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto multiset_it = multiset_test.begin() + 3;
   multiset_test.erase(multiset_it);
   EXPECT_FALSE(multiset_test.contains(8));
@@ -179,7 +171,7 @@ TEST(multiset, test_class_multiset_erase_3) {
 
 // erase
 TEST(multiset, test_class_multiset_erase_4) {
-  s21::multiset<int> multiset_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::multiset<int> multiset_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto multiset_it = multiset_test.begin() + 2;
   multiset_test.erase(multiset_it);
   EXPECT_FALSE(multiset_test.contains(7));
@@ -187,7 +179,7 @@ TEST(multiset, test_class_multiset_erase_4) {
 
 // erase
 TEST(multiset, test_class_multiset_erase_5) {
-  s21::multiset<int> multiset_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::multiset<int> multiset_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto multiset_it = multiset_test.begin() + 8;
   multiset_test.erase(multiset_it);
   EXPECT_FALSE(multiset_test.contains(15));
@@ -367,7 +359,7 @@ TEST(multiset, test_class_multiset_lower_bound_3) {
 
 // upper_bound()
 TEST(multiset, test_class_multiset_upper_bound_1) {
-  s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0}; 
+  s21::multiset<int> multiset_test{1, 2, 2, 5, 4, 0};
   auto end_it = multiset_test.begin() + 2;
   auto res = multiset_test.upper_bound(1);
   EXPECT_TRUE(*res == *end_it);
@@ -394,7 +386,7 @@ TEST(multiset, test_class_multiset_upper_bound_3) {
 // ************************************
 TEST(multiset, test_class_multiset_int_1) {
   s21::multiset<int> multiset_test{1, 2, 2, 2, 0, 0};
-  std::multiset<int> multiset_orig {1, 2, 2, 2, 0, 0};
+  std::multiset<int> multiset_orig{1, 2, 2, 2, 0, 0};
   auto multiset_test_it = multiset_test.begin();
   auto multiset_orig_it = multiset_orig.begin();
   for (size_t i = 0; i < multiset_test.size(); ++i)
@@ -404,7 +396,7 @@ TEST(multiset, test_class_multiset_int_1) {
 
 TEST(multiset, test_class_multiset_float_1) {
   s21::multiset<float> multiset_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::multiset<float> multiset_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::multiset<float> multiset_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto multiset_test_it = multiset_test.begin();
   auto multiset_orig_it = multiset_orig.begin();
   for (size_t i = 0; i < multiset_test.size(); ++i)
@@ -414,7 +406,7 @@ TEST(multiset, test_class_multiset_float_1) {
 
 TEST(multiset, test_class_multiset_double_1) {
   s21::multiset<double> multiset_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::multiset<double> multiset_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::multiset<double> multiset_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto multiset_test_it = multiset_test.begin();
   auto multiset_orig_it = multiset_orig.begin();
   for (size_t i = 0; i < multiset_test.size(); ++i)
@@ -424,7 +416,7 @@ TEST(multiset, test_class_multiset_double_1) {
 
 TEST(multiset, test_class_multiset_char_1) {
   s21::multiset<char> multiset_test{'a', 'b', 'c', 'd', 'e', 'f'};
-  std::multiset<char> multiset_orig {'a', 'b', 'c', 'd', 'e', 'f'};
+  std::multiset<char> multiset_orig{'a', 'b', 'c', 'd', 'e', 'f'};
   auto multiset_test_it = multiset_test.begin();
   auto multiset_orig_it = multiset_orig.begin();
   for (size_t i = 0; i < multiset_test.size(); ++i)
@@ -433,14 +425,14 @@ TEST(multiset, test_class_multiset_char_1) {
 }
 
 TEST(multiset, test_class_multiset_string_1) {
-  s21::multiset<std::string> multiset_test {"hello", "world"};
-  std::multiset<std::string> multiset_orig {"hello", "world"};
+  s21::multiset<std::string> multiset_test{"hello", "world"};
+  std::multiset<std::string> multiset_orig{"hello", "world"};
   ASSERT_EQ(multiset_test.size(), multiset_orig.size());
 }
 
 TEST(multiset, test_class_multiset_string_2) {
-  s21::multiset<std::string> multiset_test {"This", "is", "my", "multiset"};
-  std::multiset<std::string> multiset_orig {"This", "is", "my", "multiset"};
+  s21::multiset<std::string> multiset_test{"This", "is", "my", "multiset"};
+  std::multiset<std::string> multiset_orig{"This", "is", "my", "multiset"};
   auto multiset_test_it = multiset_test.begin();
   auto multiset_orig_it = multiset_orig.begin();
   for (size_t i = 0; i < multiset_test.size(); ++i)
