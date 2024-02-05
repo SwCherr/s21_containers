@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "../s21_array/s21_array.h"
+#include "../s21_sequential_container/s21_array.h"
 
 // --------------------------------------------------
 // Array Constructors

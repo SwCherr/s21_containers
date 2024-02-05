@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "../s21_vector/s21_vector.h"
+#include "../s21_sequential_container/s21_vector.h"
 
 template <typename T>
 bool VectorEqual(s21::vector<T> &s21_Vector, std::vector<T> &Vector) {
