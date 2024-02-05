@@ -2,6 +2,7 @@
 #define __CPP2_S21_CONTAINERS_SRC_multiset_H__
 
 #include "binary_tree.h"
+#include "../s21_vector/s21_vector.h"
 
 namespace s21 {
 template<class Key>
@@ -28,9 +29,8 @@ public:
   iterator lower_bound(const_reference key) const;
   iterator upper_bound(const_reference key) const;
 
-  // std -> s21 change
   template <class... Args>
-  std::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
+  s21::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
 };
 
 template<class Key>
@@ -106,8 +106,8 @@ typename multiset<Key>::iterator multiset<Key>::upper_bound(const_reference key)
 
 template <class Key>
 template <class... Args>
-std::vector<std::pair<typename multiset<Key>::iterator,bool>> multiset<Key>::insert_many(Args&&... args) {
-  std::vector<std::pair<iterator,bool>> insert_results{};
+s21::vector<std::pair<typename multiset<Key>::iterator,bool>> multiset<Key>::insert_many(Args&&... args) {
+  s21::vector<std::pair<iterator,bool>> insert_results{};
   for (const auto &arg : {args...})
     insert_results.push_back(insert(arg));
   return insert_results;

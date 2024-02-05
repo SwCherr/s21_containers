@@ -2,6 +2,7 @@
 #define __CPP2_S21_CONTAINERS_SRC_SET_H__
 
 #include "binary_tree.h"
+#include "../s21_vector/s21_vector.h"
 
 namespace s21 {
 template<class Key>
@@ -23,9 +24,9 @@ public:
   ~set() = default;
 
   std::pair<iterator, bool> insert(const_reference value);
-  // std -> s21 change
+
   template <class... Args>
-  std::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
+  s21::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
 };
 
 template<class Key>
@@ -45,8 +46,8 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(const_reference va
 
 template <class Key>
 template <class... Args>
-std::vector<std::pair<typename set<Key>::iterator,bool>> set<Key>::insert_many(Args&&... args) {
-  std::vector<std::pair<iterator,bool>> insert_results{};
+s21::vector<std::pair<typename set<Key>::iterator,bool>> set<Key>::insert_many(Args&&... args) {
+  s21::vector<std::pair<iterator,bool>> insert_results{};
   for (const auto &arg : {args...})
     insert_results.push_back(insert(arg));
   return insert_results;

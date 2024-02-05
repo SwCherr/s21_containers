@@ -2,6 +2,7 @@
 #define __CPP2_S21_CONTAINERS_SRC_MAP_H__
 
 #include "binary_tree.h"
+#include "../s21_vector/s21_vector.h"
 
 namespace s21 {
 template<class Key, class Value>
@@ -31,9 +32,9 @@ public:
   std::pair<iterator, bool> insert(const_reference value);
   std::pair<iterator, bool> insert(const key_type& key, const mapped_type& value);
   std::pair<iterator, bool> insert_or_assign(const key_type& key, const mapped_type& value);
-  // std -> s21 change
+
   template <class... Args>
-  std::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
+  s21::vector<std::pair<iterator,bool>> insert_many(Args&&... args);
 
   class MapIterator : public BTree<Key, Value>::Iterator {
   public:
@@ -130,8 +131,8 @@ Value& map<Key, Value>::at(const Key& key) {
 
 template<class Key, class Value>
 template <class... Args>
-std::vector<std::pair<typename map<Key, Value>::iterator,bool>> map<Key, Value>::insert_many(Args&&... args) {
-  std::vector<std::pair<iterator,bool>> insert_results{};
+s21::vector<std::pair<typename map<Key, Value>::iterator,bool>> map<Key, Value>::insert_many(Args&&... args) {
+  s21::vector<std::pair<iterator,bool>> insert_results{};
   for (const auto &arg : {args...})
     insert_results.push_back(insert(arg));
   return insert_results;
