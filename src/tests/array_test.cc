@@ -1,12 +1,8 @@
 #include <gtest/gtest.h>
 
 #include <array>
-#include <string>
-#include <vector>
 
-#include "../s21_array.h"
-
-using std::cout;
+#include "../s21_array/s21_array.h"
 
 // --------------------------------------------------
 // Array Constructors
