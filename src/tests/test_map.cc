@@ -138,6 +138,19 @@ TEST(map, test_class_map_iterator_1) {
   }
 }
 
+// iterator& operator++()
+TEST(map, test_class_map_iterator_1_error) {
+  s21::map<int, int> map_test {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}};
+  auto map_test_it = map_test.end();
+  bool result = false;
+  try {
+    ++map_test_it;
+  } catch (const std::exception& err) {
+    result = true;
+  }
+  ASSERT_EQ(result, true);
+}
+
 // iterator& operator--()
 TEST(map, test_class_map_iterator_2) {
   s21::map<int, int> map_test {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}};
@@ -151,6 +164,19 @@ TEST(map, test_class_map_iterator_2) {
     EXPECT_TRUE((*map_test_it).first == (*map_orig_it).first);
     EXPECT_TRUE((*map_test_it).second == (*map_orig_it).second);
   }
+}
+
+// iterator& operator--()
+TEST(map, test_class_map_iterator_2_error) {
+  s21::map<int, int> map_test {{15, 1}, {9, 2}, {12, 3}, {11, 3}, {13, 3}};
+  auto map_test_it = map_test.end();
+  bool result = false;
+  try {
+    --map_test_it;
+  } catch (const std::exception& err) {
+    result = true;
+  }
+  ASSERT_EQ(result, true);
 }
 
 // iterator& operator--()
