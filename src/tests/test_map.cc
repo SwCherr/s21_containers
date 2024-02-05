@@ -355,12 +355,8 @@ TEST(map, test_class_map_erase_1) {
 // erase
 TEST(map, test_class_map_erase_2) {
   s21::map<int, int> map_test{{1, 10}, {2, 20}, {5, 50}, {6, 60}, {8, 80}};
-  auto map_it = map_test.begin();
-  map_it + 1;
-  map_test.erase(map_it);
-  map_it = map_test.begin();
-  map_it + 1;
-  map_test.erase(map_it);
+  map_test.erase(map_test.begin() + 1);
+  map_test.erase(map_test.begin() + 1);
   EXPECT_TRUE(map_test.size() == 3);
   EXPECT_FALSE(map_test.contains(2));
   EXPECT_FALSE(map_test.contains(5));
@@ -370,9 +366,7 @@ TEST(map, test_class_map_erase_2) {
 TEST(map, test_class_map_erase_3) {
   s21::map<int, int> map_test{{1, 10}, {2, 20}, {5, 50}, {6, 60}, {8, 80}};
   EXPECT_TRUE(map_test.size() == 5);
-  auto map_it = map_test.begin();
-  map_it + 4;
-  map_test.erase(map_it);
+  map_test.erase(map_test.begin() + 4);
   EXPECT_TRUE(map_test.size() == 4);
   EXPECT_FALSE(map_test.contains(8));
 }
@@ -380,8 +374,7 @@ TEST(map, test_class_map_erase_3) {
 // erase
 TEST(map, test_class_map_erase_4) {
   s21::map<int, int> map_test{{1, 1}, {2, 2}};
-  auto map_it = map_test.begin();
-  map_test.erase(map_it);
+  map_test.erase(map_test.begin());
   EXPECT_TRUE(map_test.size() == 1);
   EXPECT_FALSE(map_test.contains(1));
 }
@@ -389,8 +382,7 @@ TEST(map, test_class_map_erase_4) {
 // erase
 TEST(map, test_class_map_erase_5) {
   s21::map<int, int> map_test{{1, 1}};
-  auto map_it = map_test.begin();
-  map_test.erase(map_it);
+  map_test.erase(map_test.begin());
   EXPECT_TRUE(map_test.size() == 0);
   EXPECT_FALSE(map_test.contains(1));
 }
