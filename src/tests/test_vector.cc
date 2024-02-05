@@ -42,14 +42,6 @@ TEST(vector, size_n_constructor_02) {
   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
 }
 
-// // TODO repair constructor
-// TEST(vector, size_n_constructor_03) {
-//   s21::vector<std::string> s21_Vector{"privet", "mir"};
-//   std::vector<std::string> Vector{"privet", "mir"};
-//   ASSERT_EQ(s21_Vector.capacity(), Vector.capacity());
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-// }
-
 TEST(vector, init_list_constructor_0) {
   s21::vector<int> s21_Vector = {1, 2, 3};
   std::vector<int> Vector = {1, 2, 3};
@@ -608,72 +600,72 @@ TEST(vector, const_iterator_ptrdiff) {
   ASSERT_EQ(s21_iter_2 - s21_iter_1, iter_2 - iter_1);
 }
 
-// TEST(vector, insert_many_0) {
-//   std::vector<int> Vector = {1, 2, 3};
-//   Vector.push_back(4);
-//   Vector.push_back(5);
-//   Vector.push_back(6);
-//   s21::vector<int> s21_Vector = {1, 2, 3};
-//   auto iter = s21_Vector.cend();
-//   auto iter_res = s21_Vector.insert_many(iter, 4, 5, 6);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-//   ASSERT_EQ(*iter_res, 4);
-// }
-//
-// TEST(vector, insert_many_1) {
-//   std::vector<int> Vector = {1, 2, 3, 4, 5, 6};
-//   s21::vector<int> s21_Vector = {4, 5, 6};
-//   auto iter = s21_Vector.cbegin();
-//   auto iter_res = s21_Vector.insert_many(iter, 1, 2, 3);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-//   ASSERT_EQ(*iter_res, 1);
-// }
-//
-// TEST(vector, insert_many_2) {
-//   std::vector<int> Vector = {1, 2};
-//   s21::vector<int> s21_Vector = {1, 6};
-//   Vector.push_back(3);
-//   Vector.push_back(4);
-//   Vector.push_back(5);
-//   Vector.push_back(6);
-//   s21::vector<int>::const_iterator iter = s21_Vector.cbegin();
-//   auto iter_res = s21_Vector.insert_many(++iter, 2, 3, 4, 5);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-//   ASSERT_EQ(*iter_res, 2);
-// }
-//
-// TEST(vector, insert_many_3) {
-//   std::vector<int> Vector;
-//   Vector.push_back(1);
-//   Vector.push_back(2);
-//   Vector.push_back(3);
-//   s21::vector<int> s21_Vector;
-//   s21::vector<int>::const_iterator iter = s21_Vector.cbegin();
-//   auto iter_res = s21_Vector.insert_many(iter, 1, 2, 3);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-//   ASSERT_EQ(*iter_res, 1);
-// }
-//
-// TEST(vector, insert_many_back_0) {
-//   std::vector<int> Vector = {1, 2, 3, 4, 5, 6};
-//   s21::vector<int> s21_Vector = {1, 2, 3};
-//   s21_Vector.insert_many_back(4, 5, 6);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-// }
-//
-// TEST(vector, insert_many_back_1) {
-//   std::vector<int> Vector;
-//   Vector.push_back(4);
-//   Vector.push_back(5);
-//   Vector.push_back(6);
-//   s21::vector<int> s21_Vector;
-//   s21_Vector.insert_many_back(4, 5, 6);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-// }
-//
-// TEST(vector, insert_many_back_2) {
-//   std::vector<int> Vector = {4};
-//   s21::vector<int> s21_Vector;
-//   s21_Vector.insert_many_back(4);
-//   ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
-// }
+TEST(vector, insert_many_0) {
+  std::vector<int> Vector = {1, 2, 3};
+  Vector.push_back(4);
+  Vector.push_back(5);
+  Vector.push_back(6);
+  s21::vector<int> s21_Vector = {1, 2, 3};
+  auto iter = s21_Vector.cend();
+  auto iter_res = s21_Vector.insert_many(iter, 4, 5, 6);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+  ASSERT_EQ(*iter_res, 4);
+}
+
+TEST(vector, insert_many_1) {
+  std::vector<int> Vector = {1, 2, 3, 4, 5, 6};
+  s21::vector<int> s21_Vector = {4, 5, 6};
+  auto iter = s21_Vector.cbegin();
+  auto iter_res = s21_Vector.insert_many(iter, 1, 2, 3);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+  ASSERT_EQ(*iter_res, 1);
+}
+
+TEST(vector, insert_many_2) {
+  std::vector<int> Vector = {1, 2};
+  s21::vector<int> s21_Vector = {1, 6};
+  Vector.push_back(3);
+  Vector.push_back(4);
+  Vector.push_back(5);
+  Vector.push_back(6);
+  s21::vector<int>::const_iterator iter = s21_Vector.cbegin();
+  auto iter_res = s21_Vector.insert_many(++iter, 2, 3, 4, 5);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+  ASSERT_EQ(*iter_res, 2);
+}
+
+TEST(vector, insert_many_3) {
+  std::vector<int> Vector;
+  Vector.push_back(1);
+  Vector.push_back(2);
+  Vector.push_back(3);
+  s21::vector<int> s21_Vector;
+  s21::vector<int>::const_iterator iter = s21_Vector.cbegin();
+  auto iter_res = s21_Vector.insert_many(iter, 1, 2, 3);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+  ASSERT_EQ(*iter_res, 1);
+}
+
+TEST(vector, insert_many_back_0) {
+  std::vector<int> Vector = {1, 2, 3, 4, 5, 6};
+  s21::vector<int> s21_Vector = {1, 2, 3};
+  s21_Vector.insert_many_back(4, 5, 6);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+}
+
+TEST(vector, insert_many_back_1) {
+  std::vector<int> Vector;
+  Vector.push_back(4);
+  Vector.push_back(5);
+  Vector.push_back(6);
+  s21::vector<int> s21_Vector;
+  s21_Vector.insert_many_back(4, 5, 6);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+}
+
+TEST(vector, insert_many_back_2) {
+  std::vector<int> Vector = {4};
+  s21::vector<int> s21_Vector;
+  s21_Vector.insert_many_back(4);
+  ASSERT_EQ(VectorEqual(s21_Vector, Vector), true);
+}
