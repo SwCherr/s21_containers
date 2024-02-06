@@ -29,6 +29,8 @@ class queue : public container_adaptor<T, C> {
   void push(const_reference value) override;
   const_reference back();
   const_reference front();
+  template <class... Args>
+  void insert_many_back(Args &&...args);
 
   queue operator=(const queue &other);
   bool operator==(const queue &other) const;
@@ -69,6 +71,14 @@ typename queue<T, C>::const_reference queue<T, C>::back() {
 template <class T, class C>
 typename queue<T, C>::const_reference queue<T, C>::front() {
   return container_.front();
+}
+
+template <class T, class C>
+template <class... Args>
+void queue<T, C>::insert_many_back(Args &&...args) {
+  for (auto &arg : {args...}) {
+    container_.push_back(arg);
+  }
 }
 
 template <class T, class C>

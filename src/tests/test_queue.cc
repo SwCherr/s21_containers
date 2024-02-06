@@ -106,3 +106,20 @@ TEST(queue_metods_test, queue_swap) {
   EXPECT_EQ(first_queue.size(), 1);
   EXPECT_EQ(second_queue.size(), 3);
 }
+
+TEST(queue_metods_test, queue_intert_many_back) {
+  s21::queue<int> queue({1, 2, 3});
+  queue.insert_many_back(4, 5, 6);
+  EXPECT_EQ(queue.size(), 6);
+  EXPECT_EQ(queue.front(), 1);
+  queue.pop();
+  EXPECT_EQ(queue.front(), 2);
+  queue.pop();
+  EXPECT_EQ(queue.front(), 3);
+  queue.pop();
+  EXPECT_EQ(queue.front(), 4);
+  queue.pop();
+  EXPECT_EQ(queue.front(), 5);
+  queue.pop();
+  EXPECT_EQ(queue.front(), 6);
+}
