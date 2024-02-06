@@ -1,6 +1,10 @@
 #ifndef CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_MAP_H_
 #define CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_MAP_H_
 
+#include <cstddef>
+#include <initializer_list>
+#include <utility>
+
 #include "../s21_sequental_containers/s21_vector.h"
 #include "binary_tree.h"
 

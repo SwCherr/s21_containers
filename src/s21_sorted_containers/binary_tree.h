@@ -1,6 +1,7 @@
 #ifndef CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_
 #define CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_
 
+#include <cstddef>
 #include <limits>
 #include <stdexcept>
 

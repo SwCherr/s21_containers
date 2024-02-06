@@ -1,6 +1,7 @@
 #ifndef CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_VECTOR_
 #define CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_VECTOR_
 
+#include <cstddef>
 #include <limits>
 #include <memory>
 #include <stdexcept>
