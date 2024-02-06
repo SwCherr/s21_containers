@@ -1,8 +1,8 @@
 #ifndef CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_
 #define CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_
 
-#include <iostream>
 #include <limits>
+#include <stdexcept>
 
 namespace s21 {
 template <class T1, class T2>

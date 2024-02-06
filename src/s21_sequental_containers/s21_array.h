@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <initializer_list>
+#include <stdexcept>
 
 #include "s21_array_iterator.h"
 

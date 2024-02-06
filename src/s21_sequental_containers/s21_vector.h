@@ -3,6 +3,7 @@
 
 #include <limits>
 #include <memory>
+#include <stdexcept>
 
 #include "s21_vector_allocator.h"
 

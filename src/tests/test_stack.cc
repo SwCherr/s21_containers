@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "../s21_container_adaptors/s21_stack.h"
+#include <stack>
 
+#include "../s21_container_adaptors/s21_stack.h"
 // constructors
 
 TEST(stack_constructor_test, stack_default_constructor) {
@@ -105,4 +106,15 @@ TEST(stack_metods_test, stack_swap) {
   first_stack.swap(second_stack);
   EXPECT_EQ(first_stack.size(), 1);
   EXPECT_EQ(second_stack.size(), 3);
+}
+
+TEST(stack_metods_test, stack_intert_many_front) {
+  s21::stack<int> stack({1, 2, 3});
+  stack.insert_many_front(4, 5, 6);
+  EXPECT_EQ(stack.size(), 6);
+  EXPECT_EQ(stack.top(), 6);
+  stack.pop();
+  EXPECT_EQ(stack.top(), 5);
+  stack.pop();
+  EXPECT_EQ(stack.top(), 4);
 }

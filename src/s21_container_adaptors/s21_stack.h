@@ -28,6 +28,8 @@ class stack : public container_adaptor<T, C> {
   reference top();
   void pop() override;
   void push(const_reference value) override;
+  template <class... Args>
+  void insert_many_front(Args &&...args);
 
   stack operator=(const stack &other);
   bool operator==(const stack &other) const;
@@ -74,6 +76,14 @@ stack<T, C> stack<T, C>::operator=(const stack &other) {
 template <class T, class C>
 bool stack<T, C>::operator==(const stack &other) const {
   return container_ == other.container_;
+}
+
+template <class T, class C>
+template <class... Args>
+void stack<T, C>::insert_many_front(Args &&...args) {
+  for (auto &arg : {args...}) {
+    container_.push_back(arg);
+  }
 }
 
 }  // namespace s21

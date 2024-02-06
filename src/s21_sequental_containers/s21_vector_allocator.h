@@ -2,7 +2,7 @@
 #define CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_VECTOR_ALLOCATOR_H_
 
 #include <iostream>
-#include <memory>
+#include <new>
 
 namespace s21 {
 
