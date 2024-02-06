@@ -2,7 +2,7 @@
 
 #include <list>
 
-#include "../s21_sequential_container/s21_list.h"
+#include "../s21_sequental_containers/s21_list.h"
 
 template <class T>
 bool ListEqual(s21::list<T> s21_List, std::list<T> List) {

@@ -1,8 +1,8 @@
-#ifndef __CPP2_S21_CONTAINERS_SRC_BTree_H__
-#define __CPP2_S21_CONTAINERS_SRC_BTree_H__
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_
 
-#include <cstdint>
 #include <iostream>
+#include <limits>
 
 namespace s21 {
 template <class T1, class T2>
@@ -389,20 +389,6 @@ void BTree<T1, T2>::DestroyTree(Node* node) {
   }
 }
 
-// template<class T1, class T2>
-// void BTree<T1, T2>::TreePrint(Node *node){
-//   if (node != nullptr) {
-//     TreePrint(node->Left);
-//     std::cout << node->Key << " ";
-//     TreePrint(node->Right);
-//   }
-// }
-
-// template<class T1, class T2>
-// void BTree<T1, T2>::Print() {
-//   TreePrint(root_);
-//   std::cout << std::endl;
-// }
 }  // namespace s21
 
-#endif  // __CPP2_S21_CONTAINERS_SRC_BTree_H__
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_BINARY_TREE_H_

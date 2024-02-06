@@ -3,7 +3,7 @@ PROJECT = s21_containers
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
 TESTFLAGS = -lgtest -lgtest_main -pthread
-# GCOV_FLAG = --coverage
+GCOV_FLAG = --coverage
 
 DIR_TESTS = tests/
 DIR_BUILD_TESTS = build_tests/
@@ -32,7 +32,7 @@ dir:
 
 gcov_report: test
 	@./$(TEST_EXECUTABLE)
-	@lcov -o test.info --no-external -c -d . $(LCOV_FLAG)
+	@lcov -o test.info --no-external -c -d . $(LCOV_FLAG) --ignore-errors mismatch
 	@genhtml -o report test.info $(LCOV_FLAG)
 	@$(OPEN_CMD) report/index.html
 	@rm -rf *.gcda *.gcno *.info *.dSYM 

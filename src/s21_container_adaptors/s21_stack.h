@@ -1,9 +1,11 @@
-#ifndef CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_STACK_H_
-#define CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_STACK_H_
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTORS_S21_STACK_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTORS_S21_STACK_H_
 
-#include <deque>
+#include <algorithm>
+#include <cstddef>
+#include <initializer_list>
 
-#include "../s21_sequential_container/s21_list.h"
+#include "../s21_sequental_containers/s21_list.h"
 #include "s21_container_adaptor.h"
 
 namespace s21 {
@@ -24,7 +26,6 @@ class stack : public container_adaptor<T, C> {
   ~stack() = default;
 
   reference top();
-  const_reference top() const;
   void pop() override;
   void push(const_reference value) override;
 
@@ -55,11 +56,6 @@ typename stack<T, C>::reference stack<T, C>::top() {
 }
 
 template <class T, class C>
-typename stack<T, C>::const_reference stack<T, C>::top() const {
-  return container_.back();
-}
-
-template <class T, class C>
 void stack<T, C>::push(const_reference value) {
   container_.push_back(value);
 }
@@ -82,4 +78,4 @@ bool stack<T, C>::operator==(const stack &other) const {
 
 }  // namespace s21
 
-#endif  // CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_STACK_H_
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTORS_S21_STACK_H_

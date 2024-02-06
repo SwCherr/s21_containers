@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../s21_container_adaptor/s21_stack.h"
+#include "../s21_container_adaptors/s21_stack.h"
 
 // constructors
 

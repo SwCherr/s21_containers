@@ -1,5 +1,5 @@
-#ifndef CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_CONTAINER_ADAPTOR_H_
-#define CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_CONTAINER_ADAPTOR_H_
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTORS_S21_CONTAINER_ADAPTOR_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTORS_S21_CONTAINER_ADAPTOR_H_
 
 #include <cstddef>
 
@@ -32,14 +32,14 @@ bool container_adaptor<T, C>::empty() {
 
 template <class T, class C>
 typename container_adaptor<T, C>::size_type container_adaptor<T, C>::size() {
-  return this->container_.size();
+  return container_.size();
 }
 
 template <class T, class C>
 void container_adaptor<T, C>::swap(container_adaptor &other) noexcept {
-  this->container_.swap(other.container_);
+  container_.swap(other.container_);
 }
 
 }  // namespace s21
 
-#endif  // CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTOR_S21_CONTAINER_ADAPTOR_H_
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_CONTAINER_ADAPTORS_S21_CONTAINER_ADAPTOR_H_

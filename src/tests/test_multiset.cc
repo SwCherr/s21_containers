@@ -3,7 +3,7 @@
 #include <set>
 #include <string>
 
-#include "../s21_sorted_container/s21_multiset.h"
+#include "../s21_sorted_containers/s21_multiset.h"
 
 // --------- Constructor & destructor ---------
 // default constructor, creates empty tree

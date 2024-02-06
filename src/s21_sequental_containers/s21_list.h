@@ -1,9 +1,9 @@
-#ifndef CPP2_S21_CONTAINERS_1_SRC_S21_LIST_H
-#define CPP2_S21_CONTAINERS_1_SRC_S21_LIST_H
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_LIST_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_LIST_H_
 
+#include <algorithm>
 #include <initializer_list>
 #include <limits>
-#include <memory>
 
 namespace s21 {
 
@@ -563,4 +563,4 @@ void list<value_type>::insert_many_front(Args &&...args) {
 
 }  // namespace s21
 
-#endif  // CPP2_S21_CONTAINERS_1_SRC_S21_LIST_H
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_LIST_H_

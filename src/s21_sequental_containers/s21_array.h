@@ -1,8 +1,9 @@
-#ifndef CPP2_S21_CONTAINERS_SRC_S21_ARRAY_H_
-#define CPP2_S21_CONTAINERS_SRC_S21_ARRAY_H_
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_ARRAY_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_ARRAY_H_
 
+#include <algorithm>
+#include <cstddef>
 #include <initializer_list>
-#include <iostream>
 
 #include "s21_array_iterator.h"
 
@@ -140,4 +141,4 @@ array<T, N> array<T, N>::operator=(array &&other) noexcept {
 
 }  // namespace s21
 
-#endif  // CPP2_S21_CONTAINERS_SRC_S21_ARRAY_H_
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_SEQUENTAL_CONTAINERS_S21_ARRAY_H_

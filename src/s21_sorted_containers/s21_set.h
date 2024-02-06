@@ -1,10 +1,11 @@
-#ifndef __CPP2_S21_CONTAINERS_SRC_SET_H__
-#define __CPP2_S21_CONTAINERS_SRC_SET_H__
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_SET_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_SET_H_
 
-#include "../s21_sequential_container/s21_vector.h"
+#include "../s21_sequental_containers/s21_vector.h"
 #include "binary_tree.h"
 
 namespace s21 {
+
 template <class Key>
 class set : public BTree<Key, Key> {
  public:
@@ -47,11 +48,13 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(
 
 template <class Key>
 template <class... Args>
-s21::vector<std::pair<typename set<Key>::iterator, bool>> set<Key>::insert_many(
+vector<std::pair<typename set<Key>::iterator, bool>> set<Key>::insert_many(
     Args &&...args) {
-  s21::vector<std::pair<iterator, bool>> insert_results{};
+  vector<std::pair<iterator, bool>> insert_results{};
   for (const auto &arg : {args...}) insert_results.push_back(insert(arg));
   return insert_results;
 }
+
 }  // namespace s21
-#endif  // __CPP2_S21_CONTAINERS_SRC_SET_H__
+
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_SET_H_

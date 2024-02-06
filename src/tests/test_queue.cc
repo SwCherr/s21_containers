@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../s21_container_adaptor/s21_queue.h"
+#include "../s21_container_adaptors/s21_queue.h"
 
 // constructors
 
@@ -46,6 +46,11 @@ TEST(queue_operator_test, queue_operator_comparison) {
 }
 
 // metods
+
+TEST(queue_metods_test, queue_front) {
+  s21::queue<int> example_queue({-1, -2, -3});
+  EXPECT_EQ(example_queue.front(), -1);
+}
 
 TEST(queue_metods_test, queue_back) {
   s21::queue<int> example_queue({-1, -2, -3});

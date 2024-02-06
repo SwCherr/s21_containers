@@ -1,7 +1,7 @@
-#ifndef __CPP2_S21_CONTAINERS_SRC_MAP_H__
-#define __CPP2_S21_CONTAINERS_SRC_MAP_H__
+#ifndef CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_MAP_H_
+#define CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_MAP_H_
 
-#include "../s21_sequential_container/s21_vector.h"
+#include "../s21_sequental_containers/s21_vector.h"
 #include "binary_tree.h"
 
 namespace s21 {
@@ -144,5 +144,7 @@ map<Key, Value>::insert_many(Args&&... args) {
   for (const auto& arg : {args...}) insert_results.push_back(insert(arg));
   return insert_results;
 }
+
 }  // namespace s21
-#endif  // __CPP2_S21_CONTAINERS_SRC_MAP_H__
+
+#endif  // CPP2_S21_CONTAINERS_SRC_S21_SORTED_CONTAINERS_S21_MAP_H_

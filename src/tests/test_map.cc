@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "../s21_sorted_container/s21_map.h"
+#include "../s21_sorted_containers/s21_map.h"
 
 TEST(map, ConstructorInitializerMap) {
   s21::map<int, char> map_test = {{1, 'x'}, {2, 'b'}, {3, 'z'}, {4, 'y'}};

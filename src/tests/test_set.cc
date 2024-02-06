@@ -1,7 +1,9 @@
+#include <gtest/gtest.h>
+
 #include <set>
 #include <string>
-#include <gtest/gtest.h>
-#include "../s21_sorted_container/s21_set.h"
+
+#include "../s21_sorted_containers/s21_set.h"
 
 // --------- Constructor & destructor ---------
 // default constructor, creates empty tree
@@ -181,7 +183,7 @@ TEST(set, test_class_set_insert_many_3) {
 
 // erase
 TEST(set, test_class_set_erase_1) {
-  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::set<int> set_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto set_it = set_test.begin();
   set_test.erase(set_it);
   EXPECT_FALSE(set_test.contains(1));
@@ -189,7 +191,7 @@ TEST(set, test_class_set_erase_1) {
 
 // erase
 TEST(set, test_class_set_erase_2) {
-  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::set<int> set_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto set_it = set_test.begin() + 4;
   set_test.erase(set_it);
   EXPECT_FALSE(set_test.contains(9));
@@ -197,7 +199,7 @@ TEST(set, test_class_set_erase_2) {
 
 // erase
 TEST(set, test_class_set_erase_3) {
-  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::set<int> set_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto set_it = set_test.begin() + 3;
   set_test.erase(set_it);
   EXPECT_FALSE(set_test.contains(8));
@@ -205,7 +207,7 @@ TEST(set, test_class_set_erase_3) {
 
 // erase
 TEST(set, test_class_set_erase_4) {
-  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::set<int> set_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto set_it = set_test.begin() + 2;
   set_test.erase(set_it);
   EXPECT_FALSE(set_test.contains(7));
@@ -213,7 +215,7 @@ TEST(set, test_class_set_erase_4) {
 
 // erase
 TEST(set, test_class_set_erase_5) {
-  s21::set<int> set_test {15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
+  s21::set<int> set_test{15, 9, 3, 1, 8, 7, 12, 11, 13, 23, 17, 28};
   auto set_it = set_test.begin() + 8;
   set_test.erase(set_it);
   EXPECT_FALSE(set_test.contains(15));
@@ -288,7 +290,7 @@ TEST(set, test_class_set_merge_1) {
   s21::set<int> set_test_1{8, 2, 5, 6, 1, 9};
   s21::set<int> set_test_2{3, 4, 6, 7, 0};
   s21::set<int> set_test_res{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-  
+
   set_test_1.merge(set_test_2);
   size_t size_res = 10;
   ASSERT_EQ(set_test_1.size(), size_res);
@@ -337,11 +339,10 @@ TEST(set, test_class_set_contains_3) {
   ASSERT_EQ(res, check);
 }
 
-
 // Iterator& operator++();
 TEST(set, test_class_set_iterator_plus_plus_1) {
   s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   ASSERT_EQ(set_test.size(), set_orig.size());
@@ -353,7 +354,7 @@ TEST(set, test_class_set_iterator_plus_plus_1) {
 // Iterator& operator+();
 TEST(set, test_class_set_iterator_plus_plus_2) {
   s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto set_test_it = set_test.begin() + 1;
   auto set_orig_it = ++set_orig.begin();
   ASSERT_EQ(set_test.size(), set_orig.size());
@@ -365,7 +366,7 @@ TEST(set, test_class_set_iterator_plus_plus_2) {
 // Iterator& operator--();
 TEST(set, test_class_set_iterator_minus_minus_3) {
   s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto set_test_it = set_test.begin() + 5;
   auto set_orig_it = --(set_orig.end());
   ASSERT_EQ(set_test.size(), set_orig.size());
@@ -376,8 +377,8 @@ TEST(set, test_class_set_iterator_minus_minus_3) {
 
 // Iterator& operator==();
 TEST(set, test_class_set_iterator_plus_plus_4) {
-  s21::set<double> set_test {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  s21::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  s21::set<double> set_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   ASSERT_EQ(set_test.size(), set_orig.size());
@@ -393,7 +394,7 @@ TEST(set, test_class_set_iterator_plus_plus_4) {
 // ************************************
 TEST(set, test_class_set_int_1) {
   s21::set<int> set_test{1, 2, 3, 4, 5, 6};
-  std::set<int> set_orig {1, 2, 3, 4, 5, 6};
+  std::set<int> set_orig{1, 2, 3, 4, 5, 6};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
@@ -404,7 +405,7 @@ TEST(set, test_class_set_int_1) {
 
 TEST(set, test_class_set_float_1) {
   s21::set<float> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<float> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<float> set_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
@@ -415,7 +416,7 @@ TEST(set, test_class_set_float_1) {
 
 TEST(set, test_class_set_double_1) {
   s21::set<double> set_test{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
-  std::set<double> set_orig {1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
+  std::set<double> set_orig{1.1, 2.1, 3.1, 4.1, 5.1, 6.1};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
@@ -426,7 +427,7 @@ TEST(set, test_class_set_double_1) {
 
 TEST(set, test_class_set_char_1) {
   s21::set<char> set_test{'a', 'b', 'c', 'd', 'e', 'f'};
-  std::set<char> set_orig {'a', 'b', 'c', 'd', 'e', 'f'};
+  std::set<char> set_orig{'a', 'b', 'c', 'd', 'e', 'f'};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
@@ -436,14 +437,14 @@ TEST(set, test_class_set_char_1) {
 }
 
 TEST(set, test_class_set_string_1) {
-  s21::set<std::string> set_test {"hello", "world"};
-  std::set<std::string> set_orig {"hello", "world"};
+  s21::set<std::string> set_test{"hello", "world"};
+  std::set<std::string> set_orig{"hello", "world"};
   ASSERT_EQ(set_test.size(), set_orig.size());
 }
 
 TEST(set, test_class_set_string_2) {
-  s21::set<std::string> set_test {"This", "is", "my", "set"};
-  std::set<std::string> set_orig {"This", "is", "my", "set"};
+  s21::set<std::string> set_test{"This", "is", "my", "set"};
+  std::set<std::string> set_orig{"This", "is", "my", "set"};
   auto set_test_it = set_test.begin();
   auto set_orig_it = set_orig.begin();
   for (size_t i = 0; i < set_test.size(); ++i) {
