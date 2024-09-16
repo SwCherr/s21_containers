@@ -1,3 +1,6 @@
+.DS_Store
+src/.DS_Store
+src/s21_sorted_containers/.DS_Store
 # Prerequisites
 *.d
 
