@@ -33,3 +33,8 @@
 | `void insert_many_back(Args&&... args)`          | appends new elements to the end of the container  | List, Vector, Queue |
 | `void insert_many_front(Args&&... args)`          | appends new elements to the top of the container  | List, Stack |
 | `vector<std::pair<iterator,bool>> insert_many(Args&&... args)`          | inserts new elements into the container  | Map, Set, Multiset |
+
+## Contributors
+[__Julia Kungurova__](https://github.com/SwCherr)<br>
+[__Albert Nikitin__](https://github.com/erosrolf)<br>
+[__Chulpan Bahteeva__](https://github.com/chulpanbahteeva)<br>
